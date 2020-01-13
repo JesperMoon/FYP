@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace FYP
+namespace FYP.Web
 {
     public class FilterConfig
     {

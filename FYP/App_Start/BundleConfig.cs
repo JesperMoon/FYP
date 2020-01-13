@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace FYP
+namespace FYP.Web
 {
     public class BundleConfig
     {

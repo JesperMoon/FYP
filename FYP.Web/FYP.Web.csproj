@@ -172,6 +172,8 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\HomePage\Index.cshtml" />
+    <Content Include="Views\HomePage\PractitionerLogin.cshtml" />
+    <Content Include="Views\HomePage\PatientLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -189,6 +191,16 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FYP.Entities\FYP.Entities.csproj">
+      <Project>{47b9260d-bfbb-4843-bd3f-7d7a0e2ca55f}</Project>
+      <Name>FYP.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FYP.Framework\FYP.Framework.csproj">
+      <Project>{8BC27F92-E219-410E-AF59-D94B9FDB6BE4}</Project>
+      <Name>FYP.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

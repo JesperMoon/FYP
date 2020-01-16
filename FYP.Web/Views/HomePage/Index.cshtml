@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Web App For Doctor - Select Role";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    /* Frame styling */
+    body{
+        background-color:aqua;
+    }
+
+    .jumbotron{
+        background-color:white;
+    }
+
+    /* Select your role */
+    .header {
+        text-align: center;
+    }
+
+    /* Styling for Button */
+    .menuItem {
+        text-align: center;
+        padding: 12px 0;
+        text-decoration: none !important;
+        /*color: inherit !important;*/
+        color: black;
+        border-radius: 50px;
+        background-color: lightgray;
+    }
+
+    .menuItem:hover {
+        background-color: #18a1e5;
+        text-decoration: none !important;
+        color: white !important;
+    }
+
+    .menuItem span,
+    .menuItem .fa {
+        font-size: 150px;
+    }
+
+    .menuItem .fa + h3 {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    /*.menuItem div {
+        font-size: 20px;
+        font-weight: bold;
+    }*/
+</style>
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="header">
+            <h1>Select Your Role</h1>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <div class="row">
+                    <a class="col-lg-5 menuItem" href="">
+                        <span class="fa fa-stethoscope"></span>
+                        <h3>Practitioners</h3>
+                    </a>
+                    <div class="col-lg-2"></div>
+                    <a class="col-lg-5 menuItem" href="">
+                        <span class="fa fa-users"></span>
+                        <h3>Patients</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <br />
+        <br />
+    </div>
+</body>
+</html>

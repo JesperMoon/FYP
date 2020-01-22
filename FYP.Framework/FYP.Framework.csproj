@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="ConstantHelper.cs" />
+    <Compile Include="EnumConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

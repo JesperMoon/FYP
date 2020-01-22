@@ -122,6 +122,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomePageController.cs" />
+    <Compile Include="Controllers\PractitionerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,6 +175,8 @@
     <Content Include="Views\HomePage\Index.cshtml" />
     <Content Include="Views\HomePage\PractitionerLogin.cshtml" />
     <Content Include="Views\HomePage\PatientLogin.cshtml" />
+    <Content Include="Views\Practitioner\Home.cshtml" />
+    <Content Include="Views\HomePage\PractitionerRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -200,6 +203,10 @@
     <ProjectReference Include="..\FYP.Framework\FYP.Framework.csproj">
       <Project>{8BC27F92-E219-410E-AF59-D94B9FDB6BE4}</Project>
       <Name>FYP.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FYP.Process\FYP.Process.csproj">
+      <Project>{575bad4e-9206-46c3-9cbb-422baff8ca2e}</Project>
+      <Name>FYP.Process</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

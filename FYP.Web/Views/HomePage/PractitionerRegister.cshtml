@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewBag.Title = "Web App For Doctor - Register Practitioner";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+    .backButton:hover {
+        background-color: white;
+        text-decoration: none !important;
+        color: #18a1e5 !important;
+    }
+
+    input[type=submit] {
+        width: auto;
+        height: auto;
+        font-size: 20px;
+    }
+
+    p1 {
+        overflow: auto;
+        white-space: nowrap;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    p2 {
+        font-size: 18px;
+        color: red;
+        font-style: italic;
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: lightgray;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: lightgray;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: lightgray;
+    }
+
+</style>
+
+@model FYP.Entities.PractitionerViewModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="row">
+            <a class="col-lg-3 col-xs-3 backButton" href="@Url.Action("PractitionerLogin", "HomePage")">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>
+            <div class="col-lg-9 col-9 text-center">
+                <p1>Practitioner Registration Form</p1>
+            </div>
+        </div>
+
+        <br />
+
+        @using (Html.BeginForm("PractitionerRegister", "HomePage"))
+        {
+        <div class="table-condensed">
+
+            @* First Name *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.FirstName) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.FirstName)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.FirstName)</p2></div>
+            </div>
+
+            @* Last Name *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.LastName) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.LastName)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.LastName)</p2></div>
+            </div>
+
+            @* Gender *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Gender) : </p></div>
+                <div class="col-lg-2 col-2"><p>@Html.RadioButtonFor(m => m.Gender, "Male", new { Checked = "checked", Value = "Male" }) Male</p></div>
+                <div class="col-lg-2 col-2"><p>@Html.RadioButtonFor(m => m.Gender, "Female") Female</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Religion *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Religion) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.Religion, new { @class = "form-control" })</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Date of Birth *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.DateOfBirth) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control datepicker", type = "date" })</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Email Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.EmailAddress) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.EmailAddress)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Reconfirm Email Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.ReconfirmEmail) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.ReconfirmEmail)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* UserName *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.UserName) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.UserName)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Password *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Password) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.PasswordFor(m => m.Password)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Reconfirm Password *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.RetypePassword) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.PasswordFor(m => m.RetypePassword)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Office Phone Number *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.OfficePhoneNumber) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.OfficePhoneNumber, new { htmlAttributes = new { @placeholder = "0123456789", input = "numeric" } })</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Company Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Company) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Company)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Postal Code *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric" } })</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* State *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.State) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Role *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Role) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Role)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Specialist *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Specialist) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Specialist)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>Other specialist(Please specify) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.NewSpecialist)</p></div>
+                <div class="col-lg-3 col-3"><p2>Ignore if chosen any specialist above.</p2></div>
+            </div>
+
+            @* Qualification *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Qualification) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.TextAreaFor(m => m.Qualification)</p></div>
+                <div class="col-lg-3 col-3"></div>
+            </div>
+
+            @* Submit Button *@
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <input type="submit" value="Register" name="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</body>
+</html>
+

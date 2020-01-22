@@ -12,17 +12,38 @@ namespace FYP.Framework
         public static class AppSettings
         {
             public static string RootSiteUrl = ConfigurationManager.AppSettings["RootSiteUrl"];
+            public static string BackEndUrl = ConfigurationManager.AppSettings["BackEndUrl"];
+
+            public static class Database
+            {
+                public static string FYP = "FYP";
+            }
         }
 
         public static class DBAppSettings
         {
-            //public static string DbConnectionString = ConfigurationManager.ConnectionStrings[""].ConnectionString;
+            public static string FYP = ConfigurationManager.ConnectionStrings["FYP"].ConnectionString;
         }
 
         public static class API
         {
-            public const string PractitionerLogin = "/HomePage/PractitionerLogin/";
-            public const string PatientLogin = "/HomePage/PatientLogin/";
+            public static class Registration
+            {
+                public const string PractitionerRegister = "HomePage/PractitionerRegister";
+                public const string PatientRegister = "HomePage/PatientRegister";
+            }
+
+            public static class Practitioner
+            {
+                public const string PractitionerLogin = "HomePage/PractitionerLogin";
+                public const string PractitionerRegister = "HomePage/PractitionerRegister";
+            }
+
+            public static class Patient
+            {
+                public const string PatientLogin = "HomePage/PatientLogin";
+
+            }
         }
 
     }

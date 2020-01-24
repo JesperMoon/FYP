@@ -26,17 +26,29 @@ namespace FYP.Controllers
         [HttpPost]
         public ActionResult PractitionerLogin(LoginInfo loginInfo)
         {
-            LoginInfo result = new LoginInfo();
+            Guid result;
 
             if (Request.Form["Submit"] != null)
             {
-                PractitionerProcess process = new PractitionerProcess();
-                result = process.PractitionerLogin(loginInfo);
+                if(ModelState.IsValid == true)
+                {
+                    PractitionerProcess process = new PractitionerProcess();
+                    result = process.PractitionerLogin(loginInfo);
 
-                return RedirectToAction("Home","Practitioner", null);
+                    if (result != Guid.Empty)
+                    {
+                        return RedirectToAction("Home", "Practitioner", result);
+                    }
+                    else
+                    {
+                        loginInfo.Password = "";
+                        TempData["Incorrect"] = "incorrect";
+                        return View(loginInfo);
+                    }
+                }
             }
 
-            return View();
+            return View(loginInfo);
         }
 
         public ActionResult PractitionerRegister()
@@ -55,7 +67,7 @@ namespace FYP.Controllers
 
                 if (result != null)
                 {
-                    return RedirectToAction("Index", "HomePage", null);
+                    return View("Index", "HomePage");
                 }
 
                 return View(newUser);
@@ -70,6 +82,11 @@ namespace FYP.Controllers
         {
             LoginInfo loginInfo = new LoginInfo();
             return View(loginInfo);
+        }
+
+        public ActionResult AccCreateSuccess()
+        {
+            return View();
         }
     }
 }

@@ -44,5 +44,21 @@ namespace FYP.Data
             return newUser;
         }
 
+        public Guid PractitionerLogin(LoginInfo loginInfo)
+        {
+            Guid result;
+
+            using (var context = new ApplicationContext())
+            {
+                var query = from pt in context.Practitioner
+                            where pt.EmailAddress == loginInfo.EmailAddress && pt.Password == loginInfo.Password
+                            select pt;
+
+                result = query.Select(p => p.Id).FirstOrDefault();
+            }
+
+            return result;
+        }
+
     }
 }

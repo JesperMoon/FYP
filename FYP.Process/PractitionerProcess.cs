@@ -11,7 +11,7 @@ namespace FYP.Process
 {
     public class PractitionerProcess
     {
-        public LoginInfo PractitionerLogin(LoginInfo loginInfo)
+        public Guid PractitionerLogin(LoginInfo loginInfo)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
@@ -19,8 +19,8 @@ namespace FYP.Process
             request.RequestFormat = DataFormat.Json;
             request.AddBody(loginInfo);
 
-            IRestResponse<LoginInfo> response = client.Execute<LoginInfo>(request);
-            LoginInfo result = response.Data;
+            IRestResponse<Guid> response = client.Execute<Guid>(request);
+            Guid result = response.Data;
 
             return result;
         }

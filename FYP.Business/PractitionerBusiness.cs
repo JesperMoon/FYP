@@ -28,13 +28,14 @@ namespace FYP.Business
             return result;
         }
 
-        public LoginInfo PractitionerLogin(LoginInfo loginInfo)
+        public Guid PractitionerLogin(LoginInfo loginInfo)
         {
-            LoginInfo result = new LoginInfo();
+            Guid result = new Guid();
 
             try
             {
-
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.PractitionerLogin(loginInfo);
             }
             catch(Exception err)
             {

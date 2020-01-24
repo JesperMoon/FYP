@@ -15,12 +15,13 @@ namespace FYP.Entities
     {
         [DataMember]
         [DisplayName("Email Address")]
-        [Required(ErrorMessage = "Password is required.")]
+        [Required(ErrorMessage = "Email address is required.")]
         public string EmailAddress { get; set; }
 
 
         [DataMember]
         [Required(ErrorMessage = "Password is required.")]
+        [StringLength(32, MinimumLength = 6, ErrorMessage = "The password length must be between 6 to 32.")]
         public string Password { get; set; }
     }
 }

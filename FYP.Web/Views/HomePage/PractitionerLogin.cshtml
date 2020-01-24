@@ -3,12 +3,13 @@
     ViewBag.Title = "Web App For Doctor - Practitioner Login";
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=0.5">  
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 <link href="~/Content/Site.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 <style>
     /* Frame styling */
@@ -31,9 +32,9 @@
         /*background-color: lightgray;*/
     }
 
-    .menuItem span {
-        font-size: 150px;
-    }
+        .menuItem span {
+            font-size: 150px;
+        }
 
     /* Styling for Back Button */
     .backButton {
@@ -47,16 +48,21 @@
         /*padding: 12px 0;*/
     }
 
-    .backButton:hover {
-        background-color: white;
-        text-decoration: none !important;
-        color: #18a1e5 !important;
-    }
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
 
     input[type=submit] {
-        width:auto;
+        width: auto;
         height: auto;
         font-size: 20px;
+    }
+
+    p2 {
+        color: red;
+        font-size: auto;
     }
 
     /*.menuItem span,
@@ -86,36 +92,59 @@
 
         <br />
 
-        @using (Html.BeginForm("PractitionerLogin", "HomePage"))
+        @if(TempData["Incorrect"] != null)
         {
-        <table class="table-responsive table-condensed">
-            <tr class="row">
-                <th class="col-lg-3 col-xs-3"></th>
-                <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.EmailAddress) : </p></th>
-                <th class="col-lg-3 col-xs-3"><p>@Html.TextBoxFor(m => m.EmailAddress)</p></th>
-                <th class="col-lg-3 col-xs-3"></th>
-            </tr>
-
-            @Html.ValidationMessageFor(m => m.EmailAddress)
-            <tr class="row">
-                <th class="col-lg-3 col-xs-3"></th>
-                <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.Password) : </p></th>
-                <th class="col-lg-3 col-xs-3"><p>@Html.PasswordFor(m => m.Password) </p></th>
-                <th class="col-lg-3 col-xs-3"></th>
-            </tr>
-            @Html.ValidationMessageFor(m => m.Password)
-
-            <tr class="row">
-                <th class="col-lg-3 col-xs-3"></th>
-                <th class="col-lg-3 col-xs-3"></th>
-                <th class="col-lg-6 col-xs-6">
-                    <input type="submit" value="Login" name="Submit" class="btn btn-success" />
-                </th>
-            </tr>
-        </table>
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        The email address or password is incorrect!
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
         }
 
-        @Html.ActionLink("New user? Register an account here. ", "PractitionerRegister")
+        @using (Html.BeginForm("PractitionerLogin", "HomePage"))
+        {
+            <table class="table-responsive table-condensed">
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.EmailAddress) : </p></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.TextBoxFor(m => m.EmailAddress)</p></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p2>@Html.ValidationMessageFor(m => m.EmailAddress)</p2></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.Password) : </p></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.PasswordFor(m => m.Password) </p></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p2>@Html.ValidationMessageFor(m => m.Password)</p2></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-6 col-xs-6">
+                        <input type="submit" value="Login" name="Submit" class="btn btn-success" />
+                    </th>
+                </tr>
+            </table>
+        }
+
+        @Html.ActionLink("New user? Register an account here. ", "PractitionerRegister", null, new { target = "_blank" })
     </div>
 </body>
 </html>

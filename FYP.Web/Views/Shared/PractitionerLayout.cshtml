@@ -2,14 +2,143 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script>
+        function activeLink(x) {
+            document.getElementById(x).style.backgroundColor = rgb(2,210,173);
+            document.getElementById(x).style.color = white;
+        }
+    </script>
+    <style>
+        body {
+            background-color: rgb(2,210,173);
+        }
+
+        .sidenav {
+            background-color: rgb(30,251,211);
+            height: 100%;
+            left: 0;
+            overflow-x: auto;
+            padding-top: 20px;
+            position: fixed !important;
+            top: 0;
+            width: 200px; /* Set the width for the side nav*/
+            z-index: 1;
+        }
+
+        .bar-item {
+            width: 100%;
+            display: block;
+            text-align: center;
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            white-space: normal;
+            float: none;
+            outline: 0;
+            font-size: 25px;
+            font-family: "Montserrat";
+            /*color: rgb(167,134,134);*/
+            color:black;
+            background-color: rgb(30,251,211);
+        }
+
+        .bar-item:active {
+            background-color: rgb(2,210,173);
+            color: white;
+            text-decoration: none;
+        }
+
+        .bar-item:hover {
+            color: rgb(2,210,173);
+            background-color: white;
+            text-decoration: none;
+        }
+
+        /*.sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }*/
+
+        /*.sidenav a:hover {
+            color: #f1f1f1;
+        }*/
+
+        .main {
+            margin-left: 200px; /* Same as the width of the sidenav */
+            font-size: 28px; /* Increased text to enable scrolling */
+            padding: 0px 10px;
+        }
+
+        .logout {
+            position: absolute;
+            width: 100%;
+            bottom: 5%;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            font-size: 25px;
+            font-family: "Montserrat";
+            /*color: rgb(167,134,134);*/
+            color:black;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 170px;
+            background-color: white;
+            color: black;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            /* Position the tooltip*/ 
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 38%;
+            margin-left: -60px;
+        }
+
+        .logout:hover {
+            color: dimgrey;
+        }
+
+        footer {
+            position: absolute;
+            width: 80%;
+            bottom: 1%;
+            display: inline-block;
+            text-align: right;
+            text-decoration: none;
+            font-size: 20px;
+            font-family: "Montserrat";
+            /*color: rgb(167,134,134);*/
+            color: black;
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container"
-    <div class="container body-content">
+
+    <div class="sidenav">
+        <a class="bar-item" href="#home" onclick="activeLink()">Home</a>
+        <a class="bar-item" href="#appointments" onclick="activeLink()">Appointments</a>
+        <a class="bar-item" href="#products" onclick="activeLink()">Products</a>
+        <a class="bar-item" href="#records" onclick="activeLink()">Records</a>
+        <a class="bar-item" href="#patients" onclick="activeLink()">Patients</a>
+        <a class="bar-item" href="#profile" onclick="activeLink()">Profile</a>
+
+        <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PractitionerLogin","HomePage", null)">
+            Logout
+            @*<span class="tooltiptext">Return to the login page</span>*@
+        </a>
+    </div>
+
+    <div class="main">
         @RenderBody()
         <hr />
         <footer>
@@ -23,5 +152,4 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
 

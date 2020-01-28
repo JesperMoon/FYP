@@ -15,46 +15,104 @@ namespace FYP.Data
 
         public PractitionerViewModel CreatePractitioner(PractitionerViewModel newUser)
         {
-            using (var context = new ApplicationContext())
+            try
             {
-                var practitioner = new Practitioner()
+                using (var context = new ApplicationContext())
                 {
-                    FirstName = newUser.FirstName,
-                    LastName = newUser.LastName,
-                    Password = newUser.Password,
-                    Gender = newUser.Gender,
-                    DateOfBirth = newUser.DateOfBirth.ToUniversalTime(),
-                    Religion = newUser.Religion.ToString(),
-                    EmailAddress = newUser.EmailAddress,
-                    OfficePhoneNumber = newUser.OfficePhoneNumber,
-                    Company = newUser.Company,
-                    PostalCode = Convert.ToInt32(newUser.PostalCode),
-                    State = newUser.State.ToString(),
-                    Role = newUser.Role,
-                    Specialist = newUser.Specialist,
-                    Qualification = newUser.Qualification,
-                    UserName = newUser.UserName,
-                    Status = 1,
-                };
+                    var query = from pt in context.Practitioner
+                                where pt.EmailAddress.Equals(newUser.EmailAddress)
+                                select pt;
 
-                context.Practitioner.Add(practitioner);
-                context.SaveChanges();
+                    var result = query.Select(p => p.Id).FirstOrDefault();
+
+                    if(result.Equals(Guid.Empty))
+                    {
+                        var practitioner = new Practitioner()
+                        {
+                            FirstName = newUser.FirstName,
+                            LastName = newUser.LastName,
+                            Password = newUser.Password,
+                            Salt = newUser.Salt,
+                            Gender = newUser.Gender,
+                            DateOfBirth = newUser.DateOfBirth.ToUniversalTime(),
+                            Religion = newUser.Religion.ToString(),
+                            EmailAddress = newUser.EmailAddress,
+                            OfficePhoneNumber = newUser.OfficePhoneNumber,
+                            Company = newUser.Company,
+                            PostalCode = Convert.ToInt32(newUser.PostalCode),
+                            State = newUser.State.ToString(),
+                            Role = newUser.Role,
+                            Specialist = newUser.Specialist,
+                            Qualification = newUser.Qualification,
+                            UserName = newUser.UserName,
+                            Status = ConstantHelper.AccountStatus.Pending,
+                        };
+
+                        context.Practitioner.Add(practitioner);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        newUser.ConflictEmailAddress = 1;
+                    }
+                }
             }
+            catch(Exception err)
+            {
 
+            }
+            
             return newUser;
         }
 
-        public Guid PractitionerLogin(LoginInfo loginInfo)
+        public LoginInfo PractitionerLogin(LoginInfo loginInfo)
         {
-            Guid result;
+            LoginInfo result = loginInfo;
 
-            using (var context = new ApplicationContext())
+            try
             {
-                var query = from pt in context.Practitioner
-                            where pt.EmailAddress == loginInfo.EmailAddress && pt.Password == loginInfo.Password
-                            select pt;
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Practitioner
+                                where pt.EmailAddress.Equals(loginInfo.EmailAddress) && pt.Password.Equals(loginInfo.Password)
+                                select pt;
 
-                result = query.Select(p => p.Id).FirstOrDefault();
+                    result.AccountNo = query.Select(p => p.Id).FirstOrDefault();
+
+                    //account found
+                    if (!result.AccountNo.Equals(Guid.Empty))
+                    {
+                        result.AccountStatus = query.Select(p => p.Status).FirstOrDefault();
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public byte[] GetSalt(string emailAddress)
+        {
+            byte[] result = null;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Practitioner
+                                where pt.EmailAddress == emailAddress
+                                select pt;
+
+                    result = query.Select(p => p.Salt).FirstOrDefault();
+                }
+
+            }
+            catch(Exception err)
+            {
+
             }
 
             return result;

@@ -46,5 +46,13 @@ namespace FYP.Framework
             }
         }
 
+        public static class AccountStatus
+        {
+            public const string Pending = "Pending";
+            public const string Active = "Active";
+            public const string Deleted = "Deleted";
+            public const string NotFound = "Not found";
+        }
+
     }
 }

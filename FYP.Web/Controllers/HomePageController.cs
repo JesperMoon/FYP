@@ -20,13 +20,18 @@ namespace FYP.Controllers
         public ActionResult PractitionerLogin()
         {
             LoginInfo loginInfo = new LoginInfo();
+
+            TempData["Deleted"] = "";
+            TempData["Pending"] = "";
+            TempData["Incorrect"] = "";
+
             return View(loginInfo);
         }
 
         [HttpPost]
         public ActionResult PractitionerLogin(LoginInfo loginInfo)
         {
-            Guid result;
+            LoginInfo result = new LoginInfo();
 
             if (Request.Form["Submit"] != null)
             {
@@ -35,14 +40,41 @@ namespace FYP.Controllers
                     PractitionerProcess process = new PractitionerProcess();
                     result = process.PractitionerLogin(loginInfo);
 
-                    if (result != Guid.Empty)
+                    TempData["Deleted"] = "";
+                    TempData["Pending"] = "";
+                    TempData["Incorrect"] = "";
+
+                    //Account found
+                    if (result.AccountNo != Guid.Empty)
                     {
-                        return RedirectToAction("Home", "Practitioner", result);
+                        //Check Status
+                        if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Active))
+                        {
+                            return RedirectToAction("Home", "Practitioner", result);
+                        }
+                        else if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Deleted))
+                        {
+                            //Account deleted
+                            TempData["Deleted"] = "Deleted";
+                            loginInfo.Password = "";
+
+                            return View(loginInfo);
+                        }
+                        else if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Pending))
+                        {
+                            //Account pending
+                            TempData["Pending"] = "Pending";
+                            loginInfo.Password = "";
+
+                            return View(loginInfo);
+                        }
                     }
                     else
                     {
+                        //Account not found
+                        TempData["Incorrect"] = "Incorrect";
                         loginInfo.Password = "";
-                        TempData["Incorrect"] = "incorrect";
+
                         return View(loginInfo);
                     }
                 }
@@ -54,6 +86,9 @@ namespace FYP.Controllers
         public ActionResult PractitionerRegister()
         {
             PractitionerViewModel newUser = new PractitionerViewModel();
+
+            TempData["ConflictEmailAddress"] = "";
+
             return View(newUser);
         }
 
@@ -61,21 +96,38 @@ namespace FYP.Controllers
         public ActionResult PractitionerRegister(PractitionerViewModel newUser)
         {
             PractitionerProcess process = new PractitionerProcess();
-            if(newUser.EmailAddress.Equals(newUser.ReconfirmEmail) && newUser.Password.Equals(newUser.RetypePassword))
-            {
-                PractitionerViewModel result = process.PractitionerRegister(newUser);
 
-                if (result != null)
+            TempData["ConflictEmailAddress"] = "";
+
+            if (Request.Form["Submit"] != null)
+            {
+                if (newUser.EmailAddress.Equals(newUser.ReconfirmEmail) && newUser.Password.Equals(newUser.RetypePassword))
                 {
-                    return View("Index", "HomePage");
-                }
+                    if (ModelState.IsValid)
+                    {
+                        int result = process.PractitionerRegister(newUser);
 
-                return View(newUser);
+                        if (result == 1)
+                        {
+                            return RedirectToAction("AccCreateSuccess", "HomePage", null);
+                        }
+                        else if(result == 2)
+                        {
+                            TempData["ConflictEmailAddress"] = "ConflictEmailAddress";
+                            return View(newUser);
+                        }
+                        else
+                        {
+                            return View(newUser);
+                        }
+                    }
+                }
+                else
+                {
+                    return View(newUser);
+                }
             }
-            else
-            {
-                return View(newUser);
-            }
+            return View(newUser);
         }
 
         public ActionResult PatientLogin()

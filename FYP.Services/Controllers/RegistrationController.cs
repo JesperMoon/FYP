@@ -13,12 +13,24 @@ namespace FYP.Services.Controllers
     {
         [Route(ConstantHelper.API.Registration.PractitionerRegister)]
         [HttpPost]
-        public PractitionerViewModel CreateNewPractitioner(PractitionerViewModel newUser)
+        public int CreateNewPractitioner(PractitionerViewModel newUser)
         {
             PractitionerBusiness businessLayer = new PractitionerBusiness();
             PractitionerViewModel result = businessLayer.PractitionerRegister(newUser);
 
-            return result;
+            if(result.ConflictEmailAddress == 1)
+            {
+                return 2;
+            }
+
+            if(result != null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

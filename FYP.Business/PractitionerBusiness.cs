@@ -1,5 +1,6 @@
 ﻿using FYP.Data;
 using FYP.Entities;
+using FYP.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,16 @@ namespace FYP.Business
 
             try
             {
+                if(vm.NewSpecialist != null)
+                {
+                    vm.Specialist = vm.NewSpecialist;
+                }
+
+                var salt = HashingHelper.GenerateSalt();
+                vm.Salt = salt;
+                var hashedPassword= HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(vm.Password), vm.Salt);
+                vm.Password = Convert.ToBase64String(hashedPassword);
+
                 PractitionerData dataLayer = new PractitionerData();
                 result = dataLayer.CreatePractitioner(vm);
 
@@ -28,13 +39,20 @@ namespace FYP.Business
             return result;
         }
 
-        public Guid PractitionerLogin(LoginInfo loginInfo)
+        public LoginInfo PractitionerLogin(LoginInfo loginInfo)
         {
-            Guid result = new Guid();
+            LoginInfo result = new LoginInfo();
+            result = loginInfo;
 
             try
             {
                 PractitionerData dataLayer = new PractitionerData();
+
+                //hashing password
+                var salt = dataLayer.GetSalt(loginInfo.EmailAddress);
+                var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(loginInfo.Password), salt);
+                loginInfo.Password = Convert.ToBase64String(hashedPassword);
+
                 result = dataLayer.PractitionerLogin(loginInfo);
             }
             catch(Exception err)
@@ -44,5 +62,6 @@ namespace FYP.Business
 
             return result;
         }
+
     }
 }

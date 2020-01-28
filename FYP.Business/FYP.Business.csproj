@@ -54,6 +54,10 @@
       <Project>{47B9260D-BFBB-4843-BD3F-7D7A0E2CA55F}</Project>
       <Name>FYP.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FYP.Framework\FYP.Framework.csproj">
+      <Project>{8bc27f92-e219-410e-af59-d94b9fdb6be4}</Project>
+      <Name>FYP.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

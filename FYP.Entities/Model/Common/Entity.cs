@@ -24,7 +24,7 @@ namespace FYP.Entities
         public DateTime ModifiedOn { get; set; }
 
         [DataMember]
-        [DefaultValue(1)]
-        public int Status { get; set; }
+        [DefaultValue("Pending")]
+        public string Status { get; set; }
     }
 }

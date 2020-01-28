@@ -14,10 +14,12 @@ namespace FYP.Services.Controllers
     {
         [Route(ConstantHelper.API.Practitioner.PractitionerLogin)]
         [HttpPost]
-        public Guid GetLogin(LoginInfo loginInfo)
+        public LoginInfo GetLogin(LoginInfo loginInfo)
         {
+            LoginInfo result = loginInfo;
+
             PractitionerBusiness businessLayer = new PractitionerBusiness();
-            Guid result = businessLayer.PractitionerLogin(loginInfo);
+            result = businessLayer.PractitionerLogin(loginInfo);
 
             return result;
         }

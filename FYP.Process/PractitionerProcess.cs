@@ -11,7 +11,7 @@ namespace FYP.Process
 {
     public class PractitionerProcess
     {
-        public Guid PractitionerLogin(LoginInfo loginInfo)
+        public LoginInfo PractitionerLogin(LoginInfo loginInfo)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
@@ -19,13 +19,13 @@ namespace FYP.Process
             request.RequestFormat = DataFormat.Json;
             request.AddBody(loginInfo);
 
-            IRestResponse<Guid> response = client.Execute<Guid>(request);
-            Guid result = response.Data;
+            IRestResponse<LoginInfo> response = client.Execute<LoginInfo>(request);
+            LoginInfo result = response.Data;
 
             return result;
         }
 
-        public PractitionerViewModel PractitionerRegister(PractitionerViewModel newUser)
+        public int PractitionerRegister(PractitionerViewModel newUser)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
@@ -33,8 +33,8 @@ namespace FYP.Process
             request.RequestFormat = DataFormat.Json;
             request.AddBody(newUser);
 
-            IRestResponse<PractitionerViewModel> response = client.Execute<PractitionerViewModel>(request);
-            PractitionerViewModel result = response.Data;
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
 
             return result;
         }

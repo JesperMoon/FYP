@@ -179,6 +179,11 @@
     <Content Include="Views\HomePage\PractitionerRegister.cshtml" />
     <Content Include="Views\HomePage\AccCreateSuccess.cshtml" />
     <Content Include="Views\Shared\PractitionerLayout.cshtml" />
+    <Content Include="Views\Practitioner\Appointments.cshtml" />
+    <Content Include="Views\Practitioner\Products.cshtml" />
+    <Content Include="Views\Practitioner\Patients.cshtml" />
+    <Content Include="Views\Practitioner\Profile.cshtml" />
+    <Content Include="Views\Practitioner\Records.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

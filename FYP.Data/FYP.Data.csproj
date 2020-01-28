@@ -68,6 +68,10 @@
     <Compile Include="Migrations\202001221601080_removeEntityProp.designer.cs">
       <DependentUpon>202001221601080_removeEntityProp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001271914189_SaltAndStatusString.cs" />
+    <Compile Include="Migrations\202001271914189_SaltAndStatusString.designer.cs">
+      <DependentUpon>202001271914189_SaltAndStatusString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PractitionerData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001221601080_removeEntityProp.resx">
       <DependentUpon>202001221601080_removeEntityProp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001271914189_SaltAndStatusString.resx">
+      <DependentUpon>202001271914189_SaltAndStatusString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

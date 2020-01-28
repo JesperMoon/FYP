@@ -92,13 +92,39 @@
 
         <br />
 
-        @if(TempData["Incorrect"] != null)
+        @if (TempData["Incorrect"] != String.Empty)
         {
             <div class="row">
                 <div class="col-lg-3 col-xs-3"></div>
                 <div class="col-lg-6 col-xs-6">
                     <div class="alert alert-danger" role="alert">
                         The email address or password is incorrect!
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        @if (TempData["Deleted"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        This account is deleted!
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        @if (TempData["Pending"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        This account is not active yet!
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-3"></div>

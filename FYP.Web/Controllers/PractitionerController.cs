@@ -34,7 +34,7 @@ namespace FYP.Controllers
             return View();
         }
 
-        public ActionResult PractitionerProfile()
+        public ActionResult Profile()
         {
             return View();
         }

@@ -125,12 +125,12 @@
 <body>
 
     <div class="sidenav">
-        <a class="bar-item" href="#home" onclick="activeLink()">Home</a>
-        <a class="bar-item" href="#appointments" onclick="activeLink()">Appointments</a>
-        <a class="bar-item" href="#products" onclick="activeLink()">Products</a>
-        <a class="bar-item" href="#records" onclick="activeLink()">Records</a>
-        <a class="bar-item" href="#patients" onclick="activeLink()">Patients</a>
-        <a class="bar-item" href="#profile" onclick="activeLink()">Profile</a>
+        <a class="bar-item" href="@Url.Action("Home","Practitioner",null)" onclick="activeLink()">Home</a>
+        <a class="bar-item" href="@Url.Action("Appointments","Practitioner",null)" onclick="activeLink()">Appointments</a>
+        <a class="bar-item" href="@Url.Action("Products","Practitioner",null)" onclick="activeLink()">Products</a>
+        <a class="bar-item" href="@Url.Action("Records","Practitioner",null)" onclick="activeLink()">Records</a>
+        <a class="bar-item" href="@Url.Action("Patients","Practitioner",null)" onclick="activeLink()">Patients</a>
+        <a class="bar-item" href="@Url.Action("Profile","Practitioner",null)" onclick="activeLink()">Profile</a>
 
         <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PractitionerLogin","HomePage", null)">
             Logout

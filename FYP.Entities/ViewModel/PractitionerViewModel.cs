@@ -52,14 +52,16 @@ namespace FYP.Entities
         public string Password { get; set; }
 
         [DataMember]
-        [Required(ErrorMessage = "Password is required.")]
+        [Required(ErrorMessage = "Re-type Password is required.")]
         [DisplayName("Re-type Password")]
+        [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
         [StringLength(32, MinimumLength = 6, ErrorMessage = "Invalid password length.")]
         public string RetypePassword { get; set; }
 
         [DataMember]
         [Required(ErrorMessage = "Re-confirm password is required.")]
         [DisplayName("Re-confirm Email Address")]
+        [Compare(nameof(EmailAddress), ErrorMessage = "Email address do not match")]
         public string ReconfirmEmail { get; set; }
 
         [DataMember]
@@ -93,5 +95,11 @@ namespace FYP.Entities
 
         [DataMember]
         public string Qualification { get; set; }
+
+        [DataMember]
+        public byte[] Salt { get; set; }
+
+        [DataMember]
+        public int ConflictEmailAddress { get; set; }
     }
 }

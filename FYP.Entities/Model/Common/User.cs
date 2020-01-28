@@ -37,6 +37,9 @@ namespace FYP.Entities
 
         [DataMember]
         public string Password { get; set; }
+
+        [DataMember]
+        public byte[] Salt { get; set; }
      
     }
 }

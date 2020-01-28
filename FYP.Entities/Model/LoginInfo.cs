@@ -23,5 +23,11 @@ namespace FYP.Entities
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(32, MinimumLength = 6, ErrorMessage = "The password length must be between 6 to 32.")]
         public string Password { get; set; }
+
+        [DataMember]
+        public string AccountStatus { get; set; }
+
+        [DataMember]
+        public Guid AccountNo { get; set; }
     }
 }

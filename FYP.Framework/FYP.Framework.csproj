@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="ConstantHelper.cs" />
+    <Compile Include="EmailHelper.cs" />
     <Compile Include="EnumConstant.cs" />
     <Compile Include="HashingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

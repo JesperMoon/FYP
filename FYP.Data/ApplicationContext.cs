@@ -20,6 +20,9 @@ namespace FYP.Data
         //Practitioner User Account
         public DbSet<Practitioner> Practitioner { get; set; }
 
+        //Patient User Account
+        public DbSet<Patient> Patient { get; set; }
+
         public override int SaveChanges()
         {
             var entries = ChangeTracker

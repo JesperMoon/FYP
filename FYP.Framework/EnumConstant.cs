@@ -33,5 +33,13 @@ namespace FYP.Framework
             Sabah,
             Sarawak
         }
+
+        public enum BloodType
+        {
+            O,
+            A,
+            B,
+            AB
+        }
     }
 }

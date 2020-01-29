@@ -122,6 +122,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomePageController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PractitionerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,6 +185,14 @@
     <Content Include="Views\Practitioner\Patients.cshtml" />
     <Content Include="Views\Practitioner\Profile.cshtml" />
     <Content Include="Views\Practitioner\Records.cshtml" />
+    <Content Include="Views\HomePage\PatientRegister.cshtml" />
+    <Content Include="Views\HomePage\PatientVerification.cshtml" />
+    <Content Include="Views\Shared\PatientLayout.cshtml" />
+    <Content Include="Views\Patient\Home.cshtml" />
+    <Content Include="Views\Patient\SpecialistNearby.cshtml" />
+    <Content Include="Views\Patient\Medicine.cshtml" />
+    <Content Include="Views\Patient\AuthorizedUsers.cshtml" />
+    <Content Include="Views\Patient\Records.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -59,6 +59,11 @@
         font-size: 20px;
     }
 
+    p2 {
+        color: red;
+        font-size: auto;
+    }
+
     /*.menuItem span,
     .menuItem .fa {
         font-size: 150px;
@@ -86,32 +91,85 @@
 
         <br />
 
-        @using (Html.BeginForm("PatientLogin", "HomePage"))
+        @if (TempData["Incorrect"] != String.Empty)
         {
             <div class="row">
                 <div class="col-lg-3 col-xs-3"></div>
-                <div class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.EmailAddress) : </p></div>
-                <div class="col-lg-3 col-xs-3"><p>@Html.TextBoxFor(m => m.EmailAddress)</p></div>
-                <div class="col-lg-3 col-xs-3"></div>
-            </div>
-            @Html.ValidationMessageFor(m => m.EmailAddress)
-
-            <div class="row">
-                <div class="col-lg-3 col-xs-3"></div>
-                <div class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.Password) : </p></div>
-                <div class="col-lg-3 col-xs-3"><p>@Html.PasswordFor(m => m.Password) </p></div>
-                <div class="col-lg-3 col-xs-3"></div>
-            </div>
-            @Html.ValidationMessageFor(m => m.Password)
-
-            <div class="row">
-                <div class="col-lg-3 col-xs-3"></div>
-                <div class="col-lg-3 col-xs-3"></div>
                 <div class="col-lg-6 col-xs-6">
-                    <input type="submit" value="Login" name="Submit" class="btn btn-success" />
+                    <div class="alert alert-danger" role="alert">
+                        The email address or password is incorrect!
+                    </div>
                 </div>
+                <div class="col-lg-3 col-xs-3"></div>
             </div>
         }
+
+        @if (TempData["Deleted"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        This account is deleted!
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        @if (TempData["Pending"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        This account is not active yet!
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        @using (Html.BeginForm("PatientLogin", "HomePage"))
+        {
+            <table class="table-responsive table-condensed">
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.EmailAddress) : </p></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.TextBoxFor(m => m.EmailAddress)</p></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p2>@Html.ValidationMessageFor(m => m.EmailAddress)</p2></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.DisplayNameFor(m => m.Password) : </p></th>
+                    <th class="col-lg-3 col-xs-3"><p>@Html.PasswordFor(m => m.Password) </p></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"><p2>@Html.ValidationMessageFor(m => m.Password)</p2></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                </tr>
+
+                <tr class="row">
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-3 col-xs-3"></th>
+                    <th class="col-lg-6 col-xs-6">
+                        <input type="submit" value="Login" name="Submit" class="btn btn-success" />
+                    </th>
+                </tr>
+            </table>
+        }
+
+        @Html.ActionLink("New user? Register an account here. ", "PatientRegister", null, new { target = "_blank" })
     </div>
 </body>
 </html>

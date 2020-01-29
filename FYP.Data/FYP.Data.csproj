@@ -72,7 +72,12 @@
     <Compile Include="Migrations\202001271914189_SaltAndStatusString.designer.cs">
       <DependentUpon>202001271914189_SaltAndStatusString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001290646065_AddPatient.cs" />
+    <Compile Include="Migrations\202001290646065_AddPatient.designer.cs">
+      <DependentUpon>202001290646065_AddPatient.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001271914189_SaltAndStatusString.resx">
       <DependentUpon>202001271914189_SaltAndStatusString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001290646065_AddPatient.resx">
+      <DependentUpon>202001290646065_AddPatient.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

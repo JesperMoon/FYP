@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Account Verified Successfully";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<script>
+    function home() {
+        location.href = "Index";
+    }
+</script>
+
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Middle Header */
+    .header {
+        text-align: center;
+    }
+
+    button {
+        font-size: large;
+    }
+</style>
+
+
+<html>
+<body>
+    <div class="jumbotron">
+        @if (TempData["Verified"] == "Verified")
+        {
+            <div class="header">
+                <h2>Congratulation! Account has been verified succesfully !</h2>
+                <p>Dear User, you can now log in to the system now.</p>
+            </div>
+            <br />
+            <div class="header">
+                <button class="btn btn-success" onclick="home()">Go To Home Page</button>
+            </div>
+        }
+
+        @if (TempData["Verified"] == "Error")
+        {
+            <div class="header">
+                <h2>Oops! Account verification failed !</h2>
+                <p>Dear User, you can try the verification again or you may contact system administrator for further assistance.</p>
+                <p>Thank you !</p>
+            </div>
+            <br />
+            <div class="header">
+                <button class="btn btn-success" onclick="home()">Go To Home Page</button>
+            </div>
+        }
+    </div>
+</body>
+</html>

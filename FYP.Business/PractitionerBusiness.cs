@@ -27,6 +27,9 @@ namespace FYP.Business
                 var hashedPassword= HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(vm.Password), vm.Salt);
                 vm.Password = Convert.ToBase64String(hashedPassword);
 
+                //Convert back aligned date time due to restsharp
+                vm.DateOfBirth = vm.DateOfBirth.ToLocalTime();
+
                 PractitionerData dataLayer = new PractitionerData();
                 result = dataLayer.CreatePractitioner(vm);
 

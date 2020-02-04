@@ -1,5 +1,6 @@
 ﻿using FYP.Entities;
 using FYP.Entities.Data;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,10 @@ namespace FYP.Data
                             ContactNumber1 = newUser.ContactNumber1,
                             ContactNumber2 = newUser.ContactNumber2,
                             ContactNumber3 = newUser.ContactNumber3,
-                            HomeAddress = newUser.HomeAddressLine1 + " " + newUser.HomeAddressLine2 + " " + newUser.HomeAddressLine3,
+                            HomeAddress1 = newUser.HomeAddressLine1,
+                            HomeAddress2 = newUser.HomeAddressLine2,
+                            HomeAddress3 = newUser.HomeAddressLine3,
+                            City = newUser.City,
                             PostalCode = Convert.ToInt32(newUser.PostalCode),
                             State = newUser.State.ToString(),
                             BloodType = newUser.BloodType.ToString(),
@@ -52,7 +56,7 @@ namespace FYP.Data
                         context.SaveChanges();
 
                         //Getting new account Guid
-                        newUser.accId = query.Where(p => p.EmailAddress.Equals(newUser.EmailAddress)).Select(p => p.Id).FirstOrDefault();
+                        newUser.AccId = query.Where(p => p.EmailAddress.Equals(newUser.EmailAddress)).Select(p => p.Id).FirstOrDefault();
                     }
                     else
                     {
@@ -139,6 +143,51 @@ namespace FYP.Data
                     result = query.Select(p => p.Salt).FirstOrDefault();
                 }
 
+            }
+            catch (Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public PatientBaseViewModel PatientProfile(Guid accId)
+        {
+            PatientBaseViewModel result = new PatientBaseViewModel();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Patient
+                                where pt.Id.Equals(accId)
+                                select pt;
+
+                    var patient = query.Select(p => p).FirstOrDefault();
+
+                    if(query != null)
+                    {
+                        result.AccId = accId;
+                        result.FirstName = patient.FirstName;
+                        result.LastName = patient.LastName;
+                        result.UserName = patient.UserName;
+                        result.Gender = patient.Gender;
+                        result.ReligionString = patient.Religion;
+                        result.DateOfBirth = patient.DateOfBirth.ToLocalTime();
+                        result.EmailAddress = patient.EmailAddress;
+                        result.ContactNumber1 = patient.ContactNumber1;
+                        result.ContactNumber2 = patient.ContactNumber2;
+                        result.ContactNumber3 = patient.ContactNumber3;
+                        result.HomeAddressLine1 = patient.HomeAddress1;
+                        result.HomeAddressLine2 = patient.HomeAddress2;
+                        result.HomeAddressLine3 = patient.HomeAddress3;
+                        result.City = patient.City;
+                        result.PostalCode = patient.PostalCode.ToString();
+                        result.StateString = patient.State;
+                        result.BloodTypeString = patient.BloodType;
+                    }
+                }
             }
             catch (Exception err)
             {

@@ -1,5 +1,6 @@
 ﻿using FYP.Data;
 using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,14 @@ namespace FYP.Business
                 vm.Salt = salt;
                 var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(vm.Password), vm.Salt);
                 vm.Password = Convert.ToBase64String(hashedPassword);
+
+                //Convert back aligned date time due to restsharp
+                vm.DateOfBirth = vm.DateOfBirth.ToLocalTime();
+
+                //Process Home Address
+                vm.HomeAddressLine1 = vm.HomeAddressLine1.TrimEnd(',');
+                vm.HomeAddressLine2 = vm.HomeAddressLine2.TrimEnd(',');
+                vm.HomeAddressLine3 = vm.HomeAddressLine3.TrimEnd(',');
 
                 PatientData dataLayer = new PatientData();
                 result = dataLayer.CreatePatient(vm);
@@ -70,6 +79,24 @@ namespace FYP.Business
             {
                 PatientData dataLayer = new PatientData();
                 result = dataLayer.PatientVerification(accId);
+            }
+            catch (Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public PatientBaseViewModel PatientProfile(Guid accId)
+        {
+            PatientBaseViewModel result = new PatientBaseViewModel();
+            result.AccId = accId;
+
+            try
+            {
+                PatientData dataLayer = new PatientData();
+                result = dataLayer.PatientProfile(accId);
             }
             catch (Exception err)
             {

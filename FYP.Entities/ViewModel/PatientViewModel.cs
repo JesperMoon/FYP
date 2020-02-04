@@ -85,6 +85,10 @@ namespace FYP.Entities
         public string HomeAddressLine3 { get; set; }
 
         [DataMember]
+        [Required(ErrorMessage = "City is required.")]
+        public string City { get; set; }
+
+        [DataMember]
         [Required(ErrorMessage = "Postal Code is required.")]
         [DisplayName("Home Postal Code")]
         [StringLength(5, ErrorMessage = "Invalid postal code.")]
@@ -107,6 +111,6 @@ namespace FYP.Entities
         public int ConflictEmailAddress { get; set; }
 
         [DataMember]
-        public Guid accId { get; set; }
+        public Guid AccId { get; set; }
     }
 }

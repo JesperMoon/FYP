@@ -1,4 +1,5 @@
 ﻿using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using RestSharp;
 using RestSharp.Serialization.Json;
@@ -50,6 +51,20 @@ namespace FYP.Process
 
             IRestResponse<int> response = client.Execute<int>(request);
             int result = response.Data;
+
+            return result;
+        }
+
+        public PatientBaseViewModel PatientProfile(PatientBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.PatientProfile, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<PatientBaseViewModel> response = client.Execute<PatientBaseViewModel>(request);
+            PatientBaseViewModel result = response.Data;
 
             return result;
         }

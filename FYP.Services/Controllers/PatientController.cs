@@ -1,5 +1,6 @@
 ﻿using FYP.Business;
 using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,19 @@ namespace FYP.Services.Controllers
 
             PatientBusiness businessLayer = new PatientBusiness();
             result = businessLayer.PatientLogin(loginInfo);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Patient.PatientProfile)]
+        [HttpPost]
+        public PatientBaseViewModel PatientProfile(PatientBaseViewModel vm)
+        {
+            PatientBaseViewModel result = new PatientBaseViewModel();
+            Guid accId = vm.AccId;
+
+            PatientBusiness businessLayer = new PatientBusiness();
+            result = businessLayer.PatientProfile(accId);
 
             return result;
         }

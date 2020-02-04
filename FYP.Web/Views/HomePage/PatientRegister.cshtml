@@ -241,6 +241,14 @@
                 <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
             </div>
 
+            @* City *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.City)</p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.City)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.City)</p2></div>
+            </div>
+
             @* State *@
             <div class="row">
                 <div class="col-lg-1 col-1"></div>
@@ -250,16 +258,16 @@
             </div>
 
             @* Postal Code
-            <div class="row">
-                <div class="col-lg-1 col-1"></div>
-                <div class="col-lg-3 col-3"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
-                <div class="col-lg-1 col-1"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric", @style = "width: 100px" } })</p></div>
-                <div class="col-lg-2 col-2"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
+        <div class="row">
+            <div class="col-lg-1 col-1"></div>
+            <div class="col-lg-3 col-3"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
+            <div class="col-lg-1 col-1"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric", @style = "width: 100px" } })</p></div>
+            <div class="col-lg-2 col-2"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
 
-                <div class="col-lg-2 col-2"><p>@Html.DisplayNameFor(m => m.State) :</p></div>
-                <div class="col-lg-2 col-2"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
-                <div class="col-lg-1 col-1"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
-            </div>*@
+            <div class="col-lg-2 col-2"><p>@Html.DisplayNameFor(m => m.State) :</p></div>
+            <div class="col-lg-2 col-2"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+            <div class="col-lg-1 col-1"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
+        </div>*@
 
             @* Blood Type *@
             <div class="row">

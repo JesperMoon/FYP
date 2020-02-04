@@ -6,18 +6,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FYP.Process;
+using FYP.Entities.ViewModel;
+//Newly added authentication
+using System.Web.Security;
 
 namespace FYP.Controllers
 {
     public class HomePageController : Controller
     {
         // GET: HomePage
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
         //Practitioner
+        [AllowAnonymous]
         public ActionResult PractitionerLogin()
         {
             LoginInfo loginInfo = new LoginInfo();
@@ -30,6 +35,7 @@ namespace FYP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult PractitionerLogin(LoginInfo loginInfo)
         {
             LoginInfo result = new LoginInfo();
@@ -86,6 +92,7 @@ namespace FYP.Controllers
             return View(loginInfo);
         }
 
+        [AllowAnonymous]
         public ActionResult PractitionerRegister()
         {
             PractitionerViewModel newUser = new PractitionerViewModel();
@@ -96,6 +103,7 @@ namespace FYP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult PractitionerRegister(PractitionerViewModel newUser)
         {
             PractitionerProcess process = new PractitionerProcess();
@@ -136,6 +144,7 @@ namespace FYP.Controllers
 
 
         //Patient
+        [AllowAnonymous]
         public ActionResult PatientLogin()
         {
             LoginInfo loginInfo = new LoginInfo();
@@ -148,6 +157,7 @@ namespace FYP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult PatientLogin(LoginInfo loginInfo)
         {
             LoginInfo result = new LoginInfo();
@@ -169,7 +179,10 @@ namespace FYP.Controllers
                         //Check Status
                         if (result.AccountStatus.Equals(ConstantHelper.AccountStatus.Active))
                         {
-                            return RedirectToAction("Home", "Patient", result);
+                            FormsAuthentication.SetAuthCookie(result.AccountNo.ToString(),false);
+                            PatientBaseViewModel vm = new PatientBaseViewModel();
+                            vm.AccId = result.AccountNo;
+                            return RedirectToAction("Home", "Patient", vm);
                         }
 
                         else if (result.AccountStatus.Equals(ConstantHelper.AccountStatus.Deleted))
@@ -204,6 +217,13 @@ namespace FYP.Controllers
             return View(loginInfo);
         }
 
+        public ActionResult PatientLogout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("PatientLogin","HomePage",null);
+        }
+
+        [AllowAnonymous]
         public ActionResult PatientRegister()
         {
             PatientViewModel newUser = new PatientViewModel();
@@ -214,6 +234,7 @@ namespace FYP.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult PatientRegister(PatientViewModel newUser)
         {
             PatientProcess process = new PatientProcess();
@@ -251,11 +272,12 @@ namespace FYP.Controllers
             return View(newUser);
         }
 
+        [AllowAnonymous]
         public ActionResult PatientVerification(Guid accId)
         {
             PatientProcess process = new PatientProcess();
             PatientViewModel vm = new PatientViewModel();
-            vm.accId = accId;
+            vm.AccId = accId;
             int result = process.PatientVerification(vm);
 
             TempData["Verified"] = "Verified";
@@ -273,6 +295,7 @@ namespace FYP.Controllers
             }
         }
 
+        [AllowAnonymous]
         public ActionResult AccCreateSuccess()
         {
             return View();

@@ -42,6 +42,7 @@ namespace FYP.Framework
                 public const string PatientLogin = "HomePage/PatientLogin";
                 public const string PatientRegister = "HomePage/PatientRegister";
                 public const string PatientVerification = "HomePage/PatientVerification";
+                public const string PatientProfile = "Patient/Profile";
             }
         }
 

@@ -27,10 +27,19 @@ namespace FYP.Entities.Data
         public string ContactNumber3 { get; set; }
 
         [DataMember]
-        public string HomeAddress { get; set; }
+        public string HomeAddress1 { get; set; }
+
+        [DataMember]
+        public string HomeAddress2 { get; set; }
+
+        [DataMember]
+        public string HomeAddress3 { get; set; }
 
         [DataMember]
         public int PostalCode { get; set; }
+
+        [DataMember]
+        public string City { get; set; }
 
         [DataMember]
         public string State { get; set; }

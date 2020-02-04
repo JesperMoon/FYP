@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "Web App For Doctor - Patient Profile Edit";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    input[type=submit] {
+        width: auto;
+        height: auto;
+        font-size: 20px;
+    }
+
+    p1 {
+        overflow: auto;
+        white-space: nowrap;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    p2 {
+        font-size: 18px;
+        color: red;
+        font-style: italic;
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: lightgray;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: lightgray;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: lightgray;
+    }
+</style>
+
+@model FYP.Entities.PatientViewModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="row">
+            <a class="col-lg-3 col-xs-3 backButton" href="@Url.Action("Home", "Patient", Model)">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>
+            <div class="col-lg-9 col-9 text-center">
+                <p1>User Information Details</p1>
+            </div>
+        </div>
+
+        <br />
+    </div>
+</body>
+</html>
+

@@ -4,5 +4,157 @@
     Layout = "~/Views/Shared/PatientLayout.cshtml";
 }
 
-<h2>Home</h2>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.30">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    body {
+        background-color: rgb(79,190,197);
+    }
+
+    /* Body styling */
+    /* Frame styling */
+    .jumbotron {
+        margin-left: 20px;
+        margin-right: 20px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: right;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 100px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+    .backButton:hover {
+        background-color: white;
+        text-decoration: none !important;
+        color: #18a1e5 !important;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.PatientBaseViewModel
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <div class="container">
+                <h2>Welcome back, <u><b>@Model.UserName</b></u>!</h2>
+            </div>
+        </div>
+        <a href="@Url.Action("ProfileEdit","Patient",Model)" class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2 backButton">
+            <span class="fa fa-edit"></span>
+        </a>
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+    </div>
+
+    <div class="row">
+        <div><h2 style="text-align:center">-- <b>User Information Details</b> --</h2></div>
+    </div>
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-10 col-xs-10 col-sm-10 col-md-10 col-lg-10">
+            <div class="container">
+                <table class="table-bordered table-striped table-condensed">
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.FirstName): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.FirstName</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.LastName): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.LastName</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.UserName): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.UserName</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Gender): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Gender</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Religion): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.ReligionString</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.DateOfBirth): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.DateOfBirth.ToString("yyyy-MM-dd")</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.EmailAddress): </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.EmailAddress</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Contact Number: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">1) @Model.ContactNumber1</td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">2) @Model.ContactNumber2</td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">3) @Model.ContactNumber3</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Home Address: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.HomeAddressLine1</td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.HomeAddressLine2</td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.HomeAddressLine3</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Postal Code: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.PostalCode</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">City: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.City</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">State: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.StateString</td>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Blood Type: </th>
+                        <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.BloodType</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+    </div>
+</div>
 

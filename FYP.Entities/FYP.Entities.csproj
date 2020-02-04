@@ -56,8 +56,10 @@
     <Compile Include="Model\LoginInfo.cs" />
     <Compile Include="Data\Practitioner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\PatientBaseViewModel.cs" />
     <Compile Include="ViewModel\PatientViewModel.cs" />
     <Compile Include="ViewModel\PractitionerViewModel.cs" />
+    <Compile Include="ViewModel\SpecialistNearbyViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

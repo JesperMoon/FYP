@@ -116,26 +116,28 @@
         }
     </style>
 </head>
+@model FYP.Entities.ViewModel.PatientBaseViewModel
+
 <body>
 
     <div class="sidenav">
-        <a class="bar-item" href="@Url.Action("Home","Patient",null)" onclick="activeLink()">Home</a>
-        <a class="bar-item" href="@Url.Action("SpecialistNearby","Patient",null)" onclick="activeLink()">Specialist</a>
-        <a class="bar-item" href="@Url.Action("Medicine","Patient",null)" onclick="activeLink()">Medicine</a>
-        <a class="bar-item" href="@Url.Action("AuthorizedUsers","Patient",null)" onclick="activeLink()">Authorized Users</a>
-        <a class="bar-item" href="@Url.Action("Records","Patient",null)" onclick="activeLink()">Records</a>
+        <a class="bar-item" href="@Url.Action("Home","Patient",Model)" onclick="activeLink()">Home</a>
+        <a class="bar-item" href="@Url.Action("SpecialistNearby","Patient",Model)" onclick="activeLink()">Specialist</a>
+        <a class="bar-item" href="@Url.Action("Medicine","Patient",Model)" onclick="activeLink()">Medicine</a>
+        <a class="bar-item" href="@Url.Action("AuthorizedUsers","Patient",Model)" onclick="activeLink()">Authorized Users</a>
+        <a class="bar-item" href="@Url.Action("Records","Patient",Model)" onclick="activeLink()">Records</a>
 
-        <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PatientLogin","HomePage", null)">
+        <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PatientLogout","HomePage", null)">
             Logout
         </a>
     </div>
 
     <div class="main">
         @RenderBody()
-        <hr />
+        @*<hr />
         <footer>
             <p>&copy; @DateTime.Now.Year -Final Year Project</p>
-        </footer>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")

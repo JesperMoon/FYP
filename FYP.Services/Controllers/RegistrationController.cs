@@ -50,7 +50,7 @@ namespace FYP.Services.Controllers
                 string mailFrom = ConstantHelper.AppSettings.MailFrom;
                 string emailSubject = ConstantHelper.Email.AccountVerification.EmailSubject;
                 string emailBody = ConstantHelper.Email.AccountVerification.EmailBody;
-                string linkToVerify = ConstantHelper.AppSettings.RootSiteUrl + ConstantHelper.API.Patient.PatientVerification + "?accId=" + result.accId;
+                string linkToVerify = ConstantHelper.AppSettings.RootSiteUrl + ConstantHelper.API.Patient.PatientVerification + "?accId=" + result.AccId;
                 emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.LinkToVerify, linkToVerify);
                 string userName = ConstantHelper.AppSettings.UserName;
                 string password = ConstantHelper.AppSettings.Password;
@@ -72,7 +72,7 @@ namespace FYP.Services.Controllers
 
             try
             {
-                var accId = vm.accId;
+                var accId = vm.AccId;
                 PatientBusiness businessLayer = new PatientBusiness();
                 result = businessLayer.PatientVerification(accId);
             }

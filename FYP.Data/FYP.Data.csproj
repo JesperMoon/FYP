@@ -76,6 +76,10 @@
     <Compile Include="Migrations\202001290646065_AddPatient.designer.cs">
       <DependentUpon>202001290646065_AddPatient.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001311817412_PatientAddressAndCity.cs" />
+    <Compile Include="Migrations\202001311817412_PatientAddressAndCity.designer.cs">
+      <DependentUpon>202001311817412_PatientAddressAndCity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
@@ -103,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001290646065_AddPatient.resx">
       <DependentUpon>202001290646065_AddPatient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001311817412_PatientAddressAndCity.resx">
+      <DependentUpon>202001311817412_PatientAddressAndCity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

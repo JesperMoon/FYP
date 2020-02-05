@@ -11,12 +11,44 @@ namespace FYP.Services.Controllers
 {
     public class RegistrationController : ApiController
     {
-        [Route(ConstantHelper.API.Practitioner.PractitionerRegister)]
+        [Route(ConstantHelper.API.Practitioner.CompanyRegister)]
         [HttpPost]
-        public int CreateNewPractitioner(PractitionerViewModel newUser)
+        public int CreateNewCompany(CompanyViewModel newCompany)
         {
             PractitionerBusiness businessLayer = new PractitionerBusiness();
-            PractitionerViewModel result = businessLayer.PractitionerRegister(newUser);
+            CompanyViewModel result = businessLayer.CompanyRegister(newCompany);
+
+            if (result.ConflictEmailAddress == 1)
+            {
+                return 2;
+            }
+
+            if (result != null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        [Route(ConstantHelper.API.Practitioner.GetCompanyList)]
+        [HttpPost]
+        public NewPractitionerViewModel GetCompanyList(NewPractitionerViewModel vm)
+        {
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            NewPractitionerViewModel result = businessLayer.GetCompanyList(vm);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.PractitionerRegister)]
+        [HttpPost]
+        public int CreateNewPractitioner(NewPractitionerViewModel newUser)
+        {
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            NewPractitionerViewModel result = businessLayer.PractitionerRegister(newUser);
 
             if(result.ConflictEmailAddress == 1)
             {

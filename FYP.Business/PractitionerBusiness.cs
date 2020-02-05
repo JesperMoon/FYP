@@ -1,5 +1,6 @@
 ﻿using FYP.Data;
 using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace FYP.Business
 {
     public class PractitionerBusiness
     {
-        public PractitionerViewModel PractitionerRegister(PractitionerViewModel vm)
+        public NewPractitionerViewModel PractitionerRegister(NewPractitionerViewModel vm)
         {
-            PractitionerViewModel result = new PractitionerViewModel();
+            NewPractitionerViewModel result = new NewPractitionerViewModel();
 
             try
             {
@@ -35,6 +36,60 @@ namespace FYP.Business
 
             }
             catch(Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public PractitionerBaseViewModel GetProfile(PractitionerBaseViewModel vm)
+        {
+            PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.GetProfile(vm);
+
+            }
+            catch (Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public NewPractitionerViewModel GetCompanyList(NewPractitionerViewModel vm)
+        {
+            NewPractitionerViewModel result = new NewPractitionerViewModel();
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.GetCompanyList(vm);
+                //Form key value pair for drop down
+                result.CompanyDropDown = result.CompanyIdList.Zip(result.CompanyNameList, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+            }
+            catch (Exception err)
+            {
+
+            }
+
+            return result;
+        }
+
+        public CompanyViewModel CompanyRegister(CompanyViewModel newCompany)
+        {
+            CompanyViewModel result = new CompanyViewModel();
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.CreateCompany(newCompany);
+            }
+            catch (Exception err)
             {
 
             }

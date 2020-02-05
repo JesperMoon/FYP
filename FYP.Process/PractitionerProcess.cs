@@ -1,4 +1,5 @@
 ﻿using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using RestSharp;
 using System;
@@ -25,7 +26,7 @@ namespace FYP.Process
             return result;
         }
 
-        public int PractitionerRegister(PractitionerViewModel newUser)
+        public int PractitionerRegister(NewPractitionerViewModel newUser)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
@@ -35,6 +36,48 @@ namespace FYP.Process
 
             IRestResponse<int> response = client.Execute<int>(request);
             int result = response.Data;
+
+            return result;
+        }
+
+        public int CompanyRegister(CompanyViewModel newCompany)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.CompanyRegister, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(newCompany);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public PractitionerBaseViewModel GetProfile(PractitionerBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetProfile, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<PractitionerBaseViewModel> response = client.Execute<PractitionerBaseViewModel>(request);
+            PractitionerBaseViewModel result = response.Data;
+
+            return result;
+        }
+
+        public NewPractitionerViewModel GetCompanyList(NewPractitionerViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetCompanyList, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<NewPractitionerViewModel> response = client.Execute<NewPractitionerViewModel>(request);
+            NewPractitionerViewModel result = response.Data;
 
             return result;
         }

@@ -1,5 +1,6 @@
 ﻿using FYP.Business;
 using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,18 @@ namespace FYP.Services.Controllers
 
             PractitionerBusiness businessLayer = new PractitionerBusiness();
             result = businessLayer.PractitionerLogin(loginInfo);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.GetProfile)]
+        [HttpPost]
+        public PractitionerBaseViewModel GetProfile(PractitionerBaseViewModel vm)
+        {
+            PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.GetProfile(vm);
 
             return result;
         }

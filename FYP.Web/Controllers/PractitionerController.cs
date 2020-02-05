@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FYP.Entities.ViewModel;
+using FYP.Process;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,34 +11,108 @@ namespace FYP.Controllers
     public class PractitionerController : Controller
     {
         // GET: Practitioner
-        public ActionResult Home()
+        [Authorize]
+        public ActionResult Home(PractitionerBaseViewModel vm)
         {
-            return View();
+            if(vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                result.AccId = vm.AccId;
+                return View(result);
+            }
         }
 
-        public ActionResult Appointments()
+        [Authorize]
+        public ActionResult Appointments(PractitionerBaseViewModel vm)
         {
-            return View();
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                result.AccId = vm.AccId;
+                return View(result);
+            }
         }
 
-        public ActionResult Products()
+        [Authorize]
+        public ActionResult Products(PractitionerBaseViewModel vm)
         {
-            return View();
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                result.AccId = vm.AccId;
+                return View(result);
+            }
         }
 
-        public ActionResult Records()
+        [Authorize]
+        public ActionResult Records(PractitionerBaseViewModel vm)
         {
-            return View();
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                result.AccId = vm.AccId;
+                return View(result);
+            }
         }
 
-        public ActionResult Patients()
+        [Authorize]
+        public ActionResult Patients(PractitionerBaseViewModel vm)
         {
-            return View();
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                result.AccId = vm.AccId;
+                return View(result);
+            }
         }
 
-        public ActionResult Profile()
+        [Authorize]
+        public ActionResult Profile(PractitionerBaseViewModel vm)
         {
-            return View();
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+                PractitionerProcess process = new PractitionerProcess();
+                result = process.GetProfile(vm);
+                return View(result);
+            }
+        }
+
+        [Authorize]
+        public ActionResult ProfileEdit(PractitionerBaseViewModel vm)
+        {
+            if (vm.AccId.Equals(Guid.Empty))
+            {
+                return RedirectToAction("PractitionerLogin", "HomePage", null);
+            }
+            else
+            {
+                return View(vm);
+            }
         }
 
     }

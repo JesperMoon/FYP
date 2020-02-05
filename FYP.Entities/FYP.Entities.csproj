@@ -50,15 +50,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Data\Company.cs" />
     <Compile Include="Data\Patient.cs" />
     <Compile Include="Model\Common\Entity.cs" />
     <Compile Include="Model\Common\User.cs" />
     <Compile Include="Model\LoginInfo.cs" />
     <Compile Include="Data\Practitioner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CompanyViewModel.cs" />
+    <Compile Include="ViewModel\MedicineViewModel.cs" />
     <Compile Include="ViewModel\PatientBaseViewModel.cs" />
     <Compile Include="ViewModel\PatientViewModel.cs" />
-    <Compile Include="ViewModel\PractitionerViewModel.cs" />
+    <Compile Include="ViewModel\PractitionerBaseViewModel.cs" />
+    <Compile Include="ViewModel\NewPractitionerViewModel.cs" />
     <Compile Include="ViewModel\SpecialistNearbyViewModel.cs" />
   </ItemGroup>
   <ItemGroup />

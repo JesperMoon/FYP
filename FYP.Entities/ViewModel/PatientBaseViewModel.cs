@@ -21,6 +21,9 @@ namespace FYP.Entities.ViewModel
         public string BloodTypeString { get; set; }
 
         [DataMember]
-        public SpecialistNearbyViewModel SpecialistNearby = new SpecialistNearbyViewModel() { PostalCode = 00000 };
+        public SpecialistNearbyViewModel SpecialistNearby = new SpecialistNearbyViewModel();
+
+        [DataMember]
+        public MedicineViewModel MedicineViewModel = new MedicineViewModel();
     }
 }

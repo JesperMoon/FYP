@@ -32,11 +32,11 @@
         /*padding: 12px 0;*/
     }
 
-    .backButton:hover {
-        background-color: white;
-        text-decoration: none !important;
-        color: #18a1e5 !important;
-    }
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
 
     input[type=submit] {
         width: auto;
@@ -68,10 +68,9 @@
     ::-ms-input-placeholder { /* Microsoft Edge */
         color: lightgray;
     }
-
 </style>
 
-@model FYP.Entities.PractitionerViewModel
+@model FYP.Entities.NewPractitionerViewModel
 
 <html>
 <body>
@@ -186,36 +185,21 @@
                 <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.RetypePassword)</p2></div>
             </div>
 
+            @* Company Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.CompanyId) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.DropDownListFor(m => m.CompanyId, new SelectList(Model.CompanyDropDown,"key","value"), "- Please select your company -", new { @class = "form-control" })</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ActionLink("If company is not found, register here.","CompanyRegister")</p2></div>
+            </div>
+
+
             @* Office Phone Number *@
             <div class="row">
                 <div class="col-lg-1 col-1"></div>
                 <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.OfficePhoneNumber) : </p></div>
                 <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.OfficePhoneNumber, new { htmlAttributes = new { @placeholder = "0123456789", input = "numeric" } })</p></div>
                 <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.OfficePhoneNumber)</p2></div>
-            </div>
-
-            @* Company Address *@
-            <div class="row">
-                <div class="col-lg-1 col-1"></div>
-                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Company) : </p></div>
-                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Company)</p></div>
-                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.Company)</p2></div>
-            </div>
-
-            @* Postal Code *@
-            <div class="row">
-                <div class="col-lg-1 col-1"></div>
-                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
-                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric" } })</p></div>
-                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
-            </div>
-
-            @* State *@
-            <div class="row">
-                <div class="col-lg-1 col-1"></div>
-                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.State) : </p></div>
-                <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
-                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
             </div>
 
             @* Role *@
@@ -262,3 +246,27 @@
 </body>
 </html>
 
+@*        
+Company Address
+<div class="row">
+    <div class="col-lg-1 col-1"></div>
+    <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Company) : </p></div>
+    <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Company)</p></div>
+    <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.Company)</p2></div>
+</div>
+
+Postal Code
+<div class="row">
+    <div class="col-lg-1 col-1"></div>
+    <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
+    <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric" } })</p></div>
+    <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
+</div>
+
+State
+<div class="row">
+    <div class="col-lg-1 col-1"></div>
+    <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.State) : </p></div>
+    <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+    <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
+</div> *@

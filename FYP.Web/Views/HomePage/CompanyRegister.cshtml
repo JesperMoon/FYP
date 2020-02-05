@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewBag.Title = "Web App For Doctor - Register Company";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    input[type=submit] {
+        width: auto;
+        height: auto;
+        font-size: 20px;
+    }
+
+    p1 {
+        overflow: auto;
+        white-space: nowrap;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    p2 {
+        font-size: 18px;
+        color: red;
+        font-style: italic;
+    }
+
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: lightgray;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: lightgray;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: lightgray;
+    }
+</style>
+
+@model FYP.Entities.CompanyViewModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="row">
+            <a class="col-lg-3 col-xs-3 backButton" href="@Url.Action("PractitionerLogin", "HomePage")">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>
+            <div class="col-lg-9 col-9 text-center">
+                <p1>Company Registration Form</p1>
+            </div>
+        </div>
+
+        <br />
+
+        @using (Html.BeginForm("CompanyRegister", "HomePage"))
+        {
+        <div class="table-condensed">
+
+            @* Company Name *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.CompanyName) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyName)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyName)</p2></div>
+            </div>
+
+            @* Company Phone Number *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.CompanyPhoneNumber) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyPhoneNumber)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyPhoneNumber)</p2></div>
+            </div>
+
+            @* Email Address conflict *@
+            @if (TempData["ConflictEmailAddress"] != "")
+            {
+                <div class="row">
+                    <div class="col-lg-1 col-1"></div>
+                    <div class="col-lg-8 col-8">
+                        <div class="alert alert-danger" role="alert">
+                            The email address is already in use!
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-3"></div>
+                </div>
+            }
+
+            @* Company Email Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.CompanyEmailAddress) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyEmailAddress)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyEmailAddress)</p2></div>
+            </div>
+
+            @* Reconfirm Email Address *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.ReconfirmEmail) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.ReconfirmEmail)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.ReconfirmEmail)</p2></div>
+            </div>
+
+            @* Company Address Line 1 *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.CompanyAddressLine1): </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyAddressLine1)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyAddressLine1)</p2></div>
+            </div>
+
+            @* Home Address Line 2 *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyAddressLine2)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyAddressLine2)</p2></div>
+            </div>
+
+            @* Home Address Line 3 *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.CompanyAddressLine3)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.CompanyAddressLine3)</p2></div>
+            </div>
+
+            @* Company Postal Code *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.PostalCode): </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.PostalCode)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
+            </div>
+
+
+            @* Company City *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.City) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.City)</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.City)</p2></div>
+            </div>
+
+            @* State *@
+            <div class="row">
+                <div class="col-lg-1 col-1"></div>
+                <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.State) : </p></div>
+                <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+                <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
+            </div>
+
+            @* Submit Button *@
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <input type="submit" value="Register" name="Submit" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</body>
+</html>
+
+@*
+    Company Address
+    <div class="row">
+        <div class="col-lg-1 col-1"></div>
+        <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.Company) : </p></div>
+        <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.Company)</p></div>
+        <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.Company)</p2></div>
+    </div>
+
+    Postal Code
+    <div class="row">
+        <div class="col-lg-1 col-1"></div>
+        <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.PostalCode) : </p></div>
+        <div class="col-lg-4 col-4"><p>@Html.EditorFor(m => m.PostalCode, new { htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric" } })</p></div>
+        <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.PostalCode)</p2></div>
+    </div>
+
+    State
+    <div class="row">
+        <div class="col-lg-1 col-1"></div>
+        <div class="col-lg-4 col-4"><p>@Html.DisplayNameFor(m => m.State) : </p></div>
+        <div class="col-lg-4 col-4"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+        <div class="col-lg-3 col-3"><p2>@Html.ValidationMessageFor(m => m.State)</p2></div>
+    </div> *@
+

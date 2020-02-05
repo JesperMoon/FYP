@@ -20,6 +20,9 @@ namespace FYP.Data
         //Practitioner User Account
         public DbSet<Practitioner> Practitioner { get; set; }
 
+        //Company Account
+        public DbSet<Company> Company { get; set; }
+
         //Patient User Account
         public DbSet<Patient> Patient { get; set; }
 

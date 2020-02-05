@@ -57,7 +57,10 @@ namespace FYP.Controllers
                         //Check Status
                         if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Active))
                         {
-                            return RedirectToAction("Home", "Practitioner", result);
+                            PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+                            vm.AccId = result.AccountNo;
+                            FormsAuthentication.SetAuthCookie(result.AccountNo.ToString(), false);
+                            return RedirectToAction("Home", "Practitioner", vm);
                         }
 
                         else if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Deleted))
@@ -92,19 +95,27 @@ namespace FYP.Controllers
             return View(loginInfo);
         }
 
+        public ActionResult PractitionerLogout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("PractitionerLogin", "HomePage", null);
+        }
+
         [AllowAnonymous]
         public ActionResult PractitionerRegister()
         {
-            PractitionerViewModel newUser = new PractitionerViewModel();
+            NewPractitionerViewModel newUser = new NewPractitionerViewModel();
+            PractitionerProcess process = new PractitionerProcess();
+            NewPractitionerViewModel result = process.GetCompanyList(newUser);
 
             TempData["ConflictEmailAddress"] = "";
 
-            return View(newUser);
+            return View(result);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult PractitionerRegister(PractitionerViewModel newUser)
+        public ActionResult PractitionerRegister(NewPractitionerViewModel newUser)
         {
             PractitionerProcess process = new PractitionerProcess();
 
@@ -140,8 +151,6 @@ namespace FYP.Controllers
             }
             return View(newUser);
         }
-
-
 
         //Patient
         [AllowAnonymous]
@@ -300,5 +309,54 @@ namespace FYP.Controllers
         {
             return View();
         }
+
+        //Company
+        [AllowAnonymous]
+        public ActionResult CompanyRegister()
+        {
+            TempData["ConflictEmailAddress"] = "";
+            CompanyViewModel newCompany = new CompanyViewModel();
+            return View(newCompany);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult CompanyRegister(CompanyViewModel newCompany)
+        {
+            PractitionerProcess process = new PractitionerProcess();
+
+            TempData["ConflictEmailAddress"] = "";
+
+            if (Request.Form["Submit"] != null)
+            {
+                if (newCompany.CompanyEmailAddress.Equals(newCompany.ReconfirmEmail))
+                {
+                    if (ModelState.IsValid)
+                    {
+                        int result = process.CompanyRegister(newCompany);
+
+                        if (result == 1)
+                        {
+                            return RedirectToAction("AccCreateSuccess", "HomePage", null);
+                        }
+                        else if (result == 2)
+                        {
+                            TempData["ConflictEmailAddress"] = "ConflictEmailAddress";
+                            return View(newCompany);
+                        }
+                        else
+                        {
+                            return View(newCompany);
+                        }
+                    }
+                }
+                else
+                {
+                    return View(newCompany);
+                }
+            }
+            return View(newCompany);
+        }
+
     }
 }

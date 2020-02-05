@@ -14,16 +14,10 @@ namespace FYP.Entities.Data
     {
         [Required]
         [DataMember]
-        public string Company { get; set; }
+        public Guid Company { get; set; }
 
         [DataMember]
         public string OfficePhoneNumber { get; set; }
-
-        [DataMember]
-        public int PostalCode { get; set; }
-
-        [DataMember]
-        public string State { get; set; }
 
         [DataMember]
         public string Role { get; set; }

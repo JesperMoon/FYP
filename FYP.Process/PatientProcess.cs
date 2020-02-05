@@ -68,5 +68,19 @@ namespace FYP.Process
 
             return result;
         }
+
+        //public List<PractitionerViewModel> SpecialistSearch(SpecialistNearbyViewModel speacialistvm)
+        //{
+        //    var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+        //    RestRequest request = new RestRequest(ConstantHelper.API.Patient.SpecialistSearch, Method.POST);
+        //    request.RequestFormat = DataFormat.Json;
+        //    request.AddBody(speacialistvm);
+
+        //    IRestResponse<> response = client.Execute<PatientBaseViewModel>(request);
+        //    PatientBaseViewModel result = response.Data;
+
+        //    return result;
+        //}
     }
 }

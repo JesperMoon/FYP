@@ -80,6 +80,10 @@
     <Compile Include="Migrations\202001311817412_PatientAddressAndCity.designer.cs">
       <DependentUpon>202001311817412_PatientAddressAndCity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002041150560_AddedCompanyEntity.cs" />
+    <Compile Include="Migrations\202002041150560_AddedCompanyEntity.designer.cs">
+      <DependentUpon>202002041150560_AddedCompanyEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
@@ -111,6 +115,9 @@
     <EmbeddedResource Include="Migrations\202001311817412_PatientAddressAndCity.resx">
       <DependentUpon>202001311817412_PatientAddressAndCity.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002041150560_AddedCompanyEntity.resx">
+      <DependentUpon>202002041150560_AddedCompanyEntity.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FYP.Entities\FYP.Entities.csproj">
@@ -121,6 +128,9 @@
       <Project>{8BC27F92-E219-410E-AF59-D94B9FDB6BE4}</Project>
       <Name>FYP.Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\[dbo].[GetPractitionerProfile].sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

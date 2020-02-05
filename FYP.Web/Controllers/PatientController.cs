@@ -90,6 +90,16 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public JsonResult SpecialistNearby(SpecialistNearbyViewModel speacialistvm)
+        {
+            List<NewPractitionerViewModel> result = new List<NewPractitionerViewModel>();
+            PatientProcess process = new PatientProcess();
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
         public ActionResult Medicine(PatientBaseViewModel vm)
         {
             if (vm.AccId.Equals(Guid.Empty))

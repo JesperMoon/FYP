@@ -122,17 +122,19 @@
 
     </style>
 </head>
+
+@model FYP.Entities.ViewModel.PractitionerBaseViewModel
+
 <body>
-
     <div class="sidenav">
-        <a class="bar-item" href="@Url.Action("Home","Practitioner",null)" onclick="activeLink()">Home</a>
-        <a class="bar-item" href="@Url.Action("Appointments","Practitioner",null)" onclick="activeLink()">Appointments</a>
-        <a class="bar-item" href="@Url.Action("Products","Practitioner",null)" onclick="activeLink()">Products</a>
-        <a class="bar-item" href="@Url.Action("Records","Practitioner",null)" onclick="activeLink()">Records</a>
-        <a class="bar-item" href="@Url.Action("Patients","Practitioner",null)" onclick="activeLink()">Patients</a>
-        <a class="bar-item" href="@Url.Action("Profile","Practitioner",null)" onclick="activeLink()">Profile</a>
+        <a class="bar-item" href="@Url.Action("Home","Practitioner",Model)" onclick="activeLink()">Home</a>
+        <a class="bar-item" href="@Url.Action("Appointments","Practitioner",Model)" onclick="activeLink()">Appointments</a>
+        <a class="bar-item" href="@Url.Action("Products","Practitioner",Model)" onclick="activeLink()">Products</a>
+        <a class="bar-item" href="@Url.Action("Records","Practitioner",Model)" onclick="activeLink()">Records</a>
+        <a class="bar-item" href="@Url.Action("Patients","Practitioner",Model)" onclick="activeLink()">Patients</a>
+        <a class="bar-item" href="@Url.Action("Profile","Practitioner",Model)" onclick="activeLink()">Profile</a>
 
-        <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PractitionerLogin","HomePage", null)">
+        <a class="logout" onclick="javascript:return confirm('Are you sure you want to log out?');" href="@Url.Action("PractitionerLogout","HomePage", null)">
             Logout
             @*<span class="tooltiptext">Return to the login page</span>*@
         </a>
@@ -140,10 +142,10 @@
 
     <div class="main">
         @RenderBody()
-        <hr />
+        @*<hr />
         <footer>
             <p>&copy; @DateTime.Now.Year -Final Year Project</p>
-        </footer>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")

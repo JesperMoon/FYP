@@ -42,7 +42,15 @@
     <div class="jumbotron">
         <div class="header">
             <h2>Congratulation! Account created succesfully !</h2>
-            <p>Please verified the account.</p>
+            @if (TempData["CompanySuccess"] == "")
+            {
+                <p>Please verified the account.</p>
+            }
+            @if (TempData["CompanySuccess"] == "CompanySuccess")
+            {
+                <p>Please wait the account to be verified by system admin.</p>
+            }
+
         </div>
         <br />
         <div class="header">

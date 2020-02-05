@@ -13,7 +13,7 @@ namespace FYP.Entities
 {
     [DataContract]
     [Serializable]
-    public class PractitionerViewModel
+    public class NewPractitionerViewModel
     {
         [DataMember]
         [DisplayName("First Name")]
@@ -59,29 +59,14 @@ namespace FYP.Entities
         public string RetypePassword { get; set; }
 
         [DataMember]
-        [Required(ErrorMessage = "Re-confirm password is required.")]
+        [Required(ErrorMessage = "Re-confirm email address is required.")]
         [DisplayName("Re-confirm Email Address")]
         [Compare(nameof(EmailAddress), ErrorMessage = "Email address do not match")]
         public string ReconfirmEmail { get; set; }
 
         [DataMember]
-        [Required(ErrorMessage = "This field cannot be empty.")]
-        public string Company { get; set; }
-
-        [DataMember]
         [DisplayName("Office Phone Number")]
         public string OfficePhoneNumber { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Postal Code is required.")]
-        [DisplayName("Company Postal Code")]
-        [StringLength(5, ErrorMessage = "Invalid postal code.")]
-        public string PostalCode { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "State is required.")]
-        [DisplayName("Company State")]
-        public State State { get; set; }
 
         [DataMember]
         [Required(ErrorMessage = "Role is required.")]
@@ -101,5 +86,51 @@ namespace FYP.Entities
 
         [DataMember]
         public int ConflictEmailAddress { get; set; }
+
+        [DataMember]
+        public Guid AccId { get; set; }
+
+        //For company drop down
+        [DataMember]
+        [DisplayName("Company")]
+        public Guid CompanyId { get; set; }
+
+        [DataMember]
+        public List<string> CompanyIdList { get; set; }
+
+        [DataMember]
+        public List<string> CompanyNameList { get; set; }
+
+        [DataMember]
+        public Dictionary<string,string> CompanyDropDown { get; set; }
+
+        //For Company view
+        [DataMember]
+        public string CompanyName { get; set; }
+
+        [DataMember]
+        public string CompanyEmailAddress { get; set; }
+
+        [DataMember]
+        public string CompanyAddressLine1 { get; set; }
+
+        [DataMember]
+        public string CompanyAddressLine2 { get; set; }
+
+        [DataMember]
+        public string CompanyAddressLine3 { get; set; }
+
+        [DataMember]
+        public string CompanyPhoneNumber { get; set; }
+
+        [DataMember]
+        public string PostalCode { get; set; }
+
+        [DataMember]
+        public string City { get; set; }
+
+        [DataMember]
+        public string State { get; set; }
+
     }
 }

@@ -112,5 +112,12 @@ namespace FYP.Entities
 
         [DataMember]
         public Guid AccId { get; set; }
+
+        //For company drop down
+        [DataMember]
+        public List<Guid> CompanyId { get; set; }
+
+        [DataMember]
+        public List<string> CompanyName { get; set; }
     }
 }

@@ -29,12 +29,27 @@ namespace FYP.Framework
             public static string FYP = ConfigurationManager.ConnectionStrings["FYP"].ConnectionString;
         }
 
+        public static class StoredProcedure
+        {
+            public const string GetPractitionerProfile = "[dbo].[GetPractitionerProfile]";
+
+            public static class Parameter
+            {
+                public const string AccId = "@AccId";
+            }
+
+        }
+
         public static class API
         {
             public static class Practitioner
             {
                 public const string PractitionerLogin = "HomePage/PractitionerLogin";
                 public const string PractitionerRegister = "HomePage/PractitionerRegister";
+
+                public const string CompanyRegister = "HomePage/CompanyRegister";
+                public const string GetCompanyList = "HomePage/GetCompanyList";
+                public const string GetProfile = "HomePage/GetProfile";
             }
 
             public static class Patient
@@ -43,6 +58,8 @@ namespace FYP.Framework
                 public const string PatientRegister = "HomePage/PatientRegister";
                 public const string PatientVerification = "HomePage/PatientVerification";
                 public const string PatientProfile = "Patient/Profile";
+
+                public const string SpecialistSearch = "Patient/SpecialistSearch";
             }
         }
 
@@ -65,6 +82,36 @@ namespace FYP.Framework
             public static class Keyword
             {
                 public const string LinkToVerify = "{linkToVerify}";
+            }
+        }
+
+        public static class SQLColumn
+        {
+            public static class Practitioner
+            {
+                public const string Id = "Id";
+                public const string FirstName = "FirstName";
+                public const string LastName = "LastName";
+                public const string UserName = "UserName";
+                public const string Gender = "Gender";
+                public const string Religion = "Religion";
+                public const string DateOfBirth = "DateOfBirth";
+                public const string EmailAddress = "EmailAddress";
+                public const string OfficePhoneNumber = "OfficePhoneNumber";
+                public const string Role = "Role";
+                public const string Specialist = "Specialist";
+                public const string Qualification = "Qualification";
+
+                //Company
+                public const string CompanyName = "CompanyName";
+                public const string CompanyPhoneNumber = "CompanyPhoneNumber";
+                public const string CompanyEmailAddress = "CompanyEmailAddress";
+                public const string CompanyAddressLine1 = "CompanyAddressLine1";
+                public const string CompanyAddressLine2 = "CompanyAddressLine2";
+                public const string CompanyAddressLine3 = "CompanyAddressLine3";
+                public const string PostalCode = "PostalCode";
+                public const string City = "City";
+                public const string State = "State";
             }
         }
     }

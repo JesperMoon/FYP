@@ -41,7 +41,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientBusiness.PatientRegister : " + err);
             }
 
             return result;
@@ -62,10 +62,11 @@ namespace FYP.Business
                 loginInfo.Password = Convert.ToBase64String(hashedPassword);
 
                 result = dataLayer.PatientLogin(loginInfo);
+                new LogHelper().LogMessage("PatientBusiness.PatientLogin : " + "Success");
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientBusiness.PatientLogin : " + err);
             }
 
             return result;
@@ -82,7 +83,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientBusiness.PatientVerification : " + err);
             }
 
             return result;
@@ -100,7 +101,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientBusiness.PatientProfile : " + err);
             }
 
             return result;

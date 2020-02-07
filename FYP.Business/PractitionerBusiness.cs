@@ -37,7 +37,7 @@ namespace FYP.Business
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerBusiness.PractitionerRegister : " + err);
             }
 
             return result;
@@ -55,7 +55,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerBusiness.GetProfile : " + err);
             }
 
             return result;
@@ -74,7 +74,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerBusiness.GetCompanyList : " + err);
             }
 
             return result;
@@ -91,7 +91,7 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerBusiness.CompanyRegister : " + err);
             }
 
             return result;
@@ -115,7 +115,7 @@ namespace FYP.Business
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerBusiness.PractitionerLogin : " + err);
             }
 
             return result;

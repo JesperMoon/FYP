@@ -60,9 +60,9 @@ namespace FYP.Data
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.CreatePractitioner : " + err);
             }
-            
+
             return newUser;
         }
 
@@ -105,7 +105,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.CreateCompany : " + err);
             }
 
             return newCompany;
@@ -129,7 +129,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.GetCompanyList : " + err);
             }
 
             return vm;
@@ -177,7 +177,7 @@ namespace FYP.Data
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.GetProfile : " + err);
             }
 
             return result;
@@ -206,7 +206,7 @@ namespace FYP.Data
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.PractitionerLogin : " + err);
             }
 
             return result;
@@ -230,7 +230,7 @@ namespace FYP.Data
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PractitionerData.GetSalt : " + err);
             }
 
             return result;

@@ -66,7 +66,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientData.CreatePatient : " + err);
             }
 
             return newUser;
@@ -95,7 +95,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientData.PatientLogin : " + err);
             }
 
             return result;
@@ -122,7 +122,7 @@ namespace FYP.Data
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("PatientData.PatientVerification : " + err);
             }
 
             return result;
@@ -146,7 +146,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientData.GetSalt : " + err);
             }
 
             return result;
@@ -191,7 +191,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-
+                new LogHelper().LogMessage("PatientData.PatientProfile : " + err);
             }
 
             return result;

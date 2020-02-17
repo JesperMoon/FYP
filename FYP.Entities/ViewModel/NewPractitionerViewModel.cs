@@ -73,10 +73,7 @@ namespace FYP.Entities
         public string Role { get; set; }
 
         [DataMember]
-        public string Specialist { get; set; }
-
-        [DataMember]
-        public string NewSpecialist { get; set; }
+        public Specialist Specialist { get; set; }
 
         [DataMember]
         public string Qualification { get; set; }

@@ -11,77 +11,61 @@
 <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 <link href="~/Content/Site.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
 <script type="text/javascript">
     function ajaxSearchUpdate() {
         var serviceURL = '@Url.Action("SpecialistNearby","Patient")';
+        var postalCode = $("#postalCode").val();
+        var searchText = document.getElementById("#searchText");
+        var specialist = $("#specialist").val();
+        var state = $("#state").val();
+
+        @*var data = '@Html.Raw(Json.Encode(Model.SpecialistNearby))';*@
+        var data = JSON.stringify({ searchText: searchText, specialist: specialist, state: state, postalCode: postalCode });
 
         $.ajax({
             type: "POST",
+            cache: false ,
             url: serviceURL,
-            data: { @Model.SpecialistNearby },
+            data: data,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function successFunc() {
-                $("#result").show();
-                $("#error").hide();
+            success: function successFunc(result) {
+                $('.container').show();
+
+                var trHTML = '';
+                var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                if (result.ResultTable.length == 0) {
+                    trHTML += '<tr><td colspan="8" style="text-align:center;color:red;">' + 'No specialist with any requirements above found. Please try again.' + '</td></tr>';
+                } else {
+                    $.each(result.ResultTable, function (i, item) {
+                        trHTML += '<tr><td><a href="' + '@Url.Action("SpecialistProfile","Patient")' + '?specialistId=' + item.AccId + '&accId=' + accId + '" target="_self"><p>' + item.SpecialistName + '</p></a></td><td><p>' + item.SpecialistType + '</p></td><td><p>' + item.CompanyName + '</p></td><td><p>' + item.CompanyAddressLine1 + '</p></td><td><p>' + item.CompanyPhoneNumber + '</p></td><td><p>' + item.PostalCode + '</p></td><td><p>' + item.City + '</p></td><td><p>' + item.State + '</p></td></tr>';
+                    });
+                }
+
+                document.getElementById("content").innerHTML = trHTML;
+
+                //$('#table').append(trHTML);
+                //$('.container').html(result);
+                //document.getElementsByClassName("container").style.visibility = 'visible';
+                //document.getElementById("#result").style.display = 'block';
             },
             error: function errorFunc() {
-                $("#result").hide();
-                $("#error").show();
+                //document.getElementById("#result").style.display = 'none';
+                windows.alert("Somethings wrong...Contact admin for further assistance.");
             }
         });
     }
 
-    $(document).ready(function (e) {
-        ajaxSearchUpdate();                    // fires on document.ready
-        $("#search").keypress(function () {
-            ajaxSearchUpdate();                // your function call
-        }
-    })
 
-    @*$(document).ready(function () {
-        var serviceURL = '@Url.Action("SpecialistNearby","Patient")';
+    $(document).ready(function () {
+        $('.container').hide();
+    });
 
-        $.ajax({
-            type: "POST",
-            url: serviceURL,
-            data: { @Model.SpecialistNearby },
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: successFunc,
-            error: errorFunc
-        });
-
-        function successFunc(data, status) {
-            alert(data);
-        }
-
-        function errorFunc() {
-            alert('error');
-        }
-    })*@
-
-    //function ajaxSearchUpdate() {
-    //    $("#result").show();
-    //    var x = $('#search').val();
-    //    $.ajax({
-    //        type: 'POST',
-    //        url: 'res.php',
-    //        data: 'q=' + x,
-    //        cache: false,
-    //        success: function (data) {
-    //            $("#result").html(data)
-    //        }
-    //    });
-    //}
-
-    //$(document).ready(function (e) {
-    //    ajaxSearchUpdate();                    // fires on document.ready
-    //    $("#search").keypress(function () {
-    //        ajaxSearchUpdate();                // your function call
-    //    }
-    //})
 </script>
+}
 
 <style>
     body {
@@ -119,6 +103,10 @@
     .input {
         flex: 1;
     }
+
+    th{
+        text-align:center;
+    }
 </style>
 
 @model FYP.Entities.ViewModel.PatientBaseViewModel
@@ -133,32 +121,59 @@
     <div class="row">
         <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Specialist Name : </p></div>
-        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.SpecialistNearby.SearchText)</p></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.SpecialistNearby.SearchText, new { id = "searchText", @value = Model.SpecialistNearby.SearchText })</p></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p2>@Html.ValidationMessageFor(m => m.SpecialistNearby.SearchText)</p2></div>
     </div>
 
     <div class="row">
         <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Specialist : </p></div>
-        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.SpecialistNearby.Specialist)</p></div>
-        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p2>@Html.ValidationMessageFor(m => m.SpecialistNearby.Specialist)</p2></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.EnumDropDownListFor(m => m.SpecialistNearby.EnumSpecialist, new { @class = "form-control", id = "specialist", @value = Model.SpecialistNearby.EnumSpecialist })</p></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
     </div>
 
     <div class="row">
         <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>State : </p></div>
-        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.EnumDropDownListFor(m => m.State, new { @class = "form-control" })</p></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.EnumDropDownListFor(m => m.SpecialistNearby.EnumState, new { @class = "form-control", id = "state", @value = Model.SpecialistNearby.EnumState })</p></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
     </div>
 
     <div class="row">
         <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Postal Code : </p></div>
-        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.PostalCode, new { htmlAttributes = new { maxlength = "5", input = "numeric" } })</p></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.SpecialistNearby.PostalCode, new { id = "postalCode", @value = Model.SpecialistNearby.PostalCode })</p></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">@Html.ValidationMessageFor(m => m.SpecialistNearby.PostalCode)</div>
     </div>
 
 
+    <div style="text-align:center;">
+        <div type="button" onclick="javascript:ajaxSearchUpdate()" class="btn btn-success" style="font-size:16px;">Search</div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+
+    <div class="container">
+        <table class="table-bordered table-condensed table-hover" style="background-color:lightgray;" id="table">
+            <thead>
+                <tr>
+                    <th><p><b>Name</b></p></th>
+                    <th><p><b>Specialist</b></p></th>
+                    <th><p><b>Company</b></p></th>
+                    <th><p><b>Company Address</b></p></th>
+                    <th><p><b>Company Contact Number</b></p></th>
+                    <th><p><b>Postal Code</b></p></th>
+                    <th><p><b>City</b></p></th>
+                    <th><p><b>State</b></p></th>
+                </tr>
+            </thead>
+            <tbody id="content">
+                @* Content generated by javascript *@
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

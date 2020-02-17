@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "Specialist Profile";
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+        function makeAppointment() {
+             var patientId = @Html.Raw(Json.Encode(Model.PatientId));
+             var practitionerId = @Html.Raw(Json.Encode(Model.Practitioner.AccId));
+
+            window.open('@Url.Action("MakeAppointment","Patient")' + '?patientId=' + patientId + '&practitionerId=' + practitionerId);
+        }
+    </script>
+}
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Styling for Logo Center */
+    .menuItem {
+        text-align: center;
+        padding: 12px 0;
+        text-decoration: none !important;
+        color: black;
+        border-radius: 50px;
+        /*color: inherit !important;*/
+        /*background-color: lightgray;*/
+    }
+
+        .menuItem span {
+            font-size: 150px;
+        }
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+</style>
+
+@model FYP.Entities.ViewModel.AppointmentViewModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="row">
+            <a class="col-lg-3 col-xs-3 backButton" href="javascript:window.history.back();">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>
+            <h2 class="col-lg-6 col-xs-6" style="font-size:40px;text-align:center;"><b>Practitioner Profile</b></h2>
+            <div class="col-lg-3 col-xs-3"></div>
+        </div>
+
+        @*<br />*@
+
+        <div class="row">
+            <div><h2 style="text-align:center">-- <b>Practitioner Information Details</b> --</h2></div>
+        </div>
+
+        <table class="table-bordered table-striped table-condensed">
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.FirstName): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.FirstName</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.LastName): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.LastName</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.UserName): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.UserName</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.Gender): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.Gender</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.Religion): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.ReligionString</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.DateOfBirth): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.DateOfBirth.ToString("yyyy-MM-dd")</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.EmailAddress): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.EmailAddress</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Practitioner.OfficePhoneNumber): </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.OfficePhoneNumber</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Role: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.Role</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Specialist: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.SpecialistString</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Qualification: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.Qualification</td>
+            </tr>
+        </table>
+
+        <br />
+
+        <div class="row">
+            <div><h2 style="text-align:center">-- <b>Company Information Details</b> --</h2></div>
+        </div>
+
+        <table class="table-bordered table-striped table-condensed">
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Name: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyName</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Phone Number: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyPhoneNumber</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Email Address: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyEmailAddress</td>
+            </tr>
+
+            <tr class="row">
+                <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Address: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyAddressLine1</td>
+            </tr>
+
+            <tr class="row">
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyAddressLine2</td>
+            </tr>
+
+            <tr class="row">
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.CompanyAddressLine3</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Postal Code: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.PostalCode</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company City: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.City</td>
+            </tr>
+
+            <tr class="row">
+                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company State: </th>
+                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.Practitioner.State</td>
+            </tr>
+        </table>
+        <br />
+
+        <div style="float:right;">
+            <input type="button" value="Make Appointment" name="MakeAppointment" class="btn btn-success" onclick="makeAppointment()" />
+        </div>
+
+    </div>
+</body>
+</html>
+

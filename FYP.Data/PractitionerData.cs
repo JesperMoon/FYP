@@ -43,7 +43,7 @@ namespace FYP.Data
                             OfficePhoneNumber = newUser.OfficePhoneNumber,
                             Company = newUser.CompanyId,
                             Role = newUser.Role,
-                            Specialist = newUser.Specialist,
+                            Specialist = newUser.Specialist.ToString(),
                             Qualification = newUser.Qualification,
                             UserName = newUser.UserName,
                             Status = ConstantHelper.AccountStatus.Pending,
@@ -51,6 +51,9 @@ namespace FYP.Data
 
                         context.Practitioner.Add(practitioner);
                         context.SaveChanges();
+
+                        newUser.AccId = query.Where(p => p.EmailAddress == newUser.EmailAddress).Select(p => p.Id).FirstOrDefault();
+                        newUser.CompanyEmailAddress = context.Company.Where(p => p.Id == newUser.CompanyId).Select(p => p.CompanyEmailAddress).FirstOrDefault();
                     }
                     else
                     {
@@ -64,6 +67,54 @@ namespace FYP.Data
             }
 
             return newUser;
+        }
+
+        public string PractitionerApproved(Guid accId)
+        {
+            string emailAddress = String.Empty;
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var practitioner = context.Practitioner.Where(p => p.Id == accId).FirstOrDefault();
+                    practitioner.Status = ConstantHelper.AccountStatus.Active;
+                    result = context.SaveChanges();
+
+                    emailAddress = practitioner.EmailAddress;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.PractitioenrApproved : " + err);
+            }
+
+            return emailAddress;
+        }
+
+        public string PractitionerRejected(Guid accId)
+        {
+            string emailAddress = String.Empty;
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var practitioner = context.Practitioner.Where(p => p.Id == accId).FirstOrDefault();
+                    practitioner.Status = ConstantHelper.AccountStatus.Rejected;
+                    result = context.SaveChanges();
+
+                    emailAddress = practitioner.EmailAddress;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.PractitionerRejected : " + err);
+            }
+
+            return emailAddress;
         }
 
         public CompanyViewModel CreateCompany(CompanyViewModel newCompany)
@@ -96,6 +147,9 @@ namespace FYP.Data
 
                         context.Company.Add(company);
                         context.SaveChanges();
+
+                        //Getting new company account Guid
+                        newCompany.CompanyId = query.Where(p => p.CompanyEmailAddress.Equals(newCompany.CompanyEmailAddress)).Select(p => p.Id).FirstOrDefault();
                     }
                     else
                     {
@@ -111,6 +165,54 @@ namespace FYP.Data
             return newCompany;
         }
 
+        public string CompanyApproved(Guid accId)
+        {
+            string emailAddress = String.Empty;
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var company = context.Company.Where(p => p.Id == accId).FirstOrDefault();
+                    company.Status = ConstantHelper.AccountStatus.Active;
+                    result = context.SaveChanges();
+
+                    emailAddress = company.CompanyEmailAddress;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.CompanyApproved : " + err);
+            }
+
+            return emailAddress;
+        }
+
+        public string CompanyRejected(Guid accId)
+        {
+            string emailAddress = String.Empty;
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var company = context.Company.Where(p => p.Id == accId).FirstOrDefault();
+                    company.Status = ConstantHelper.AccountStatus.Rejected;
+                    result = context.SaveChanges();
+
+                    emailAddress = company.CompanyEmailAddress;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.CompanyRejected : " + err);
+            }
+
+            return emailAddress;
+        }
+
         public NewPractitionerViewModel GetCompanyList(NewPractitionerViewModel vm)
         {
             try
@@ -118,6 +220,7 @@ namespace FYP.Data
                 using (var context = new ApplicationContext())
                 {
                     var query = from pt in context.Company
+                                where pt.Status.Equals(ConstantHelper.AccountStatus.Active)
                                 select pt;
 
                     var key = query.Select(p => p.Id.ToString()).ToList();
@@ -156,11 +259,11 @@ namespace FYP.Data
                     result.UserName = practitioner[ConstantHelper.SQLColumn.Practitioner.UserName].ToString();
                     result.Gender = practitioner[ConstantHelper.SQLColumn.Practitioner.Gender].ToString();
                     result.ReligionString = practitioner[ConstantHelper.SQLColumn.Practitioner.Religion].ToString();
-                    result.DateOfBirth = Convert.ToDateTime(practitioner[ConstantHelper.SQLColumn.Practitioner.DateOfBirth].ToString()).ToLocalTime();
+                    result.DateOfBirth = Convert.ToDateTime(practitioner[ConstantHelper.SQLColumn.Practitioner.DateOfBirth].ToString()).AddHours(6).ToLocalTime();
                     result.EmailAddress = practitioner[ConstantHelper.SQLColumn.Practitioner.EmailAddress].ToString();
                     result.OfficePhoneNumber = practitioner[ConstantHelper.SQLColumn.Practitioner.OfficePhoneNumber].ToString();
                     result.Role = practitioner[ConstantHelper.SQLColumn.Practitioner.Role].ToString();
-                    result.Specialist = practitioner[ConstantHelper.SQLColumn.Practitioner.Specialist].ToString();
+                    result.SpecialistString = practitioner[ConstantHelper.SQLColumn.Practitioner.Specialist].ToString();
                     result.Qualification = practitioner[ConstantHelper.SQLColumn.Practitioner.Qualification].ToString();
 
                     //Company

@@ -27,5 +27,7 @@ namespace FYP.Entities.Data
 
         [DataMember]
         public string Qualification { get; set; }
+
+        //Working hours
     }
 }

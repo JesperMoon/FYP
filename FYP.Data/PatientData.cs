@@ -1,9 +1,12 @@
 ﻿using FYP.Entities;
 using FYP.Entities.Data;
+using FYP.Entities.Model;
 using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -192,6 +195,56 @@ namespace FYP.Data
             catch (Exception err)
             {
                 new LogHelper().LogMessage("PatientData.PatientProfile : " + err);
+            }
+
+            return result;
+        }
+
+        public SpecialistNearbyViewModel SpecialistSearch(SpecialistNearbyViewModel vm)
+        {
+            SpecialistNearbyViewModel result = new SpecialistNearbyViewModel();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.SpecialistSearch, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.SearchText, vm.SearchText));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.Specialist, vm.SpecialistSelected));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.State, vm.StateSelected.ToString()));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.PostalCode, vm.PostalCode));
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var test = reader["Id"].ToString();
+
+                    SpecialistNearby specialist = new SpecialistNearby();
+                    specialist.AccId = Guid.Parse(reader[ConstantHelper.SQLColumn.SpecialistSearch.Id].ToString());
+                    specialist.SpecialistName = reader[ConstantHelper.SQLColumn.SpecialistSearch.SpecialistName].ToString();
+                    specialist.SpecialistType = reader[ConstantHelper.SQLColumn.SpecialistSearch.Specialist].ToString();
+                    specialist.CompanyName = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyName].ToString();
+                    specialist.CompanyAddressLine1 = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyAddressLine1].ToString();
+                    specialist.CompanyAddressLine2 = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyAddressLine2].ToString();
+                    specialist.CompanyAddressLine3 = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyAddressLine3].ToString();
+                    specialist.CompanyPhoneNumber = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyPhoneNumber].ToString();
+                    specialist.PostalCode = Convert.ToInt32(reader[ConstantHelper.SQLColumn.SpecialistSearch.PostalCode].ToString());
+                    specialist.City = reader[ConstantHelper.SQLColumn.SpecialistSearch.City].ToString();
+                    specialist.State = reader[ConstantHelper.SQLColumn.SpecialistSearch.State].ToString();
+
+                    result.ResultTable.Add(specialist);
+
+                    ////place data accordingly
+                    //SpecialistNearby specialist = new SpecialistNearby();
+                    //result.ResultTable.Add(specialist);
+                    
+                }
+            }
+
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.SpecialistSearch : " + err);
             }
 
             return result;

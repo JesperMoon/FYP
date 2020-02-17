@@ -15,6 +15,9 @@ namespace FYP.Entities
     public class CompanyViewModel
     {
         [DataMember]
+        public Guid CompanyId { get; set; }
+
+        [DataMember]
         [Required(ErrorMessage = "Company Name cannot be empty.")]
         [DisplayName("Company Name")]
         public string CompanyName { get; set; }

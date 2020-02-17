@@ -44,7 +44,7 @@ namespace FYP.Process
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
-            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.CompanyRegister, Method.POST);
+            RestRequest request = new RestRequest(ConstantHelper.API.Company.CompanyRegister, Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(newCompany);
 
@@ -53,6 +53,20 @@ namespace FYP.Process
 
             return result;
         }
+
+        //public int CompanyApproved(CompanyViewModel vm)
+        //{
+        //    var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+        //    RestRequest request = new RestRequest(ConstantHelper.API.Company.CompanyApproved, Method.POST);
+        //    request.RequestFormat = DataFormat.Json;
+        //    request.AddBody(vm);
+
+        //    IRestResponse<int> response = client.Execute<int>(request);
+        //    int result = response.Data;
+
+        //    return result;
+        //}
 
         public PractitionerBaseViewModel GetProfile(PractitionerBaseViewModel vm)
         {

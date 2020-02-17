@@ -9,13 +9,12 @@ namespace FYP.Entities.ViewModel
 {
     [DataContract]
     [Serializable]
-    public class PractitionerBaseViewModel : NewPractitionerViewModel
+    public class AppointmentViewModel
     {
         [DataMember]
-        public string ReligionString { get; set; }
+        public Guid PatientId { get; set; }
 
         [DataMember]
-        public string SpecialistString { get; set; }
-        
+        public PractitionerBaseViewModel Practitioner = new PractitionerBaseViewModel();
     }
 }

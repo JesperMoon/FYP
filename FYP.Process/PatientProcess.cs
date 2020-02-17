@@ -1,4 +1,5 @@
 ﻿using FYP.Entities;
+using FYP.Entities.Model;
 using FYP.Entities.ViewModel;
 using FYP.Framework;
 using RestSharp;
@@ -69,18 +70,18 @@ namespace FYP.Process
             return result;
         }
 
-        //public List<PractitionerViewModel> SpecialistSearch(SpecialistNearbyViewModel speacialistvm)
-        //{
-        //    var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+        public List<SpecialistNearby> SpecialistSearch(SpecialistNearbyViewModel speacialistvm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
-        //    RestRequest request = new RestRequest(ConstantHelper.API.Patient.SpecialistSearch, Method.POST);
-        //    request.RequestFormat = DataFormat.Json;
-        //    request.AddBody(speacialistvm);
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.SpecialistSearch, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(speacialistvm);
 
-        //    IRestResponse<> response = client.Execute<PatientBaseViewModel>(request);
-        //    PatientBaseViewModel result = response.Data;
+            IRestResponse<List<SpecialistNearby>> response = client.Execute<List<SpecialistNearby>>(request);
+            List<SpecialistNearby> result = response.Data;
 
-        //    return result;
-        //}
+            return result;
+        }
     }
 }

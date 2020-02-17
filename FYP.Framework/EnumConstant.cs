@@ -10,28 +10,28 @@ namespace FYP.Framework
     {
         public enum Religion
         {
-            Muslim,
             Buddhist,
             Christian,
             Hindu,
+            Muslim,
             Other
         }
 
         public enum State
         {
-            Perlis,
+            Johor,
             Kedah,
+            Kelantan,
+            Melaka,
+            Negeri_Sembilan,
+            Pahang,
             Penang,
             Perak,
-            Selangor,
-            Melaka,
-            Kelantan,
-            Terengganu,
-            Pahang,
-            Negeri_Sembilan,
-            Johor,
+            Perlis,
             Sabah,
-            Sarawak
+            Sarawak,
+            Selangor,
+            Terengganu
         }
 
         public enum BloodType
@@ -40,6 +40,41 @@ namespace FYP.Framework
             A,
             B,
             AB
+        }
+
+        public enum Role
+        {
+            Doctor,
+            Nurse
+        }
+
+        public enum Specialist
+        {
+            Allergist,
+            Anesthesiologist,
+            Cardiologist,
+            Dermatologist,
+            Emergency_Physician,
+            Endocrinologist,
+            Gastroenterologist,
+            General_Practitioner,
+            Gynecologist,
+            Nephrologist,
+            Neurologist,
+            Obstetrician,
+            Oncologist,
+            Ophthalmologist,
+            Orthopedist,
+            Otolaryngologist,
+            Pediatrician,
+            Podiatrist,
+            Psychiatrist,
+            Pulmonologist,
+            Radiologist,
+            Rheumatologist,
+            Surgeon,
+            Immunologist,
+            Urologist,    
         }
     }
 }

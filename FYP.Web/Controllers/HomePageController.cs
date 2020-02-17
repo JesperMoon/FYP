@@ -310,6 +310,30 @@ namespace FYP.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult CompanyApproved()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult CompanyRejected()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult PractitionerApproved()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult PractitionerRejected()
+        {
+            return View();
+        }
+
         //Company
         [AllowAnonymous]
         public ActionResult CompanyRegister()
@@ -337,6 +361,7 @@ namespace FYP.Controllers
 
                         if (result == 1)
                         {
+                            TempData["CompanySuccess"] = "CompanySuccess";
                             return RedirectToAction("AccCreateSuccess", "HomePage", null);
                         }
                         else if (result == 2)

@@ -197,6 +197,11 @@
     <Content Include="Views\Patient\Records.cshtml" />
     <Content Include="Views\Patient\ProfileEdit.cshtml" />
     <Content Include="Views\HomePage\CompanyRegister.cshtml" />
+    <Content Include="Views\HomePage\CompanyApproved.cshtml" />
+    <Content Include="Views\HomePage\CompanyRejected.cshtml" />
+    <Content Include="Views\HomePage\PractitionerApproved.cshtml" />
+    <Content Include="Views\HomePage\PractitionerRejected.cshtml" />
+    <Content Include="Views\Patient\SpecialistProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

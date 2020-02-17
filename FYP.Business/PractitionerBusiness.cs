@@ -18,11 +18,6 @@ namespace FYP.Business
 
             try
             {
-                if(vm.NewSpecialist != null)
-                {
-                    vm.Specialist = vm.NewSpecialist;
-                }
-
                 var salt = HashingHelper.GenerateSalt();
                 vm.Salt = salt;
                 var hashedPassword= HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(vm.Password), vm.Salt);
@@ -38,6 +33,40 @@ namespace FYP.Business
             catch(Exception err)
             {
                 new LogHelper().LogMessage("PractitionerBusiness.PractitionerRegister : " + err);
+            }
+
+            return result;
+        }
+
+        public string PractitioenrApproved(Guid accId)
+        {
+            string result = String.Empty;
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.PractitionerApproved(accId);
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.PractitioenrApproved : " + err);
+            }
+
+            return result;
+        }
+
+        public string PractitionerRejected(Guid accId)
+        {
+            string result = String.Empty;
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.PractitionerRejected(accId);
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.PractitioenrRejected : " + err);
             }
 
             return result;
@@ -92,6 +121,40 @@ namespace FYP.Business
             catch (Exception err)
             {
                 new LogHelper().LogMessage("PractitionerBusiness.CompanyRegister : " + err);
+            }
+
+            return result;
+        }
+
+        public string CompanyApproved(Guid accId)
+        {
+            string result = String.Empty;
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.CompanyApproved(accId);
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.CompanyApproved : " + err);
+            }
+
+            return result;
+        }
+
+        public string CompanyRejected(Guid accId)
+        {
+            string result = String.Empty;
+
+            try
+            {
+                PractitionerData dataLayer = new PractitionerData();
+                result = dataLayer.CompanyRejected(accId);
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.CompanyRejedcted : " + err);
             }
 
             return result;

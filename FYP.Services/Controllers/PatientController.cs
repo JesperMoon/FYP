@@ -1,5 +1,6 @@
 ﻿using FYP.Business;
 using FYP.Entities;
+using FYP.Entities.Model;
 using FYP.Entities.ViewModel;
 using FYP.Framework;
 using System;
@@ -36,6 +37,18 @@ namespace FYP.Services.Controllers
             result = businessLayer.PatientProfile(accId);
 
             return result;
+        }
+
+        [Route(ConstantHelper.API.Patient.SpecialistSearch)]
+        [HttpPost]
+        public List<SpecialistNearby> SpecialistSearch(SpecialistNearbyViewModel speacialistvm)
+        {
+            SpecialistNearbyViewModel result = new SpecialistNearbyViewModel();
+
+            PatientBusiness businessLayer = new PatientBusiness();
+            result = businessLayer.SpecialistSearch(speacialistvm);
+
+            return result.ResultTable;
         }
     }
 }

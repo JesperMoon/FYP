@@ -1,11 +1,13 @@
 ﻿using FYP.Entities;
 using FYP.Entities.ViewModel;
 using FYP.Process;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static FYP.Framework.EnumConstant;
 
 namespace FYP.Controllers
 {
@@ -83,20 +85,66 @@ namespace FYP.Controllers
             }
             else
             {
-                PatientBaseViewModel result = new PatientBaseViewModel();
-                result.AccId = vm.AccId;
-                return View(result);
+
+                //vm.SpecialistNearby.Specialist = Enum.GetValues(typeof(Specialist)).Cast<Specialist>().Select(v => v.ToString()).ToList();
+                //vm.SpecialistNearby.State = Enum.GetValues(typeof(State)).Cast<State>().Select(v => v.ToString()).ToList();
+                return View(vm);
             }
         }
 
         [Authorize]
         [HttpPost]
-        public JsonResult SpecialistNearby(SpecialistNearbyViewModel speacialistvm)
+        public ActionResult SpecialistNearby(string searchText, int specialist, int state, string postalCode)
         {
-            List<NewPractitionerViewModel> result = new List<NewPractitionerViewModel>();
+            var selectedSpecialist = (Specialist)specialist;
+            var selectedState = (State)state;
+
+            SpecialistNearbyViewModel specialistvm = new SpecialistNearbyViewModel();
+            specialistvm.SearchText = searchText;                                           //Search Text
+            specialistvm.SpecialistSelected = selectedSpecialist.ToString();                //Specialist       
+            specialistvm.StateSelected = selectedState.ToString();                          //State
+            specialistvm.PostalCode = postalCode;                                           //Posstal Code
+
+
+            SpecialistNearbyViewModel result = new SpecialistNearbyViewModel();
             PatientProcess process = new PatientProcess();
+            result.ResultTable = process.SpecialistSearch(specialistvm);
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult SpecialistProfile(string specialistId, string accId)
+        {
+            AppointmentViewModel result = new AppointmentViewModel();
+            PractitionerBaseViewModel practitioner = new PractitionerBaseViewModel();
+
+            if (String.IsNullOrEmpty(specialistId) && String.IsNullOrEmpty(accId))
+            {
+                return new HttpNotFoundResult( "Oops..There is no account selected. Please try again.");
+            }
+            else
+            {
+                Guid patientAccId = Guid.Parse(accId);
+                result.PatientId = patientAccId;
+
+                Guid specialistAccId = Guid.Parse(specialistId);
+                if (specialistAccId.Equals(Guid.Empty))
+                {
+                    return new HttpNotFoundResult("Oops..There is some errors occur. Please try again.");
+                }
+                else
+                {
+                    PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+                    vm.AccId = specialistAccId;
+                    PractitionerProcess process = new PractitionerProcess();
+                    practitioner = process.GetProfile(vm);
+
+                    result.Practitioner = practitioner;
+                }
+            }
+
+            return View(result);
         }
 
         [Authorize]

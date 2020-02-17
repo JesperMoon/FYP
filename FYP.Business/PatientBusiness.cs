@@ -106,5 +106,38 @@ namespace FYP.Business
 
             return result;
         }
+
+        public SpecialistNearbyViewModel SpecialistSearch(SpecialistNearbyViewModel specialistvm)
+        {
+            SpecialistNearbyViewModel result = new SpecialistNearbyViewModel();
+
+            try
+            {
+                if(String.IsNullOrEmpty(specialistvm.SearchText))
+                {
+                    specialistvm.SearchText = "All";
+                }
+
+                if (String.IsNullOrEmpty(specialistvm.PostalCode))
+                {
+                    specialistvm.PostalCode = "All";
+                }
+
+                PatientData dataLayer = new PatientData();
+                result = dataLayer.SpecialistSearch(specialistvm);
+
+                if(result!= null)
+                {
+                    new LogHelper().LogMessage("PatientBusiness.SpecialistSearch : " + "Success");
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientBusiness.PatientLogin : " + err);
+            }
+
+            return result;
+        }
+
     }
 }

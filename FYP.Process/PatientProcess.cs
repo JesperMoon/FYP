@@ -83,5 +83,33 @@ namespace FYP.Process
 
             return result;
         }
+
+        public int AddAuthorizePractitioner(AuthorizePractitionerModel authorizePractitioner)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.AddAuthorizePractitioner, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(authorizePractitioner);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public int MakeAppointment(AppointmentModel appointmentModel)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.MakeAppointment, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(appointmentModel);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
     }
 }

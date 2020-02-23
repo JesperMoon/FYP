@@ -339,5 +339,27 @@ namespace FYP.Data
             return result;
         }
 
+        public string GetPractitionerEmail(Guid practitionerId)
+        {
+            string practitionerEmail = String.Empty;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Practitioner
+                                where pt.Id.Equals(practitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                select pt.EmailAddress;
+
+                    practitionerEmail = query.Select(p => p).FirstOrDefault().ToString();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetPractitionerEmail : " + err);
+            }
+
+            return practitionerEmail;
+        }
     }
 }

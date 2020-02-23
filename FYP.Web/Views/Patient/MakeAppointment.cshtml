@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Make Appointment";
+    Layout = null;
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.4">
+
+@model FYP.Entities.AppointmentModel
+
+<html>
+<head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <style>
+        /* Frame styling */
+        body {
+            background-color: aqua;
+        }
+
+        .jumbotron {
+            margin-left: 50px;
+            margin-right: 50px;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        input[type=submit], input[type=button] {
+            width: auto;
+            height: auto;
+            font-size: 20px;
+        }
+
+        table {
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+
+        p2 {
+            color: red;
+            font-size: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron">
+
+        @if (TempData["Rejected"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        The appointment request is rejected ! It may caused by date or time clashing.
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        @if (TempData["DateRange"] != String.Empty)
+        {
+            <div class="row">
+                <div class="col-lg-3 col-xs-3"></div>
+                <div class="col-lg-6 col-xs-6">
+                    <div class="alert alert-danger" role="alert">
+                        You have enter an invalid appintment date. Please try again.
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-3"></div>
+            </div>
+        }
+
+        <div class="row"><h2 style="text-align:center;"><b>Make Appointment</b></h2></div>
+
+        <br />
+        <div class="row">
+            @using (Html.BeginForm("MakeAppointment", "Patient"))
+            {
+
+                <table class="table-responsive table-condensed">
+                    <tr class="row">
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-3 col-lg-3 col-xs-3"><p>@Html.LabelFor(m => m.AppointmentDate)</p></th>
+                        <th class="col-4 col-lg-4 col-xs-4"><p>@Html.EditorFor(m => m.AppointmentDate, new { htmlAttributes = new { @class = "form-control datetimepicker", @type = "date" } })</p></th>
+                        <th class="col-2 col-lg-2 col-xs-2"><p2>@Html.ValidationMessageFor(m => m.AppointmentDate)</p2></th>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-3 col-lg-3 col-xs-3"><p>@Html.LabelFor(m => m.AppointmentTime)</p></th>
+                        <th class="col-4 col-lg-4 col-xs-4"><p>@Html.EditorFor(m => m.AppointmentTime, new { htmlAttributes = new { @class = "form-control datetimepicker", @type = "time", @min = "10:00", @max = "17:00" } })</p></th>
+                        <th class="col-2 col-lg-2 col-xs-2"><p2>@Html.ValidationMessageFor(m => m.AppointmentTime)</p2></th>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-3 col-lg-3 col-xs-3"><p>@Html.LabelFor(m => m.Description)</p></th>
+                        <th class="col-4 col-lg-4 col-xs-4"><p>@Html.TextAreaFor(m => m.Description, new { rows = "5", cols = "50", placeholder = "Things you must mention to doctor. For example, appointment details and reasons." })</p></th>
+                        <th class="col-2 col-lg-2 col-xs-2"><p2>@Html.ValidationMessageFor(m => m.Description)</p2></th>
+                    </tr>
+
+                    <tr class="row">
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-3 col-lg-3 col-xs-3"><p>@Html.LabelFor(m => m.Remarks) (Optional)</p></th>
+                        <th class="col-4 col-lg-4 col-xs-4"><p>@Html.TextAreaFor(m => m.Remarks, new { rows = "5", cols = "50", placeholder = "Things you want to remark to practitioner." })</p></th>
+                        <th class="col-2 col-lg-2 col-xs-2"><p2>@Html.ValidationMessageFor(m => m.Remarks)</p2></th>
+                    </tr>
+
+                    @Html.HiddenFor(m => m.PatientId)
+                    @Html.HiddenFor(m => m.PractitionerId)
+
+
+                    <tr class="row">
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th colspan="2" class="col-6 col-lg-6 col-xs-6">
+                            <div class="row">
+                                <div class="col-lg-2 col-xs-2 col-2">
+                                    <input type="button" value="Cancel" onclick="javascipt: window.close();" class="btn btn-danger" />
+                                </div>
+                                <div class="col-lg-1 col-xs-1 col-1"></div>
+                                <div class="col-lg-3 col-xs-3 col-3">
+                                    <input type="submit" value="Make Appointment" name="Submit" class="btn btn-success" />
+                                </div>
+                                <div class="col-lg-6 col-xs-6 col-6"></div>
+                            </div>
+                        </th>
+                    </tr>
+
+                    @*<tr class="row">
+                        <th class="col-1 col-lg-1 col-xs-1"></th>
+                        <th class="col-2 col-lg-2 col-xs-2"></th>
+                        <th class="col-2 col-lg-2 col-xs-2"></th>
+                        <th class="col-1 col-lg-1 col-xs-1">
+                            <input type="button" value="Cancel" onclick="javascipt: window.close();" class="btn btn-danger" />
+                        </th>
+                        <th class="col-3 col-lg-3 col-xs-3"></th>
+                        <th class="col-1 col-lg-1 col-xs-1">
+                            <input type="submit" value="Make Appointment" name="Submit" class="btn btn-success" />
+                        </th>
+                        <th class="col-2 col-lg-2 col-xs-2"></th>
+                    </tr>*@
+                </table>
+            }
+        </div>
+
+    </div>
+</body>
+</html>
+

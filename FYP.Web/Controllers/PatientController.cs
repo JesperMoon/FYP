@@ -148,6 +148,77 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        public ActionResult MakeAppointment(string patientId, string practitionerId)
+        {
+            int result = 0;
+
+            PatientProcess process = new PatientProcess();
+            AuthorizePractitionerModel authorizedPractitioner = new AuthorizePractitionerModel();
+            if(patientId != null && practitionerId != null)
+            {
+                authorizedPractitioner.PatientId = Guid.Parse(patientId);
+                authorizedPractitioner.PractitionerId = Guid.Parse(practitionerId);
+
+                result = process.AddAuthorizePractitioner(authorizedPractitioner);
+            }
+
+            if(result == 1)
+            {
+                //Create new Appointment View Model
+                AppointmentModel model = new AppointmentModel();
+                TempData["Rejected"] = "";
+                TempData["DateRange"] = "";
+
+                return View(model);
+            }
+            else
+            {
+                return new HttpNotFoundResult("Failed to add practitioner to your account's authorized practitioner list.");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult MakeAppointment(AppointmentModel appointmentModel)
+        {
+            TempData["Rejected"] = "";
+            TempData["DateRange"] = "";
+
+            if (ModelState.IsValid)
+            {
+                if (appointmentModel.AppointmentDate >= DateTime.Now)
+                {
+                    appointmentModel.AppointmentDate = appointmentModel.AppointmentDate + appointmentModel.AppointmentTime;
+                    PatientProcess process = new PatientProcess();
+                    int result = process.MakeAppointment(appointmentModel);
+                    if(result == 1)         //success
+                    {
+                        return Content(@"<body>
+                       <script type='text/javascript'>
+                         if(confirm('Appointment is made successfully. Please wait and check your email for practitioner approval. Press ok to close this tab.')){ window.close(); };
+                       </script>
+                     </body> ");
+                    }
+                    else if(result == -1)   //rejected
+                    {
+                        TempData["Rejected"] = "Rejected";
+                        return View();
+                    }
+                    else                    //failed
+                    {
+                        return View();
+                    }
+                }
+                else
+                {
+                    TempData["DateRange"] = "DateRange";
+                }
+            }
+
+            return View();
+        }
+
+        [Authorize]
         public ActionResult Medicine(PatientBaseViewModel vm)
         {
             if (vm.AccId.Equals(Guid.Empty))

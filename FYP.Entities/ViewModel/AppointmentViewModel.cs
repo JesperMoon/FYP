@@ -14,6 +14,7 @@ namespace FYP.Entities.ViewModel
         [DataMember]
         public Guid PatientId { get; set; }
 
+        //Store practitioner profile details
         [DataMember]
         public PractitionerBaseViewModel Practitioner = new PractitionerBaseViewModel();
     }

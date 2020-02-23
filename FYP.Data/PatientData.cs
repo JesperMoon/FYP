@@ -249,5 +249,154 @@ namespace FYP.Data
 
             return result;
         }
+
+        public AuthorizePractitionerModel AddAuthorizePractitioner(AuthorizePractitionerModel authorizePractitioner)
+        {
+            AuthorizePractitionerModel result = new AuthorizePractitionerModel();
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.AuthorizePractitioner
+                                where pt.PatientId.Equals(authorizePractitioner.PatientId) && pt.PractitionerId.Equals(authorizePractitioner.PractitionerId)
+                                select pt;
+
+                    var check = query.Select(p => p.Id).FirstOrDefault();
+
+                    if (check.Equals(Guid.Empty))
+                    {
+                        var authorize = new AuthorizePractitioner()
+                        {
+                            PractitionerId = authorizePractitioner.PractitionerId,
+                            PatientId = authorizePractitioner.PatientId,
+                            CreatedOn = DateTime.Now,
+                        };
+
+                        context.AuthorizePractitioner.Add(authorize);
+                        context.SaveChanges();
+
+                        result = authorizePractitioner;
+                    }
+                    else
+                    {
+                        result = authorizePractitioner;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.AddAuthorizePractitioner : " + err);
+            }
+
+            return result;
+        }
+
+        public AuthorizePractitionerModel GetAuthorizePractitioner(AuthorizePractitionerModel authorizePractitioner)
+        {
+            AuthorizePractitionerModel result = new AuthorizePractitionerModel();
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.AuthorizePractitioner
+                                where pt.PatientId.Equals(authorizePractitioner.PatientId)
+                                select pt;
+
+                    var check = query.Select(p => p.Id).FirstOrDefault();
+
+                    if (check.Equals(Guid.Empty))
+                    {
+                        var authorize = new AuthorizePractitioner()
+                        {
+                            PractitionerId = authorizePractitioner.PractitionerId,
+                            PatientId = authorizePractitioner.PatientId,
+                            CreatedOn = DateTime.Now,
+                        };
+
+                        context.AuthorizePractitioner.Add(authorize);
+                        context.SaveChanges();
+
+                        result = authorizePractitioner;
+                    }
+                    else
+                    {
+                        result = authorizePractitioner;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.AddAuthorizePractitioner : " + err);
+            }
+
+            return result;
+        }
+
+        public AppointmentModel MakeAppointment(AppointmentModel appointmentModel)
+        {
+            AppointmentModel result = new AppointmentModel();
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Appointment
+                                where pt.PractitionerId.Equals(appointmentModel.PractitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                select pt;
+
+                    var check = query.Where(p => p.AppointmentDateTime == appointmentModel.AppointmentDate).Select(p => p.Id).FirstOrDefault();
+
+                    if (check.Equals(Guid.Empty))
+                    {
+                        var appointment = new Appointment()
+                        {
+                            PractitionerId = appointmentModel.PractitionerId,
+                            PatientId = appointmentModel.PatientId,
+                            AppointmentDateTime = appointmentModel.AppointmentDate.GetValueOrDefault() + appointmentModel.AppointmentTime,
+                            Description = appointmentModel.Description,
+                            Remarks = appointmentModel.Description,
+                            Status = ConstantHelper.AccountStatus.Pending,
+                        };
+
+                        context.Appointment.Add(appointment);
+                        context.SaveChanges();
+
+                        result.Status = ConstantHelper.AccountStatus.Pending;
+                    }
+                    else
+                    {
+                        result.Status = ConstantHelper.AccountStatus.Rejected;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.AddAuthorizePractitioner : " + err);
+            }
+
+            return result;
+        }
+
+        public string GetPatientEmail(Guid patientId)
+        {
+            string patientEmail = String.Empty;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Patient
+                                where pt.Id.Equals(patientId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                select pt.EmailAddress;
+
+                    patientEmail = query.Select(p => p).FirstOrDefault().ToString();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.GetPatientEmail : " + err);
+            }
+
+            return patientEmail;
+        }
     }
 }

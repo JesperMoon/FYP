@@ -202,6 +202,7 @@
     <Content Include="Views\HomePage\PractitionerApproved.cshtml" />
     <Content Include="Views\HomePage\PractitionerRejected.cshtml" />
     <Content Include="Views\Patient\SpecialistProfile.cshtml" />
+    <Content Include="Views\Patient\MakeAppointment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

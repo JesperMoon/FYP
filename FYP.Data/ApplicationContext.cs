@@ -26,6 +26,12 @@ namespace FYP.Data
         //Patient User Account
         public DbSet<Patient> Patient { get; set; }
 
+        //Authorize Practitioner for Patient
+        public DbSet<AuthorizePractitioner> AuthorizePractitioner { get; set; }
+
+        //Appointment
+        public DbSet<Appointment> Appointment { get; set; }
+
         public override int SaveChanges()
         {
             var entries = ChangeTracker

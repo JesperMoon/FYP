@@ -41,7 +41,7 @@
                     trHTML += '<tr><td colspan="8" style="text-align:center;color:red;">' + 'No specialist with any requirements above found. Please try again.' + '</td></tr>';
                 } else {
                     $.each(result.ResultTable, function (i, item) {
-                        trHTML += '<tr><td><a href="' + '@Url.Action("SpecialistProfile","Patient")' + '?specialistId=' + item.AccId + '&accId=' + accId + '" target="_self"><p>' + item.SpecialistName + '</p></a></td><td><p>' + item.SpecialistType + '</p></td><td><p>' + item.CompanyName + '</p></td><td><p>' + item.CompanyAddressLine1 + '</p></td><td><p>' + item.CompanyPhoneNumber + '</p></td><td><p>' + item.PostalCode + '</p></td><td><p>' + item.City + '</p></td><td><p>' + item.State + '</p></td></tr>';
+                        trHTML += '<tr><td><a href="' + '@Url.Action("SpecialistProfile","Patient")' + '?specialistId=' + item.AccId + '&accId=' + accId + '" target="_blank"><p>' + item.SpecialistName + '</p></a></td><td><p>' + item.SpecialistType + '</p></td><td><p>' + item.CompanyName + '</p></td><td><p>' + item.CompanyAddressLine1 + '</p></td><td><p>' + item.CompanyPhoneNumber + '</p></td><td><p>' + item.PostalCode + '</p></td><td><p>' + item.City + '</p></td><td><p>' + item.State + '</p></td></tr>';
                     });
                 }
 

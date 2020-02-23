@@ -67,6 +67,8 @@ namespace FYP.Framework
                 public const string PatientProfile = "Patient/Profile";
 
                 public const string SpecialistSearch = "Patient/SpecialistSearch";
+                public const string AddAuthorizePractitioner = "Patient/AddAuthorizePractitioner";
+                public const string MakeAppointment = "Patient/MakeAppointment";
             }
 
             public static class Company
@@ -114,6 +116,20 @@ namespace FYP.Framework
                 public const string CompanyRejectedBody = @"<html><body><p>Dear User,</p> <br/> <p>Thank you for registering your company account on <u>Web App For Doctor</u> .</p> <p>Your company was not added to our system. This may cause by your company is not fulfilling our requirements.</p><p>Do contact our admin for further assistance. </p> <br /> <p>Thank you and have a nice day.</p></body></html>";
             }
 
+            public static class AppointmentVerification
+            {
+                public const string AppointmentMadeSubject = "Web App For Doctor - Appointment Made Successfully";
+                public const string NewAppointmentSubject = "Web App For Doctor - New Appointment";
+                public const string AppointmentApprovedSubject = "Web App For Doctor - Appointment Approved";
+                public const string AppointmentRejectedSubject = "Web App For Doctor - Appointment Rejected";
+
+                public const string AppointmentMadeBody = @"<html><body><p>Dear User,</p><p>The appointment is made successfully. Please check your email regularly for practitioner approval on the appointment.</p><p>Your appointment details is shown as below:</p>{appointmentDetails}<br/><p>Thank you and have a nice day.</p></body></html>";
+                public const string NewAppointmentBody = @"<html><body><p>Dear User,</p><p>Sorry for disturbing, this is a reminder emails.</p><p>There is a new appointment from patient. Please login to your account for further actions on the appointment.</p><p>Link to login page : {practitionerLoginPageLink}</p><br/><p>Thank you and have a nice day.</p></body></html>";
+                public const string AppointmentApprovedBody = @"<html><body>Web App For Doctor - Appointment Approved</body></html>";
+                public const string AppointmentRejectedBody = @"<html><body>Web App For Doctor - Appointment Rejected</body></html>";
+
+            }
+
             public static class Keyword
             {
                 public const string LinkToVerify = "{linkToVerify}";
@@ -125,6 +141,10 @@ namespace FYP.Framework
 
                 //Practitioner
                 public const string PractitionerDetailsTable = "{practitionerDetailsTable}";
+
+                //Appointment
+                public const string AppointmentDetails = "{appointmentDetails}";
+                public const string PractitionerLoginPage = "{practitionerLoginPageLink}";
             }
         }
 

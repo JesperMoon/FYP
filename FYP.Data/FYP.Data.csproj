@@ -84,6 +84,14 @@
     <Compile Include="Migrations\202002041150560_AddedCompanyEntity.designer.cs">
       <DependentUpon>202002041150560_AddedCompanyEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002190950224_CreatedAuthorizePractitionerTable.cs" />
+    <Compile Include="Migrations\202002190950224_CreatedAuthorizePractitionerTable.designer.cs">
+      <DependentUpon>202002190950224_CreatedAuthorizePractitionerTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002200654457_CreatedAppointmentTable.cs" />
+    <Compile Include="Migrations\202002200654457_CreatedAppointmentTable.designer.cs">
+      <DependentUpon>202002200654457_CreatedAppointmentTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
@@ -117,6 +125,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002041150560_AddedCompanyEntity.resx">
       <DependentUpon>202002041150560_AddedCompanyEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002190950224_CreatedAuthorizePractitionerTable.resx">
+      <DependentUpon>202002190950224_CreatedAuthorizePractitionerTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002200654457_CreatedAppointmentTable.resx">
+      <DependentUpon>202002200654457_CreatedAppointmentTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

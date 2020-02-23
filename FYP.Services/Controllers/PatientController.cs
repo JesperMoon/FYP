@@ -50,5 +50,34 @@ namespace FYP.Services.Controllers
 
             return result.ResultTable;
         }
+
+        [Route(ConstantHelper.API.Patient.AddAuthorizePractitioner)]
+        [HttpPost]
+        public int AddAuthorizePractitioner(AuthorizePractitionerModel authorizePractitioner)
+        {
+            int result = 0;
+
+            PatientBusiness businessLayer = new PatientBusiness();
+            result = businessLayer.AddAuthorizePractitioner(authorizePractitioner);     //if 1 then added, if 0 means fail
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Patient.MakeAppointment)]
+        [HttpPost]
+        public int MakeAppointment(AppointmentModel appointment)
+        {
+            int result = 0;
+
+            PatientBusiness businessLayer = new PatientBusiness();
+            result = businessLayer.MakeAppointment(appointment);     //if 1 then added, else -1 mean rejected, else 0 is failed
+
+            if(result == 1)
+            {
+                businessLayer.SentEmailNotification(appointment);
+            }
+
+            return result;
+        }
     }
 }

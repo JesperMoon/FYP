@@ -50,8 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Data\Appointment.cs" />
+    <Compile Include="Data\AuthorizePractitioner.cs" />
     <Compile Include="Data\Company.cs" />
     <Compile Include="Data\Patient.cs" />
+    <Compile Include="Model\AppointmentModel.cs" />
+    <Compile Include="Model\AuthorizePractitioner.cs" />
     <Compile Include="Model\Common\Entity.cs" />
     <Compile Include="Model\Common\User.cs" />
     <Compile Include="Model\LoginInfo.cs" />

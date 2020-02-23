@@ -139,5 +139,96 @@ namespace FYP.Business
             return result;
         }
 
+        public int AddAuthorizePractitioner(AuthorizePractitionerModel authorizePractitioner)
+        {
+            AuthorizePractitionerModel check = new AuthorizePractitionerModel();
+            int result = 0;
+
+            try
+            {
+                PatientData dataLayer = new PatientData();
+                check = dataLayer.AddAuthorizePractitioner(authorizePractitioner);
+
+                if (!check.PatientId.Equals(Guid.Empty)&& !check.PractitionerId.Equals(Guid.Empty))
+                {
+                    result = 1;
+                    new LogHelper().LogMessage("PatientBusiness.AddAuthorizePractitioner : " + "Success");
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientBusiness.AddAuthorizePractitioner : " + err);
+            }
+
+            return result;
+        }
+
+        public int MakeAppointment(AppointmentModel appointmentModel)
+        {
+            AppointmentModel check = new AppointmentModel();
+            int result = 0;
+
+            try
+            {
+                PatientData dataLayer = new PatientData();
+                appointmentModel.AppointmentDate = Convert.ToDateTime(appointmentModel.AppointmentDate).ToLocalTime();
+                check = dataLayer.MakeAppointment(appointmentModel);
+
+                if(check.Status == ConstantHelper.AccountStatus.Pending)
+                {
+                    result = 1;
+                }
+                else if(check.Status == ConstantHelper.AccountStatus.Rejected)
+                {
+                    result = -1;
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PatientBUsiness.MakeAppointment : " + err);
+            }
+            return result;
+        }
+
+        public void SentEmailNotification(AppointmentModel model)
+        {
+            string mailFrom = ConstantHelper.AppSettings.MailFrom;
+            string userName = ConstantHelper.AppSettings.UserName;
+            string password = ConstantHelper.AppSettings.Password;
+
+            try
+            {
+                PatientData patientDataLayer = new PatientData();
+                string patientEmail = patientDataLayer.GetPatientEmail(model.PatientId);
+                if(!String.IsNullOrEmpty(patientEmail))
+                {
+                    //Sent notification email to patient
+                    string patientEmailSubject = ConstantHelper.Email.AppointmentVerification.AppointmentMadeSubject;
+                    string patientEmailBody = ConstantHelper.Email.AppointmentVerification.AppointmentMadeBody;
+                    //replace with appointment details
+                    DateTime tempAppointmentDateTime = Convert.ToDateTime(model.AppointmentDate.ToString());
+                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + tempAppointmentDateTime.ToString("dd/MM/yyyy") + "</td></tr><tr><th>Appointment Time</th><td>" + tempAppointmentDateTime.ToString("hh:mm tt") + "</td></tr><tr><th>Appointment Description</th><td>" + model.Description + "</td></tr><tr><th>Appointment Remarks</th><td>" + model.Remarks + "</td></tr></table>";
+                    patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.AppointmentDetails, appointmentDetailsTable);
+                    EmailHelper.SentMail(mailFrom, patientEmail, patientEmailSubject, patientEmailBody, userName, password);
+                }
+
+                PractitionerData practitionerDataLayer = new PractitionerData();
+                string practitionerEmail = practitionerDataLayer.GetPractitionerEmail(model.PractitionerId);
+                if (!String.IsNullOrEmpty(practitionerEmail))
+                {
+                    //Sent notification email to practitioner
+                    string practitionerEmailSubject = ConstantHelper.Email.AppointmentVerification.NewAppointmentSubject;
+                    string practitionerEmailBody = ConstantHelper.Email.AppointmentVerification.NewAppointmentBody;
+                    //replace maybe link to practitionerLogin
+                    string practitionerLoginPage = "<a href='" + ConstantHelper.AppSettings.RootSiteUrl + ConstantHelper.API.Practitioner.PractitionerLogin + "'>Practitioner Login Page</a>";
+                    practitionerEmailBody = practitionerEmailBody.Replace(ConstantHelper.Email.Keyword.PractitionerLoginPage, practitionerLoginPage);
+                    EmailHelper.SentMail(mailFrom, practitionerEmail, practitionerEmailSubject, practitionerEmailBody, userName, password);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PatientBusiness.SentEmailNotification : " + err);
+            }
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace FYP.Framework
 
         public static class StoredProcedure
         {
+            public const string GetAuthorizedPractitioners = "[dbo].[GetAuthorizedPractitioners]";
             public const string GetPractitionerProfile = "[dbo].[GetPractitionerProfile]";
             public const string SpecialistSearch = "[dbo].[SpecialistSearch]";
 
@@ -51,12 +52,15 @@ namespace FYP.Framework
             public static class Practitioner
             {
                 public const string PractitionerLogin = "HomePage/PractitionerLogin";
+
+                //For registration
                 public const string PractitionerRegister = "HomePage/PractitionerRegister";
                 public const string PractitionerApproved = "HomePage/PractitionerApproved";
                 public const string PractitionerRejected = "HomePage/PractitionerRejected";
 
                 public const string GetCompanyList = "HomePage/GetCompanyList";
                 public const string GetProfile = "HomePage/GetProfile";
+                public const string GetAppointmentsTable = "HomePage/GetAppointmentsTable";
             }
 
             public static class Patient
@@ -68,7 +72,7 @@ namespace FYP.Framework
 
                 public const string SpecialistSearch = "Patient/SpecialistSearch";
                 public const string AddAuthorizePractitioner = "Patient/AddAuthorizePractitioner";
-                public const string MakeAppointment = "Patient/MakeAppointment";
+                public const string AuthorizedPractitionersTable = "Patient/AuthorizedPractitionersTable";
             }
 
             public static class Company
@@ -77,6 +81,13 @@ namespace FYP.Framework
                 public const string CompanyApproved = "HomePage/CompanyApproved";
                 public const string CompanyRejected = "HomePage/CompanyRejected";
             }
+
+            public static class Appointment
+            {
+                public const string MakeAppointment = "Patient/MakeAppointment";
+                public const string AppointmentAccepted = "Practitioner/AppointmentAccepted";
+                public const string AppointmentRejected = "Practitioner/AppointmentRejected";
+            }
         }
 
         public static class AccountStatus
@@ -84,6 +95,7 @@ namespace FYP.Framework
             public const string Pending = "Pending";
             public const string Active = "Active";
             public const string Deleted = "Deleted";
+            public const string Accepted = "Accepted";
             public const string Rejected = "Rejected";
             public const string NotFound = "Not found";
         }
@@ -125,7 +137,7 @@ namespace FYP.Framework
 
                 public const string AppointmentMadeBody = @"<html><body><p>Dear User,</p><p>The appointment is made successfully. Please check your email regularly for practitioner approval on the appointment.</p><p>Your appointment details is shown as below:</p>{appointmentDetails}<br/><p>Thank you and have a nice day.</p></body></html>";
                 public const string NewAppointmentBody = @"<html><body><p>Dear User,</p><p>Sorry for disturbing, this is a reminder emails.</p><p>There is a new appointment from patient. Please login to your account for further actions on the appointment.</p><p>Link to login page : {practitionerLoginPageLink}</p><br/><p>Thank you and have a nice day.</p></body></html>";
-                public const string AppointmentApprovedBody = @"<html><body>Web App For Doctor - Appointment Approved</body></html>";
+                public const string AppointmentApprovedBody = @"<html><body><p>Dear User,</p><p>Congratulation, your previous appointment request has been approved.</p><p>The date and time of the appointment is shown below:</p><p>{appointmentDetails}</p><br/><p>Thank you and have a nice day.</p></body></html>";
                 public const string AppointmentRejectedBody = @"<html><body>Web App For Doctor - Appointment Rejected</body></html>";
 
             }
@@ -190,7 +202,18 @@ namespace FYP.Framework
                 public const string PostalCode = "PostalCode";
                 public const string City = "City";
                 public const string State = "State";
+            }
 
+            public static class AuthorizedPractitionersTable
+            {
+                public const string PractitionerId = "PractitionerId";
+                public const string PractitionerName = "PractitionerName";
+                public const string Specialist = "Specialist";
+                public const string CompanyName = "CompanyName";
+                public const string PostalCode = "PostalCode";
+                public const string City = "City";
+                public const string State = "State";
+                public const string CreatedOn = "CreatedOn";
             }
         }
     }

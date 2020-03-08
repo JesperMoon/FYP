@@ -23,8 +23,8 @@ namespace FYP.Entities
         [DataMember]
         public DateTime CreatedOn { get; set; }
 
-        [DataMember]
-        public List<User> PractitionerList = new List<User>();
+        //[DataMember]
+        //public List<User> PractitionerList = new List<User>();
 
     }
 }

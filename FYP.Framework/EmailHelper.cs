@@ -30,7 +30,7 @@ namespace FYP.Framework
             }
             catch(Exception err)
             {
-
+                new LogHelper().LogMessage("EmailHelper.SentMail : " + err);
             }
 
         }

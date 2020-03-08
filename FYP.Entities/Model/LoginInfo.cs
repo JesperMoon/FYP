@@ -29,5 +29,8 @@ namespace FYP.Entities
 
         [DataMember]
         public Guid AccountNo { get; set; }
+
+        [DataMember]
+        public byte[] Salt { get; set; }
     }
 }

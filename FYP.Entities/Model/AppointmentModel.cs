@@ -20,6 +20,9 @@ namespace FYP.Entities
         public Guid PractitionerId { get; set; }
 
         [DataMember]
+        public Guid AppointmentId { get; set; }
+
+        [DataMember]
         [DisplayName("Appointment Date")]
         [Required(ErrorMessage ="Appointment Date is required.")]
         [Range(typeof(DateTime), "01/01/1900", "01/01/2100", ErrorMessage = "Date is out of Range")]
@@ -43,5 +46,14 @@ namespace FYP.Entities
 
         [DataMember]
         public string Status { get; set; }
+
+        [DataMember]
+        public string AppointmentDateString { get; set; }
+
+        [DataMember]
+        public string AppointmentTimeString { get; set; }
+
+        [DataMember]
+        public string CreatedOnString { get; set; }
     }
 }

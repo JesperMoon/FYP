@@ -1,4 +1,5 @@
-﻿using FYP.Entities.ViewModel;
+﻿using FYP.Entities;
+using FYP.Entities.ViewModel;
 using FYP.Process;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,43 @@ namespace FYP.Controllers
                 result.AccId = vm.AccId;
                 return View(result);
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Appointments(string practitionerId)
+        {
+            PractitionerProcess process = new PractitionerProcess();
+            List<AppointmentModel> result = process.GetAppointmentsTable(practitionerId);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AppointmentAccept(string appointmentId)
+        {
+            Guid id = Guid.Parse(appointmentId);
+            AppointmentModel appointment = new AppointmentModel();
+            appointment.AppointmentId = id;
+            PractitionerProcess process = new PractitionerProcess();
+            int result = process.AppointmentAccept(appointment);
+
+            //if result = 1 then success, if 0 means fail
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AppointmentReject(string appointmentId)
+        {
+            Guid id = Guid.Parse(appointmentId);
+            AppointmentModel appointment = new AppointmentModel();
+            appointment.AppointmentId = id;
+            PractitionerProcess process = new PractitionerProcess();
+            int result = process.AppointmentReject(appointment);
+
+            //if result = 1 then success, if 0 means fail
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

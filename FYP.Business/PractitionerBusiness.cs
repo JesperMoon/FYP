@@ -170,15 +170,117 @@ namespace FYP.Business
                 PractitionerData dataLayer = new PractitionerData();
 
                 //hashing password
-                var salt = dataLayer.GetSalt(loginInfo.EmailAddress);
-                var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(loginInfo.Password), salt);
+                result = dataLayer.PractitionerLogin(loginInfo);
+                var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(loginInfo.Password), result.Salt);
                 loginInfo.Password = Convert.ToBase64String(hashedPassword);
 
-                result = dataLayer.PractitionerLogin(loginInfo);
+                if(loginInfo.Password.Equals(result.Password))
+                {
+                    result.Salt = null;
+                    return result;
+                }
+
             }
             catch(Exception err)
             {
                 new LogHelper().LogMessage("PractitionerBusiness.PractitionerLogin : " + err);
+            }
+
+            return result;
+        }
+
+        public List<AppointmentModel> GetAppointmentsTable(Guid practitionerId)
+        {
+            List<AppointmentModel> result = new List<AppointmentModel>();
+            PractitionerData business = new PractitionerData();
+            result = business.GetAppointmentsTable(practitionerId);
+
+            return result;
+        }
+
+        public int AppointmentAccepted(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            try
+            {
+                //Change Appointment Status to accepted
+                PractitionerData dataLayer = new PractitionerData();
+                AppointmentModel model = new AppointmentModel();
+                //model is with appointmentdatestring and appointmenttimestring and PatientId
+                model = dataLayer.AppointmentAccepted(appointmentModel);
+
+                if(!model.PatientId.Equals(Guid.Empty))
+                {
+                    //Get PatientId to retrieve email
+                    PatientData patientDataLayer = new PatientData();
+                    string patientEmailAddress = patientDataLayer.GetPatientEmail(model.PatientId);
+                    result = SentAppointmentAcceptedNotificationEmail(patientEmailAddress, model.AppointmentDateString, model.AppointmentTimeString);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.AppointmentAccepted : " + err);
+            }
+
+            return result;
+        }
+
+        public int AppointmentRejected(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            try
+            {
+                //Change Appointment Status to accepted
+                PractitionerData dataLayer = new PractitionerData();
+                AppointmentModel model = new AppointmentModel();
+                //model is with appointmentdatestring and appointmenttimestring and PatientId
+                model = dataLayer.AppointmentAccepted(appointmentModel);
+
+                if (!model.PatientId.Equals(Guid.Empty))
+                {
+                    //Get PatientId to retrieve email
+                    PatientData patientDataLayer = new PatientData();
+                    string patientEmailAddress = patientDataLayer.GetPatientEmail(model.PatientId);
+                    result = SentAppointmentAcceptedNotificationEmail(patientEmailAddress, model.AppointmentDateString, model.AppointmentTimeString);
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.AppointmentAccepted : " + err);
+            }
+
+            return result;
+        }
+
+
+        public int SentAppointmentAcceptedNotificationEmail(string patientEmailAddress, string appointmentDate, string appointmentTime)
+        {
+            int result = 0;
+
+            string mailFrom = ConstantHelper.AppSettings.MailFrom;
+            string userName = ConstantHelper.AppSettings.UserName;
+            string password = ConstantHelper.AppSettings.Password;
+
+            try
+            {
+                if (!String.IsNullOrEmpty(patientEmailAddress))
+                {
+                    //Sent notification email to patient
+                    string patientEmailSubject = ConstantHelper.Email.AppointmentVerification.AppointmentApprovedSubject;
+                    string patientEmailBody = ConstantHelper.Email.AppointmentVerification.AppointmentApprovedBody;
+                    //replace with appointment details
+                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + appointmentDate + "</td></tr><tr><th>Appointment Time</th><td>" + appointmentTime + "</td></tr></table>";
+                    patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.AppointmentDetails, appointmentDetailsTable);
+                    EmailHelper.SentMail(mailFrom, patientEmailAddress, patientEmailSubject, patientEmailBody, userName, password);
+
+                    result = 1;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.SentAppointmentAcceptedNotificationEmail : " + err);
             }
 
             return result;

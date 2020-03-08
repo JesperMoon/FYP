@@ -102,12 +102,26 @@ namespace FYP.Process
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
 
-            RestRequest request = new RestRequest(ConstantHelper.API.Patient.MakeAppointment, Method.POST);
+            RestRequest request = new RestRequest(ConstantHelper.API.Appointment.MakeAppointment, Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(appointmentModel);
 
             IRestResponse<int> response = client.Execute<int>(request);
             int result = response.Data;
+
+            return result;
+        }
+
+        public List<AuthorizedPractitionersTable> AuthorizedPractitionersTable(PatientBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.AuthorizedPractitionersTable, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<AuthorizedPractitionersTable>> response = client.Execute<List<AuthorizedPractitionersTable>>(request);
+            List<AuthorizedPractitionersTable> result = response.Data;
 
             return result;
         }

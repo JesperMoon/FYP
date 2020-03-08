@@ -25,5 +25,8 @@ namespace FYP.Entities.ViewModel
 
         [DataMember]
         public MedicineViewModel MedicineViewModel = new MedicineViewModel();
+
+        [DataMember]
+        public AuthorizedPractitionersViewModel AuthorizePractitionersViewModel = new AuthorizedPractitionersViewModel();
     }
 }

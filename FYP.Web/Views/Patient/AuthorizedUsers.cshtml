@@ -6,7 +6,47 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=0.30">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
 
+        window.onload = function ajaxAuthorizedPractitionerTable() {
+            var serviceURL = '@Url.Action("AuthorizedUsers", "Patient")';
+            var patientId = @Html.Raw(Json.Encode(Model.AccId));
+            var data = JSON.stringify({ patientId : patientId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function success(result) {
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.AuthorizedPractitionersTable.length == 0) {
+                        trHTML += '<tr><td colspan="7" style="text-align:center;color:red;">' + 'No authorized practitioner yet.' + '</td></tr>';
+                    } else {
+                        $.each(result.AuthorizedPractitionersTable, function (i, item) {
+                            trHTML += '<tr><td><a href="' + '@Url.Action("SpecialistProfile","Patient")' + '?specialistId=' + item.PractitionerId + '&accId=' + accId + '" target="_blank"><p>' + item.PractitionerName + '</p></a></td><td><p>' + item.Specialist + '</p></td><td><p>' + item.CompanyName + '</p></td><td><p>' + item.PostalCode + '</p></td><td><p>' + item.City + '</p></td><td><p>' + item.State + '</p></td><td><p>' + item.CreatedOn + '</p></td></tr>';
+                        });
+                    }
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                error: function error() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        };
+    </script>
+}
 <style>
     body {
         background-color: rgb(79,190,197);
@@ -19,6 +59,7 @@
         margin-right: 20px;
         border-radius: 10px;
         background-color: white;
+        weight:100vw;
     }
 
 
@@ -40,9 +81,13 @@
             color: #18a1e5 !important;
         }
 
-        th{
-            text-align:center;
-        }
+    th {
+        text-align: center;
+    }
+
+    td{
+        text-align:center;
+    }
 </style>
 
 @model FYP.Entities.ViewModel.PatientBaseViewModel
@@ -52,17 +97,19 @@
         <div><h2 style="text-align:center">-- <b>Authorized Users</b> --</h2></div>
     </div>
 
-    <br/>
+    <br />
 
     <div class="container">
         <table class="table-bordered table-condensed table-hover" style="background-color:lightgray;">
             <thead class="row">
                 <tr>
-                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Name</b></p></th>
-                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Role</b></p></th>
+                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Practitioner Name</b></p></th>
                     <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Specialist</b></p></th>
-                    <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p><b>Company</b></p></th>
-                    <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p><b>Date Added</b></p></th>
+                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Company</b></p></th>
+                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Postal Code</b></p></th>
+                    <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"><p><b>City</b></p></th>
+                    <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"><p><b>State</b></p></th>
+                    <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2"><p><b>Date Added</b></p></th>
                 </tr>
             </thead>
             <tbody id="content">

@@ -249,6 +249,20 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult AuthorizedUsers(string patientId)
+        {
+            AuthorizedPractitionersViewModel result = new AuthorizedPractitionersViewModel();
+            PatientBaseViewModel vm = new PatientBaseViewModel();
+            vm.AccId = Guid.Parse(patientId);
+
+            PatientProcess process = new PatientProcess();
+            result.AuthorizedPractitionersTable = process.AuthorizedPractitionersTable(vm);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
         public ActionResult Records(PatientBaseViewModel vm)
         {
             if (vm.AccId.Equals(Guid.Empty))

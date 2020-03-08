@@ -55,6 +55,7 @@
     <Compile Include="Data\Company.cs" />
     <Compile Include="Data\Patient.cs" />
     <Compile Include="Model\AppointmentModel.cs" />
+    <Compile Include="Model\AuthorizedPractitionersTable.cs" />
     <Compile Include="Model\AuthorizePractitioner.cs" />
     <Compile Include="Model\Common\Entity.cs" />
     <Compile Include="Model\Common\User.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Model\SpecialistNearby.cs" />
     <Compile Include="Model\SpecialistSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AuthorizedPractitionersViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\MedicineViewModel.cs" />
     <Compile Include="ViewModel\PatientBaseViewModel.cs" />

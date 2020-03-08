@@ -95,5 +95,50 @@ namespace FYP.Process
 
             return result;
         }
+
+        public List<AppointmentModel> GetAppointmentsTable(string practitionerId)
+        {
+            PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+            vm.AccId = Guid.Parse(practitionerId);
+
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetAppointmentsTable, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<AppointmentModel>> response = client.Execute<List<AppointmentModel>>(request);
+            List<AppointmentModel> result = response.Data;
+
+            return result;
+        }
+
+        public int AppointmentAccept(AppointmentModel appointment)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Appointment.AppointmentAccepted, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(appointment);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public int AppointmentReject(AppointmentModel appointment)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Appointment.AppointmentRejected, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            //request.AddBody(appointment);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
     }
 }

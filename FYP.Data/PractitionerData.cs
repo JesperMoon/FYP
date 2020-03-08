@@ -295,7 +295,7 @@ namespace FYP.Data
                 using (var context = new ApplicationContext())
                 {
                     var query = from pt in context.Practitioner
-                                where pt.EmailAddress.Equals(loginInfo.EmailAddress) && pt.Password.Equals(loginInfo.Password)
+                                where pt.EmailAddress.Equals(loginInfo.EmailAddress)
                                 select pt;
 
                     result.AccountNo = query.Select(p => p.Id).FirstOrDefault();
@@ -303,37 +303,17 @@ namespace FYP.Data
                     //account found
                     if (!result.AccountNo.Equals(Guid.Empty))
                     {
+                        result.Salt = query.Select(p => p.Salt).FirstOrDefault();
+                        result.Password = query.Select(p => p.Password).FirstOrDefault();
                         result.AccountStatus = query.Select(p => p.Status).FirstOrDefault();
+
+                        return result;
                     }
                 }
             }
             catch(Exception err)
             {
                 new LogHelper().LogMessage("PractitionerData.PractitionerLogin : " + err);
-            }
-
-            return result;
-        }
-
-        public byte[] GetSalt(string emailAddress)
-        {
-            byte[] result = null;
-
-            try
-            {
-                using (var context = new ApplicationContext())
-                {
-                    var query = from pt in context.Practitioner
-                                where pt.EmailAddress == emailAddress
-                                select pt;
-
-                    result = query.Select(p => p.Salt).FirstOrDefault();
-                }
-
-            }
-            catch(Exception err)
-            {
-                new LogHelper().LogMessage("PractitionerData.GetSalt : " + err);
             }
 
             return result;
@@ -361,5 +341,98 @@ namespace FYP.Data
 
             return practitionerEmail;
         }
+
+        public List<AppointmentModel> GetAppointmentsTable(Guid practitionerId)
+        {
+            List<AppointmentModel> result = new List<AppointmentModel>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Appointment
+                                where pt.PractitionerId.Equals(practitionerId)
+                                select pt;
+
+                    foreach(var item in query)
+                    {
+                        AppointmentModel appointment = new AppointmentModel();
+                        appointment.AppointmentId = Guid.Parse(item.Id.ToString());
+                        appointment.AppointmentDateString = item.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        appointment.AppointmentTimeString = item.AppointmentDateTime.TimeOfDay.ToString();
+                        appointment.CreatedOnString = item.CreatedOn.Date.ToString("dd-MM-yyyy");
+                        appointment.PatientId = item.PatientId;
+                        appointment.Status = item.Status;
+
+                        result.Add(appointment);
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetAppointmentsTable : " + err);
+            }
+
+            return result;
+        }
+
+        public AppointmentModel AppointmentAccepted(AppointmentModel appointmentModel)
+        {
+            AppointmentModel returnAppointment = new AppointmentModel();
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var appointment = context.Appointment.Where(p => p.Id == appointmentModel.AppointmentId).FirstOrDefault();
+                    appointment.Status = ConstantHelper.AccountStatus.Accepted;
+                    result = context.SaveChanges();
+
+                    if(result != 0)
+                    {
+                        returnAppointment.PatientId = appointment.PatientId;
+                        returnAppointment.AppointmentDateString = appointment.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        returnAppointment.AppointmentTimeString = appointment.AppointmentDateTime.TimeOfDay.ToString();
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.AppointmentAccepted : " + err);
+            }
+
+            return returnAppointment;
+        }
+
+        public AppointmentModel AppointmentRejected(AppointmentModel appointmentModel)
+        {
+            AppointmentModel returnAppointment = new AppointmentModel();
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var appointment = context.Appointment.Where(p => p.Id == appointmentModel.AppointmentId).FirstOrDefault();
+                    appointment.Status = ConstantHelper.AccountStatus.Accepted;
+                    result = context.SaveChanges();
+
+                    if (result != 0)
+                    {
+                        returnAppointment.PatientId = appointment.PatientId;
+                        returnAppointment.AppointmentDateString = appointment.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        returnAppointment.AppointmentTimeString = appointment.AppointmentDateTime.TimeOfDay.ToString();
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.AppointmentAccepted : " + err);
+            }
+
+            return returnAppointment;
+        }
+
     }
 }

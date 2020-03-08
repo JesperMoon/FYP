@@ -84,7 +84,7 @@ namespace FYP.Data
                 using (var context = new ApplicationContext())
                 {
                     var query = from pt in context.Patient
-                                where pt.EmailAddress.Equals(loginInfo.EmailAddress) && pt.Password.Equals(loginInfo.Password)
+                                where pt.EmailAddress.Equals(loginInfo.EmailAddress)
                                 select pt;
 
                     result.AccountNo = query.Select(p => p.Id).FirstOrDefault();
@@ -92,6 +92,8 @@ namespace FYP.Data
                     //account found
                     if (!result.AccountNo.Equals(Guid.Empty))
                     {
+                        result.Salt = query.Select(p => p.Salt).FirstOrDefault();
+                        result.Password = query.Select(p => p.Password).FirstOrDefault();
                         result.AccountStatus = query.Select(p => p.Status).FirstOrDefault();
                     }
                 }
@@ -126,30 +128,6 @@ namespace FYP.Data
             catch(Exception err)
             {
                 new LogHelper().LogMessage("PatientData.PatientVerification : " + err);
-            }
-
-            return result;
-        }
-
-        public byte[] GetSalt(string emailAddress)
-        {
-            byte[] result = null;
-
-            try
-            {
-                using (var context = new ApplicationContext())
-                {
-                    var query = from pt in context.Patient
-                                where pt.EmailAddress == emailAddress
-                                select pt;
-
-                    result = query.Select(p => p.Salt).FirstOrDefault();
-                }
-
-            }
-            catch (Exception err)
-            {
-                new LogHelper().LogMessage("PatientData.GetSalt : " + err);
             }
 
             return result;
@@ -218,8 +196,6 @@ namespace FYP.Data
 
                 while (reader.Read())
                 {
-                    var test = reader["Id"].ToString();
-
                     SpecialistNearby specialist = new SpecialistNearby();
                     specialist.AccId = Guid.Parse(reader[ConstantHelper.SQLColumn.SpecialistSearch.Id].ToString());
                     specialist.SpecialistName = reader[ConstantHelper.SQLColumn.SpecialistSearch.SpecialistName].ToString();
@@ -332,6 +308,43 @@ namespace FYP.Data
             return result;
         }
 
+        public List<AuthorizedPractitionersTable> GetAuthorizePractitioners(Guid patientId)
+        {
+            List<AuthorizedPractitionersTable> result = new List<AuthorizedPractitionersTable>();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.GetAuthorizedPractitioners, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.AccId, patientId));
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    AuthorizedPractitionersTable authorizedPractitioner = new AuthorizedPractitionersTable();
+                    authorizedPractitioner.PractitionerId = Guid.Parse(reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.PractitionerId].ToString());
+                    authorizedPractitioner.PractitionerName = reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.PractitionerName].ToString();
+                    authorizedPractitioner.Specialist = reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.Specialist].ToString();
+                    authorizedPractitioner.CompanyName = reader[ConstantHelper.SQLColumn.SpecialistSearch.CompanyName].ToString();
+                    authorizedPractitioner.PostalCode = Convert.ToInt32(reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.PostalCode].ToString());
+                    authorizedPractitioner.City = reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.City].ToString();
+                    authorizedPractitioner.State = reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.State].ToString();
+                    authorizedPractitioner.CreatedOn = Convert.ToDateTime(reader[ConstantHelper.SQLColumn.AuthorizedPractitionersTable.CreatedOn].ToString()).ToString("dd-MM-yyyy");
+
+                    result.Add(authorizedPractitioner);
+                }
+            }
+
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.GetAuthorizedractitioners : " + err);
+            }
+
+            return result;
+        }
+
         public AppointmentModel MakeAppointment(AppointmentModel appointmentModel)
         {
             AppointmentModel result = new AppointmentModel();
@@ -353,7 +366,7 @@ namespace FYP.Data
                             PatientId = appointmentModel.PatientId,
                             AppointmentDateTime = appointmentModel.AppointmentDate.GetValueOrDefault() + appointmentModel.AppointmentTime,
                             Description = appointmentModel.Description,
-                            Remarks = appointmentModel.Description,
+                            Remarks = appointmentModel.Remarks,
                             Status = ConstantHelper.AccountStatus.Pending,
                         };
 

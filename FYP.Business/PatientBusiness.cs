@@ -50,18 +50,22 @@ namespace FYP.Business
         public LoginInfo PatientLogin(LoginInfo loginInfo)
         {
             LoginInfo result = new LoginInfo();
-            result = loginInfo;
 
             try
             {
                 PatientData dataLayer = new PatientData();
 
                 //hashing password
-                var salt = dataLayer.GetSalt(loginInfo.EmailAddress);
-                var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(loginInfo.Password), salt);
+                result = dataLayer.PatientLogin(loginInfo);
+                var hashedPassword = HashingHelper.ComputeHMAC_SHA256(Encoding.UTF8.GetBytes(loginInfo.Password), result.Salt);
                 loginInfo.Password = Convert.ToBase64String(hashedPassword);
 
-                result = dataLayer.PatientLogin(loginInfo);
+                if(loginInfo.Password.Equals(result.Password))
+                {
+                    result.Salt = null;
+                    return result;
+                }
+
                 new LogHelper().LogMessage("PatientBusiness.PatientLogin : " + "Success");
             }
             catch (Exception err)
@@ -69,7 +73,7 @@ namespace FYP.Business
                 new LogHelper().LogMessage("PatientBusiness.PatientLogin : " + err);
             }
 
-            return result;
+            return loginInfo;
         }
 
         public int PatientVerification(Guid accId)
@@ -163,6 +167,23 @@ namespace FYP.Business
             return result;
         }
 
+        public List<AuthorizedPractitionersTable> GetAuthorizedPractitionersTable(Guid patientId)
+        {
+            List<AuthorizedPractitionersTable> result = new List<AuthorizedPractitionersTable>();
+
+            try
+            {
+                PatientData dataLayer = new PatientData();
+                result = dataLayer.GetAuthorizePractitioners(patientId);
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PatientBUsiness.GetAuthorizedPractitionersTable : " + err);
+            }
+
+            return result;
+        }
+
         public int MakeAppointment(AppointmentModel appointmentModel)
         {
             AppointmentModel check = new AppointmentModel();
@@ -185,7 +206,7 @@ namespace FYP.Business
             }
             catch(Exception err)
             {
-                new LogHelper().LogMessage("PatientBUsiness.MakeAppointment : " + err);
+                new LogHelper().LogMessage("PatientBusiness.MakeAppointment : " + err);
             }
             return result;
         }

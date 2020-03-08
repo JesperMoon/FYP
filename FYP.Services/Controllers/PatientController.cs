@@ -63,18 +63,30 @@ namespace FYP.Services.Controllers
             return result;
         }
 
-        [Route(ConstantHelper.API.Patient.MakeAppointment)]
+        [Route(ConstantHelper.API.Patient.AuthorizedPractitionersTable)]
         [HttpPost]
-        public int MakeAppointment(AppointmentModel appointment)
+        public List<AuthorizedPractitionersTable> AuthorizedPractitionersTable(PatientBaseViewModel vm)
+        {
+            List<AuthorizedPractitionersTable> result = new List<AuthorizedPractitionersTable>();
+
+            PatientBusiness businessLayer = new PatientBusiness();
+            result = businessLayer.GetAuthorizedPractitionersTable(vm.AccId);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Appointment.MakeAppointment)]
+        [HttpPost]
+        public int MakeAppointment(AppointmentModel appointmentModel)
         {
             int result = 0;
 
             PatientBusiness businessLayer = new PatientBusiness();
-            result = businessLayer.MakeAppointment(appointment);     //if 1 then added, else -1 mean rejected, else 0 is failed
+            result = businessLayer.MakeAppointment(appointmentModel);
 
             if(result == 1)
             {
-                businessLayer.SentEmailNotification(appointment);
+                businessLayer.SentEmailNotification(appointmentModel);
             }
 
             return result;

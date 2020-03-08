@@ -36,5 +36,41 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.Practitioner.GetAppointmentsTable)]
+        [HttpPost]
+        public List<AppointmentModel> GetAppointmentsTable(PractitionerBaseViewModel vm)
+        {
+            List<AppointmentModel> result = new List<AppointmentModel>();
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.GetAppointmentsTable(vm.AccId);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Appointment.AppointmentAccepted)]
+        [HttpPost]
+        public int AppointmentAccepted(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.AppointmentAccepted(appointmentModel);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Appointment.AppointmentRejected)]
+        [HttpPost]
+        public int AppointmentRejected(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.AppointmentRejected(appointmentModel);
+
+            return result;
+        }
     }
 }

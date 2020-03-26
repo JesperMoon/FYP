@@ -25,5 +25,8 @@ namespace FYP.Entities.Data
 
         [DataMember]
         public string Remarks { get; set; }
+
+        [DataMember]
+        public string RejectedReasons { get; set; }
     }
 }

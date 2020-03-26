@@ -211,7 +211,7 @@ namespace FYP.Business
             return result;
         }
 
-        public void SentEmailNotification(AppointmentModel model)
+        public void SentEmailNotification(AppointmentModel model, PractitionerBaseViewModel ptResult)
         {
             string mailFrom = ConstantHelper.AppSettings.MailFrom;
             string userName = ConstantHelper.AppSettings.UserName;
@@ -228,7 +228,7 @@ namespace FYP.Business
                     string patientEmailBody = ConstantHelper.Email.AppointmentVerification.AppointmentMadeBody;
                     //replace with appointment details
                     DateTime tempAppointmentDateTime = Convert.ToDateTime(model.AppointmentDate.ToString());
-                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + tempAppointmentDateTime.ToString("dd/MM/yyyy") + "</td></tr><tr><th>Appointment Time</th><td>" + tempAppointmentDateTime.ToString("hh:mm tt") + "</td></tr><tr><th>Appointment Description</th><td>" + model.Description + "</td></tr><tr><th>Appointment Remarks</th><td>" + model.Remarks + "</td></tr></table>";
+                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + tempAppointmentDateTime.ToString("dd/MM/yyyy") + "</td></tr><tr><th>Appointment Time</th><td>" + tempAppointmentDateTime.ToString("hh:mm tt") + "</td></tr><tr><th>Company</th><td>" + ptResult.CompanyName + "</td></tr><tr><th>City</th><td>" + ptResult.City + "</td></tr><tr><th>Postal Code</th><td>" + ptResult.PostalCode + "</td></tr><tr><th>State</th><td>" + ptResult.State + "</td></tr><tr><th>Appointment Description</th><td>" + model.Description + "</td></tr><tr><th>Appointment Remarks</th><td>" + model.Remarks + "</td></tr></table>";
                     patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.AppointmentDetails, appointmentDetailsTable);
                     EmailHelper.SentMail(mailFrom, patientEmail, patientEmailSubject, patientEmailBody, userName, password);
                 }

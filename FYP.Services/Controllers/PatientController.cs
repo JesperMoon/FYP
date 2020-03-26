@@ -86,7 +86,12 @@ namespace FYP.Services.Controllers
 
             if(result == 1)
             {
-                businessLayer.SentEmailNotification(appointmentModel);
+                PractitionerBaseViewModel pt = new PractitionerBaseViewModel();
+                PractitionerBaseViewModel ptResult = new PractitionerBaseViewModel();
+                pt.AccId = appointmentModel.PractitionerId;
+                PractitionerBusiness practitionerBusiness = new PractitionerBusiness();
+                ptResult = practitionerBusiness.GetProfile(pt);
+                businessLayer.SentEmailNotification(appointmentModel, ptResult);
             }
 
             return result;

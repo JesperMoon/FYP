@@ -61,12 +61,14 @@
     <Compile Include="Model\Common\User.cs" />
     <Compile Include="Model\LoginInfo.cs" />
     <Compile Include="Data\Practitioner.cs" />
+    <Compile Include="Model\PatientRecordModel.cs" />
     <Compile Include="Model\SpecialistNearby.cs" />
     <Compile Include="Model\SpecialistSearch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AuthorizedPractitionersViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\MedicineViewModel.cs" />
+    <Compile Include="ViewModel\NewPatientRecordViewModel.cs" />
     <Compile Include="ViewModel\PatientBaseViewModel.cs" />
     <Compile Include="ViewModel\PatientViewModel.cs" />
     <Compile Include="ViewModel\PractitionerBaseViewModel.cs" />

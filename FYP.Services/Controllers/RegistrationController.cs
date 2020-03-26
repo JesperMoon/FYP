@@ -18,48 +18,49 @@ namespace FYP.Services.Controllers
         public int CreateNewCompany(CompanyViewModel newCompany)
         {
             PractitionerBusiness businessLayer = new PractitionerBusiness();
-            CompanyViewModel result = businessLayer.CompanyRegister(newCompany);
-
-            if (result.ConflictEmailAddress == 1)
+            if(newCompany != null)
             {
-                return 2;
-            }
+                CompanyViewModel result = businessLayer.CompanyRegister(newCompany);
 
-            if (result != null)
-            {
-                try
+                if (result.ConflictEmailAddress == 1)
                 {
-                    //Sending verification email to admin to verify
-                    string mailFrom = ConstantHelper.AppSettings.MailFrom;
-                    string adminMail = ConstantHelper.AppSettings.AdminEmail;
-                    string emailSubject = ConstantHelper.Email.CompanyVerification.EmailSubject;
-                    string emailBody = ConstantHelper.Email.CompanyVerification.EmailBody;
-                    string linkToApprove = ConstantHelper.AppSettings.BackEndUrl + ConstantHelper.API.Company.CompanyApproved + "?accId=" + result.CompanyId;
-                    string linkToReject = ConstantHelper.AppSettings.BackEndUrl + ConstantHelper.API.Company.CompanyRejected + "?accId=" + result.CompanyId;
-                    string companyDetailsTable = "<table><tr><th>" + "Company Name" + "</th><td>" + result.CompanyName + "</td></tr><tr><th>" + "Company Phone Number" + "</th><td>" + result.CompanyPhoneNumber + "</td></tr><tr><th>" + "Company Email Address" + "</th><td>" + result.CompanyEmailAddress + "</td></tr><tr><th rowspan='3'>" + "Company Address" + "</th><td>" + result.CompanyAddressLine1 + "</td></tr><tr><td>" + result.CompanyAddressLine2 + "</td></tr><tr><td>" + result.CompanyAddressLine3 + "</td></tr></table>";
-                    emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.LinkToApprove, linkToApprove);
-                    emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.LinkToReject, linkToReject);
-                    emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.companyDetailsTable, companyDetailsTable);
-                    string userName = ConstantHelper.AppSettings.UserName;
-                    string password = ConstantHelper.AppSettings.Password;
-                    EmailHelper.SentMail(mailFrom, adminMail, emailSubject, emailBody, userName, password);
-
-                    //Notify company
-                    string emailBodyForCompany = ConstantHelper.Email.CompanyVerification.CompanyEmailBody;
-                    EmailHelper.SentMail(mailFrom, result.CompanyEmailAddress, emailSubject, emailBodyForCompany, userName, password);
-
-                }
-                catch (Exception err)
-                {
-                    new LogHelper().LogMessage("RegistrationController.CreateNewCompany : " + err);
+                    return 2;
                 }
 
-                return 1;
+                if (result != null)
+                {
+                    try
+                    {
+                        //Sending verification email to admin to verify
+                        string mailFrom = ConstantHelper.AppSettings.MailFrom;
+                        string adminMail = ConstantHelper.AppSettings.AdminEmail;
+                        string emailSubject = ConstantHelper.Email.CompanyVerification.EmailSubject;
+                        string emailBody = ConstantHelper.Email.CompanyVerification.EmailBody;
+                        string linkToApprove = ConstantHelper.AppSettings.BackEndUrl + ConstantHelper.API.Company.CompanyApproved + "?accId=" + result.CompanyId;
+                        string linkToReject = ConstantHelper.AppSettings.BackEndUrl + ConstantHelper.API.Company.CompanyRejected + "?accId=" + result.CompanyId;
+                        string companyDetailsTable = "<table><tr><th>" + "Company Name" + "</th><td>" + result.CompanyName + "</td></tr><tr><th>" + "Company Phone Number" + "</th><td>" + result.CompanyPhoneNumber + "</td></tr><tr><th>" + "Company Email Address" + "</th><td>" + result.CompanyEmailAddress + "</td></tr><tr><th rowspan='3'>" + "Company Address" + "</th><td>" + result.CompanyAddressLine1 + "</td></tr><tr><td>" + result.CompanyAddressLine2 + "</td></tr><tr><td>" + result.CompanyAddressLine3 + "</td></tr></table>";
+                        emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.LinkToApprove, linkToApprove);
+                        emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.LinkToReject, linkToReject);
+                        emailBody = emailBody.Replace(ConstantHelper.Email.Keyword.companyDetailsTable, companyDetailsTable);
+                        string userName = ConstantHelper.AppSettings.UserName;
+                        string password = ConstantHelper.AppSettings.Password;
+                        EmailHelper.SentMail(mailFrom, adminMail, emailSubject, emailBody, userName, password);
+
+                        //Notify company
+                        string emailBodyForCompany = ConstantHelper.Email.CompanyVerification.CompanyEmailBody;
+                        EmailHelper.SentMail(mailFrom, result.CompanyEmailAddress, emailSubject, emailBodyForCompany, userName, password);
+
+                    }
+                    catch (Exception err)
+                    {
+                        new LogHelper().LogMessage("RegistrationController.CreateNewCompany : " + err);
+                    }
+
+                    return 1;
+                }
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
 
         [Route(ConstantHelper.API.Company.CompanyApproved)]

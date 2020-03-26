@@ -192,8 +192,8 @@ namespace FYP.Business
         public List<AppointmentModel> GetAppointmentsTable(Guid practitionerId)
         {
             List<AppointmentModel> result = new List<AppointmentModel>();
-            PractitionerData business = new PractitionerData();
-            result = business.GetAppointmentsTable(practitionerId);
+            PractitionerData data = new PractitionerData();
+            result = data.GetAppointmentsTable(practitionerId);
 
             return result;
         }
@@ -232,18 +232,22 @@ namespace FYP.Business
 
             try
             {
-                //Change Appointment Status to accepted
+                //Change Appointment Status to rejected
                 PractitionerData dataLayer = new PractitionerData();
                 AppointmentModel model = new AppointmentModel();
-                //model is with appointmentdatestring and appointmenttimestring and PatientId
-                model = dataLayer.AppointmentAccepted(appointmentModel);
+                //model is with appointmentdatestring and appointmenttimestring and PatientId + RejectReasons + PracitionerId
+                model = dataLayer.AppointmentRejected(appointmentModel);
 
                 if (!model.PatientId.Equals(Guid.Empty))
                 {
                     //Get PatientId to retrieve email
                     PatientData patientDataLayer = new PatientData();
                     string patientEmailAddress = patientDataLayer.GetPatientEmail(model.PatientId);
-                    result = SentAppointmentAcceptedNotificationEmail(patientEmailAddress, model.AppointmentDateString, model.AppointmentTimeString);
+                    PractitionerBaseViewModel companyDetails = new PractitionerBaseViewModel();
+                    PractitionerBaseViewModel temp = new PractitionerBaseViewModel();
+                    temp.AccId = appointmentModel.PractitionerId;
+                    companyDetails = dataLayer.GetProfile(temp);
+                    result = SentAppointmentRejectedNotificationEmail(patientEmailAddress, model.AppointmentDateString, model.AppointmentTimeString, model.RejectReasons, companyDetails);
                 }
             }
             catch (Exception err)
@@ -254,6 +258,56 @@ namespace FYP.Business
             return result;
         }
 
+        public int AppointmentAbsent(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            try
+            {
+                //Change Appointment Status to absent
+                PractitionerData dataLayer = new PractitionerData();
+                AppointmentModel model = new AppointmentModel();
+                model = dataLayer.AppointmentAbsent(appointmentModel);
+
+                if (!model.PatientId.Equals(Guid.Empty))
+                {
+                    //Get PatientId to retrieve email
+                    PatientData patientDataLayer = new PatientData();
+                    string patientEmailAddress = patientDataLayer.GetPatientEmail(model.PatientId);
+                    result = SentAppointmentAbsentNotificationEmail(patientEmailAddress, model.AppointmentDateString, model.AppointmentTimeString);
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.AppointmentAbsent : " + err);
+            }
+
+            return result;
+        }
+
+        public int AppointmentPending(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            try
+            {
+                //Change Appointment Status to pending
+                PractitionerData dataLayer = new PractitionerData();
+                AppointmentModel model = new AppointmentModel();
+                model = dataLayer.AppointmentPending(appointmentModel);
+
+                if (!model.PatientId.Equals(Guid.Empty))
+                {
+                    result = 1;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.AppointmentPending : " + err);
+            }
+
+            return result;
+        }
 
         public int SentAppointmentAcceptedNotificationEmail(string patientEmailAddress, string appointmentDate, string appointmentTime)
         {
@@ -280,8 +334,93 @@ namespace FYP.Business
             }
             catch (Exception err)
             {
-                new LogHelper().LogMessage("PractitionerData.SentAppointmentAcceptedNotificationEmail : " + err);
+                new LogHelper().LogMessage("PractitionerBusiness.SentAppointmentAcceptedNotificationEmail : " + err);
             }
+
+            return result;
+        }
+
+        public int SentAppointmentAbsentNotificationEmail(string patientEmailAddress, string appointmentDate, string appointmentTime)
+        {
+            int result = 0;
+
+            string mailFrom = ConstantHelper.AppSettings.MailFrom;
+            string userName = ConstantHelper.AppSettings.UserName;
+            string password = ConstantHelper.AppSettings.Password;
+
+            try
+            {
+                if (!String.IsNullOrEmpty(patientEmailAddress))
+                {
+                    //Sent notification email to patient
+                    string patientEmailSubject = ConstantHelper.Email.AppointmentVerification.AppointmentAbsentSubject;
+                    string patientEmailBody = ConstantHelper.Email.AppointmentVerification.AppointmentAbsentBody;
+                    //replace with appointment details
+                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + appointmentDate + "</td></tr><tr><th>Appointment Time</th><td>" + appointmentTime + "</td></tr></table>";
+                    patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.AppointmentDetails, appointmentDetailsTable);
+                    EmailHelper.SentMail(mailFrom, patientEmailAddress, patientEmailSubject, patientEmailBody, userName, password);
+
+                    result = 1;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.SentAppointmentAbsentNotificationEmail : " + err);
+            }
+
+            return result;
+        }
+
+        public int SentAppointmentRejectedNotificationEmail(string patientEmailAddress, string appointmentDate, string appointmentTime, string rejectReasons, PractitionerBaseViewModel companyDetails)
+        {
+            int result = 0;
+
+            string mailFrom = ConstantHelper.AppSettings.MailFrom;
+            string userName = ConstantHelper.AppSettings.UserName;
+            string password = ConstantHelper.AppSettings.Password;
+
+            try
+            {
+                if (!String.IsNullOrEmpty(patientEmailAddress))
+                {
+                    //Sent notification email to patient
+                    string patientEmailSubject = ConstantHelper.Email.AppointmentVerification.AppointmentRejectedSubject;
+                    string patientEmailBody = ConstantHelper.Email.AppointmentVerification.AppointmentRejectedBody;
+                    //replace with appointment details
+                    string appointmentDetailsTable = "<table><caption>Appointment Details</caption><tr><th>Appointment Date</th><td>" + appointmentDate + "</td></tr><tr><th>Appointment Time</th><td>" + appointmentTime + "</td></tr></table>";
+                    patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.RejectedReasons, rejectReasons);
+                    patientEmailBody = patientEmailBody.Replace(ConstantHelper.Email.Keyword.AppointmentDetails, appointmentDetailsTable);
+                    EmailHelper.SentMail(mailFrom, patientEmailAddress, patientEmailSubject, patientEmailBody, userName, password);
+
+                    result = 1;
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerBusiness.SentAppointmentRejectedNotificationEmail : " + err);
+            }
+
+            return result;
+        }
+
+        public NewPatientRecordViewModel CreateNewRecord(PatientRecordModel vm)
+        {
+            NewPatientRecordViewModel result = new NewPatientRecordViewModel();
+            PractitionerData practitionerData = new PractitionerData();
+            PatientData patientData = new PatientData();
+
+            //Retrieve practitioner and company information
+            PractitionerBaseViewModel practitionerId = new PractitionerBaseViewModel();
+            practitionerId.AccId = vm.PractitionerId;
+            result.PractitionerDetails = practitionerData.GetProfile(practitionerId);
+
+            // Retrieve patient information
+            result.PatientDetails = patientData.PatientProfile(vm.PatientId);
+
+            //record Id
+            //vm.RecordId = practitionerData.GetRecordId(xxx);
+            vm.CreatedOn = DateTime.UtcNow;
+            result.NewPatientRecord = vm;
 
             return result;
         }

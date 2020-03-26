@@ -350,11 +350,17 @@ namespace FYP.Data
             {
                 using (var context = new ApplicationContext())
                 {
+                    var today = DateTime.Today;
                     var query = from pt in context.Appointment
                                 where pt.PractitionerId.Equals(practitionerId)
                                 select pt;
+                    var query2 = query.OrderBy(x => x.Status);
+                    var pendingQuery = query2.Where(x => x.Status.Equals(ConstantHelper.AccountStatus.Pending)).OrderBy(x => x.CreatedOn).ThenBy(x=> x.AppointmentDateTime).Select(x => x);
+                    var acceptedQuery = query2.Where(x => x.Status.Equals(ConstantHelper.AccountStatus.Accepted) && x.AppointmentDateTime.Day == today.Day && x.AppointmentDateTime.Month == today.Month && x.AppointmentDateTime.Year == today.Year).OrderBy(x => x.AppointmentDateTime).Select(x => x);
+                    var rejectedQuery = query2.Where(x => x.Status.Equals(ConstantHelper.AccountStatus.Rejected) && x.AppointmentDateTime.Day == today.Day && x.AppointmentDateTime.Month == today.Month && x.AppointmentDateTime.Year == today.Year).OrderBy(x => x.ModifiedOn).Select(x => x);
+                    var absentQuery = query2.Where(x => x.Status.Equals(ConstantHelper.AccountStatus.Absent) && x.AppointmentDateTime.Day == today.Day && x.AppointmentDateTime.Month == today.Month && x.AppointmentDateTime.Year == today.Year).OrderBy(x => x.AppointmentDateTime).Select(x => x);
 
-                    foreach(var item in query)
+                    foreach (var item in pendingQuery)
                     {
                         AppointmentModel appointment = new AppointmentModel();
                         appointment.AppointmentId = Guid.Parse(item.Id.ToString());
@@ -365,6 +371,57 @@ namespace FYP.Data
                         appointment.Status = item.Status;
 
                         result.Add(appointment);
+                    }
+
+                    foreach (var item in acceptedQuery)
+                    {
+                        AppointmentModel appointment = new AppointmentModel();
+                        appointment.AppointmentId = Guid.Parse(item.Id.ToString());
+                        appointment.AppointmentDateString = item.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        appointment.AppointmentTimeString = item.AppointmentDateTime.TimeOfDay.ToString();
+                        appointment.CreatedOnString = item.CreatedOn.Date.ToString("dd-MM-yyyy");
+                        appointment.PatientId = item.PatientId;
+                        appointment.Status = item.Status;
+
+                        result.Add(appointment);
+                    }
+         
+                    foreach (var item in rejectedQuery)
+                    {
+                        AppointmentModel appointment = new AppointmentModel();
+                        appointment.AppointmentId = Guid.Parse(item.Id.ToString());
+                        appointment.AppointmentDateString = item.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        appointment.AppointmentTimeString = item.AppointmentDateTime.TimeOfDay.ToString();
+                        appointment.CreatedOnString = item.CreatedOn.Date.ToString("dd-MM-yyyy");
+                        appointment.PatientId = item.PatientId;
+                        appointment.Status = item.Status;
+                        appointment.RejectReasons = item.RejectedReasons;
+
+                        result.Add(appointment);
+                    }
+
+                    foreach (var item in absentQuery)
+                    {
+                        AppointmentModel appointment = new AppointmentModel();
+                        appointment.AppointmentId = Guid.Parse(item.Id.ToString());
+                        appointment.AppointmentDateString = item.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        appointment.AppointmentTimeString = item.AppointmentDateTime.TimeOfDay.ToString();
+                        appointment.CreatedOnString = item.CreatedOn.Date.ToString("dd-MM-yyyy");
+                        appointment.PatientId = item.PatientId;
+                        appointment.Status = item.Status;
+
+                        result.Add(appointment);
+                    }
+
+                    foreach (var item in result)
+                    {
+                        var id = item.PatientId;
+                        var patientQuery = from pt in context.Patient
+                                           where pt.Id.Equals(id)
+                                           select pt;
+                        var patient = patientQuery.Select(x => x).FirstOrDefault();
+                        item.FirstName = patient.FirstName;
+
                     }
                 }
             }
@@ -415,7 +472,70 @@ namespace FYP.Data
                 using (var context = new ApplicationContext())
                 {
                     var appointment = context.Appointment.Where(p => p.Id == appointmentModel.AppointmentId).FirstOrDefault();
-                    appointment.Status = ConstantHelper.AccountStatus.Accepted;
+                    appointment.RejectedReasons = appointmentModel.RejectReasons;
+                    appointment.Status = ConstantHelper.AccountStatus.Rejected;
+                    result = context.SaveChanges();
+
+                    if (result != 0)
+                    {
+                        returnAppointment.PatientId = appointment.PatientId;
+                        returnAppointment.PractitionerId = appointment.PractitionerId;
+                        returnAppointment.AppointmentDateString = appointment.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        returnAppointment.AppointmentTimeString = appointment.AppointmentDateTime.TimeOfDay.ToString();
+                        returnAppointment.RejectReasons = appointment.RejectedReasons;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.AppointmentRejected : " + err);
+            }
+
+            return returnAppointment;
+        }
+
+        public AppointmentModel AppointmentAbsent(AppointmentModel appointmentModel)
+        {
+            AppointmentModel returnAppointment = new AppointmentModel();
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var appointment = context.Appointment.Where(p => p.Id == appointmentModel.AppointmentId).FirstOrDefault();
+                    appointment.Status = ConstantHelper.AccountStatus.Absent;
+                    result = context.SaveChanges();
+
+                    if (result != 0)
+                    {
+                        returnAppointment.PatientId = appointment.PatientId;
+                        returnAppointment.AppointmentDateString = appointment.AppointmentDateTime.Date.ToString("dd-MM-yyyy");
+                        returnAppointment.AppointmentTimeString = appointment.AppointmentDateTime.TimeOfDay.ToString();
+                        returnAppointment.RejectReasons = "Patient is absent.";
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.AppointmentAbsent : " + err);
+            }
+
+            return returnAppointment;
+        }
+
+        public AppointmentModel AppointmentPending(AppointmentModel appointmentModel)
+        {
+            AppointmentModel returnAppointment = new AppointmentModel();
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var appointment = context.Appointment.Where(p => p.Id == appointmentModel.AppointmentId).FirstOrDefault();
+                    appointment.Status = ConstantHelper.AccountStatus.Pending;
+                    appointment.RejectedReasons = "";
                     result = context.SaveChanges();
 
                     if (result != 0)
@@ -428,7 +548,7 @@ namespace FYP.Data
             }
             catch (Exception err)
             {
-                new LogHelper().LogMessage("PractitionerData.AppointmentAccepted : " + err);
+                new LogHelper().LogMessage("PractitionerData.AppointmentPending : " + err);
             }
 
             return returnAppointment;

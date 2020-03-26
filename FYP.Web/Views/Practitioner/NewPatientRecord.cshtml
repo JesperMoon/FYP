@@ -1,0 +1,367 @@
+﻿
+@{
+    ViewBag.Title = "New Patient Record";
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $('#allergicYes').click(function () {
+            if ($(this).is(':checked')) {
+                document.getElementById('allergic').disabled = false;
+            }
+        });
+
+        $('#allergicNo').click(function () {
+            if ($(this).is(':checked')) {
+                document.getElementById('allergic').value = "";
+                document.getElementById('allergic').disabled = true;
+            }
+        });
+
+    </script>
+}
+<style>
+    /* Frame styling */
+    body {
+        background-color: aqua;
+    }
+
+    .jumbotron {
+        background-color: white;
+    }
+
+    /* Styling for Logo Center */
+    .menuItem {
+        text-align: center;
+        padding: 12px 0;
+        text-decoration: none !important;
+        color: black;
+        border-radius: 50px;
+        /*color: inherit !important;*/
+        /*background-color: lightgray;*/
+    }
+
+        .menuItem span {
+            font-size: 150px;
+        }
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    #header{
+        font-size: medium;
+    }
+
+    table {
+        width: 100%;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.NewPatientRecordViewModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <form method="post" action="@Url.Action("NewPatientRecord","Practitioner")">
+            <div class="row">
+                @*<a class="col-lg-2 col-xs-2 backButton" href="javascript:window.window.close();;">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>*@
+                <h4 class="col-lg-8 col-xs-8" style="text-align:left;font-size:xx-large;"><b>Patient Health Record</b></h4>
+                <div class="col-lg-4 col-xs-4" style="text-align:right;">
+                    <p><small>Created Date: <b>@Model.NewPatientRecord.CreatedOn.ToString("dd/MM/yyyy")</b></small></p>
+                    <p><small>Created Time: <b>@Model.NewPatientRecord.CreatedOn.ToString("hh:MM:ss")</b></small></p>
+                </div>
+            </div>
+            <div class="row" style="text-align:right;"><p><small>Record ID: <b>@Model.NewPatientRecord.RecordId</b></small></p></div>
+
+            <header>
+                <table class="table-condensed">
+                    <caption><h4><b><u>Company Details</u></b></h4></caption>
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Company Name :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.CompanyName</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Phone Number :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.CompanyPhoneNumber</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Company Address :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.CompanyAddressLine1</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">State :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.State</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2"></td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.CompanyAddressLine2</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Postal Code:</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.PostalCode</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2"></td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.CompanyAddressLine3</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header"></h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b></b></h4>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <table class="table-condensed">
+                    <caption><h4><b><u>Practitioner Details</u></b></h4></caption>
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">First Name :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.FirstName</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Date of Birth (dd/MM/yyyy) :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.DateOfBirth.ToString("dd / MM / yyyy")</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Last Name :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.LastName</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Specialist :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.SpecialistString</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Gender :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.Gender</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Office Phone Number:</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.OfficePhoneNumber</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header">Email Address :</h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b>@Model.PractitionerDetails.EmailAddress</b></h4>
+                        </td>
+                        <td class="col-2">
+                            <h4 style="text-align:left;" id="header"></h4>
+                        </td>
+                        <td class="col-4">
+                            <h4 id="header"><b></b></h4>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <table class="table-responsive">
+                    <caption><h4><b><u>Patient Details</u></b></h4></caption>
+                    <tr class="row">
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">First Name :</h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 id="header"><b>@Model.PatientDetails.FirstName &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</b></h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">Date of Birth (dd/MM/yyyy) :</h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 id="header"><b>@Model.PatientDetails.DateOfBirth.ToString("dd / MM / yyyy")</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">Last Name :</h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 id="header"><b>@Model.PatientDetails.LastName</b></h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">Blood Type :</h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 id="header"><b>@Model.PatientDetails.BloodType</b></h4>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">Gender :</h4>
+                        </td>
+                        <td class="col-3">
+                            <h4 id="header"><b>@Model.PatientDetails.Gender</b></h4>
+                        </td>
+                        <td class="col-3"></td>
+                        <td class="col-3"></td>
+                    </tr>
+
+                    <tr class="row">
+                        <td class="col-3">
+                            <h4 style="text-align:left;" id="header">&nbsp &nbsp &nbsp &nbsp &nbsp</h4>
+                        </td>
+                        <td class="col-3"></td>
+                        <td class="col-3"></td>
+                        <td class="col-3"></td>
+                    </tr>
+                </table>
+
+                <hr />
+            </header>
+
+            <table class="table-striped">
+                <tr class="row">
+                    <td class="col-2"><h4><b>Current Medication Status : </b></h4></td>
+                    <td class="col-2"><h4>@Html.RadioButtonFor(m => m.NewPatientRecord.CurrMedication, "Yes") Yes &nbsp &nbsp @Html.RadioButtonFor(m => m.NewPatientRecord.CurrMedication, "No", new { @checked = "checked" }) No</h4></td>
+                    <td class="col-8"></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-2"><h4><b>Allergic : </b></h4></td>
+                    <td class="col-2"><h4>@Html.RadioButtonFor(m => m.NewPatientRecord.AllergicBool, "Yes", new { id = "allergicYes", name = "Allergic" })Yes &nbsp &nbsp @Html.RadioButtonFor(m => m.NewPatientRecord.AllergicBool, "No", new { id = "allergicNo", name = "Allergic", @checked = "checked" })No</h4></td>
+                    <td class="col-8"></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-2"><h4><b>(Only If Yes) : </b></h4></td>
+                    <td class="col-2">
+                        <h4>@Html.TextBoxFor(m => m.NewPatientRecord.AllergicType, new { id = "allergic", @disabled = "true", value = Model.NewPatientRecord.AllergicType })</h4>
+                    </td>
+                    <td class="col-8"></td>
+                </tr>
+
+
+                <tr class="row">
+                    <td class="col-4"><h4><b>Body Temperature : </b></h4></td>
+                    <td class="col-8"><h4>@Html.EditorFor(m => m.NewPatientRecord.BodyTemperature, new { htmlAttributes = new { @type = "number", @min = "30", @max = "45", @step = "0.1" } })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"><h4><b>Symptoms : </b></h4></td>
+                    <td class="col-8"><h4>@Html.TextAreaFor(m => m.NewPatientRecord.Symptoms, new { value = Model.NewPatientRecord.Symptoms, rows = "10", cols = "40" })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"><h4><b>Medicines : </b></h4></td>
+                    <td class="col-8"><h4>@Html.TextAreaFor(m => m.NewPatientRecord.Medicines, new { value = Model.NewPatientRecord.Medicines, rows = "10", cols = "40" })</h4></td>
+                </tr>
+            </table>
+
+
+            <br />
+
+            @Html.HiddenFor(m => m.NewPatientRecord.PatientId)
+            @Html.HiddenFor(m => m.NewPatientRecord.PractitionerId)
+            @Html.HiddenFor(m => m.NewPatientRecord.AppointmentId)
+            @Html.HiddenFor(m => m.NewPatientRecord.RecordId)
+
+
+            @Html.HiddenFor(m => m.NewPatientRecord.CreatedOn)
+
+            @Html.HiddenFor(m => m.PatientDetails.AccId)
+            @Html.HiddenFor(m => m.PatientDetails.BloodType)
+            @Html.HiddenFor(m => m.PatientDetails.DateOfBirth)
+            @Html.HiddenFor(m => m.PatientDetails.EmailAddress)
+            @Html.HiddenFor(m => m.PatientDetails.FirstName)
+            @Html.HiddenFor(m => m.PatientDetails.LastName)
+            @Html.HiddenFor(m => m.PatientDetails.Gender)
+
+            @Html.HiddenFor(m => m.PractitionerDetails.AccId)
+            @Html.HiddenFor(m => m.PractitionerDetails.City)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine1)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine2)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine3)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyEmailAddress)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyName)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyPhoneNumber)
+            @Html.HiddenFor(m => m.PractitionerDetails.DateOfBirth)
+            @Html.HiddenFor(m => m.PractitionerDetails.EmailAddress)
+            @Html.HiddenFor(m => m.PractitionerDetails.FirstName)
+            @Html.HiddenFor(m => m.PractitionerDetails.Gender)
+            @Html.HiddenFor(m => m.PractitionerDetails.LastName)
+            @Html.HiddenFor(m => m.PractitionerDetails.OfficePhoneNumber)
+            @Html.HiddenFor(m => m.PractitionerDetails.SpecialistString)
+
+            <div style="float:right;">
+                <input type="submit" value="Create New Record" name="CreateNewRecord" class="btn btn-success" @*onclick="createNewRecord()"*@ />
+            </div>
+
+        </form>
+    </div>
+    <footer></footer>
+</body>
+</html>
+

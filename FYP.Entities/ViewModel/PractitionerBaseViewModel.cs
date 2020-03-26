@@ -16,6 +16,9 @@ namespace FYP.Entities.ViewModel
 
         [DataMember]
         public string SpecialistString { get; set; }
+
+        [DataMember]
+        public string RejectedReasons { get; set; }
         
     }
 }

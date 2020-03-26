@@ -72,5 +72,44 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.Appointment.AppointmentAbsent)]
+        [HttpPost]
+        public int AppointmentAbsent(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.AppointmentAbsent(appointmentModel);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Appointment.AppointmentPending)]
+        [HttpPost]
+        public int AppointmentPending(AppointmentModel appointmentModel)
+        {
+            int result = 0;
+
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            result = businessLayer.AppointmentPending(appointmentModel);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.PatientRecord.CreateNewRecord)]
+        [HttpPost]
+        public NewPatientRecordViewModel CreateNewRecord(PatientRecordModel vm)
+        {
+            NewPatientRecordViewModel result = new NewPatientRecordViewModel();
+
+            if (vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.CreateNewRecord(vm);
+            }
+
+            return result;
+        }
     }
 }

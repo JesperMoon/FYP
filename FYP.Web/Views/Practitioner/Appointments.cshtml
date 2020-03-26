@@ -27,12 +27,15 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 beforeSend: function () {
-
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
                 },
                 success: function success(result) {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").hide() }, 1000));
+
                     var pendingHtml = '';
                     var approvedHtml = '';
                     var rejectedHtml = '';
+                    var absentHtml = '';
                     var rejectButton = '<button onclick="ajaxRejectAppointment" type="button" class="btn btn-danger">Reject</button>';
                     var accId = @Html.Raw(Json.Encode(Model.AccId));
 
@@ -40,19 +43,24 @@
                         var pendingIndex = 0;
                         var approvedIndex = 0;
                         var rejectedIndex = 0;
+                        var absentIndex = 0;
 
                         $.each(result, function (i, item) {
                             if (item.Status == 'Pending') {
                                 pendingIndex = pendingIndex + 1;
-                                pendingHtml += '<tr><td>' + pendingIndex + '</td><td><p>' + item.AppointmentDateString + '</p></td><td><p>' + item.AppointmentTimeString + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + '<button onclick="ajaxAcceptAppointment(' + "'" + item.AppointmentId + "'" + ')" type="button" class="btn btn-success">Approve</button>' + ' / ' + '<button type="button" id="modalButton" class="btn btn-danger" onclick="openModal()">Reject</button>' + '</p></td></tr>';
+                                pendingHtml += '<tr><td>' + pendingIndex + '</td><td><p>' + item.AppointmentDateString + '  ' + item.AppointmentTimeString + '</p></td><td><p>' + item.FirstName + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + '<button onclick="ajaxAcceptAppointment(' + "'" + item.AppointmentId + "'" + ')" type="button" class="btn btn-success">Approve</button>' + ' / ' + '<button type="button" id="modalButton" class="btn btn-danger" onclick="openModal(' + "'" + item.AppointmentId + "'" + ')">Reject</button>' + '</p></td></tr>';
                             }
                             else if (item.Status == 'Accepted') {
                                 approvedIndex = approvedIndex + 1;
-                                approvedHtml += '<tr><td>' + approvedIndex + '</td><td><p>' + item.AppointmentDateString + '</p></td><td><p>' + item.AppointmentTimeString + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + 'action' + '</p></td></tr>';
+                                approvedHtml += '<tr><td>' + approvedIndex + '</td><td><p>' + item.AppointmentDateString + '  ' + item.AppointmentTimeString + '</p></td><td><p>' + item.FirstName + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + '<a href="' + '@Url.Action("NewPatientRecord", "Practitioner")' + '?appointmentId=' + item.AppointmentId + '&practitionerId=' + accId + '&patientId=' + item.PatientId + '" target="_blank""><button type="button" class="btn btn-success">New Record</button></a>' + ' / ' + '<button onclick="ajaxAbsentAppointment(' + "'" + item.AppointmentId + "'" + ')" type="button" class="btn btn-danger">Absent</button>' + '</p></td></tr>';
                             }
                             else if (item.Status == 'Rejected') {
                                 rejectedIndex = rejectedIndex + 1;
-                                rejectedHtml += '<tr><td>' + rejectedIndex + '</td><td><p>' + item.AppointmentDateString + '</p></td><td><p>' + item.AppointmentTimeString + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + 'action' + '</p></td></tr>';
+                                rejectedHtml += '<tr><td>' + rejectedIndex + '</td><td><p>' + item.AppointmentDateString + '  ' + item.AppointmentTimeString + '</p></td><td><p>' + item.FirstName +'</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p style="color:red;">' + item.RejectReasons + '</p></td></tr>';
+                            }
+                            else if (item.Status == 'Absent') {
+                                absentIndex = absentIndex + 1;
+                                absentHtml += '<tr><td>' + absentIndex + '</td><td><p>' + item.AppointmentDateString + ' ' + item.AppointmentTimeString + '</p></td><td><p>' + item.FirstName + '</p></td><td><p>' + item.CreatedOnString + '</p></td><td><p>' + '<button onclick="ajaxPendingAppointment(' + "'" + item.AppointmentId + "'" + ')" type="button" class="btn btn-danger">Revert To Pending</button>' + '</p></td></tr>';
                             }
                         });
 
@@ -65,10 +73,25 @@
                         if (rejectedIndex == 0) {
                             rejectedHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No rejected request yet.' + '</td></tr>';
                         }
+                        if (absentIndex == 0) {
+                            absentHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No absent request yet.' + '</td></tr>';
+                        }
+                    }
+                    else {
+                        var pendingHtml = '';
+                        var approvedHtml = '';
+                        var rejectedHtml = '';
+                        var absentHtml = '';
+
+                        pendingHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No pending request yet.' + '</td></tr>';
+                        approvedHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No approved request yet.' + '</td></tr>';
+                        rejectedHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No rejected request yet.' + '</td></tr>';
+                        absentHtml = '<tr><td colspan="5" style="text-align:center;color:red;">' + 'No absent request yet.' + '</td></tr>';       
                     }
                     document.getElementById("pendingContent").innerHTML = pendingHtml;
                     document.getElementById("approvedContent").innerHTML = approvedHtml;
                     document.getElementById("rejectedContent").innerHTML = rejectedHtml;
+                    document.getElementById("absentContent").innerHTML = absentHtml;
                 },
                 complete: function () {
 
@@ -100,16 +123,10 @@
                     }
 
                     if (result.responseText == 0) {
-                        if (confirm("Appointment was not updated. PLease try again.")) {
+                        if (confirm("Appointment was not updated. Please try again.")) {
                             window.location.reload();
                         }
                     }
-                    
-                    //document.getElementById("pendingContent").innerHTML = '';
-                    //document.getElementById("approvedContent").innerHTML = '';
-                    //document.getElementById("rejectedContent").innerHTML = '';
-                    //ajaxAppointmentTable();
-
                 }
             });
         }
@@ -118,7 +135,9 @@
         var span = document.getElementsByClassName("close")[0];               //span that closes the modal
 
         //when the user click the button, open the modal
-        function openModal() {
+        function openModal(appointmentId) {
+            var rejectButton = '<button type="button" id="modalButton" class="btn btn-danger" onclick="ajaxRejectAppointment(' + "'" + appointmentId + "'" + ')">Reject</button>';
+            document.getElementById("reject").innerHTML = rejectButton;  
             modal.style.display = "block";
         }
 
@@ -130,6 +149,7 @@
         // When the user clicks on (x), close the modal
         function closeModal() {
             modal.style.display = "none";
+            document.getElementById("reject").innerHTML = "";
         }
 
         // When the user clicks anywhere outside of the modal, close it
@@ -141,9 +161,9 @@
 
         function ajaxRejectAppointment(appointmentId) {
             var serviceURL = '@Url.Action("AppointmentReject","Practitioner")';
-
+            var rejectReason = document.getElementById("rejectReasons").value;
             @*var data = '@Html.Raw(Json.Encode(Model.SpecialistNearby))';*@
-            var data = JSON.stringify({ appointmentId:appointmentId });
+            var data = JSON.stringify({ appointmentId: appointmentId, rejectReason: rejectReason });
 
             $.ajax({
                 type: "POST",
@@ -160,6 +180,74 @@
                 }
             });
         }
+
+        function ajaxAbsentAppointment(appointmentId) {
+            var serviceURL = '@Url.Action("AppointmentAbsent","Practitioner")';
+
+            @*var data = '@Html.Raw(Json.Encode(Model.SpecialistNearby))';*@
+            var data = JSON.stringify({ appointmentId:appointmentId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                complete: function (result) {
+                    if (result.responseText == 1) {
+                        if (confirm("Appointment was updated successfully.")) {
+                            window.location.reload();
+                        }
+                    }
+
+                    if (result.responseText == 0) {
+                        if (confirm("Appointment was not updated. Please try again.")) {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        }
+
+        function ajaxPendingAppointment(appointmentId) {
+            var serviceURL = '@Url.Action("AppointmentPending", "Practitioner")';
+
+            @*var data = '@Html.Raw(Json.Encode(Model.SpecialistNearby))';*@
+            var data = JSON.stringify({ appointmentId:appointmentId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                complete: function (result) {
+                    if (result.responseText == 1) {
+                        if (confirm("Appointment was updated successfully.")) {
+                            window.location.reload();
+                        }
+                    }
+
+                    if (result.responseText == 0) {
+                        if (confirm("Appointment was not updated. Please try again.")) {
+                            window.location.reload();
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(document).ajaxStart(function () {
+                $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+            });
+            $(document).ajaxComplete(function () {
+                $("#loading").data('timeout', window.setTimeout(function () { $("#loading").hide() }, 100000));
+
+            });
+        });
     </script>
 }
 
@@ -216,6 +304,7 @@
 
     th {
         text-align: center;
+        font-size:20px;
     }
 
     #pending {
@@ -234,6 +323,13 @@
 
     #rejected {
         background-color: lightpink;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
+    }
+
+    #absent {
+        background-color: yellow;
         margin-left: 20px;
         margin-right: 20px;
         border-radius: 10px;
@@ -282,6 +378,7 @@
             cursor: pointer;
         }
 
+
     </style>
 
 @model FYP.Entities.ViewModel.PractitionerBaseViewModel
@@ -291,12 +388,20 @@
             <div><h2 style="text-align:center">-- <b>Appointments</b> --</h2></div>
         </div>
 
+        <div id="loading" class="spinner-border" role="status">
+            <span id="loading" class="sr-only">Loading...</span>
+        </div>
+
         <!-- The Modal -->
         <div id="rejectReason" class="modal">
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <p>Some text in the Modal..</p>
+                <p><b>Rejected Reason</b> : </p>
+                <p>@Html.TextAreaFor(m => m.RejectedReasons, new { id = "rejectReasons" })</p>
+                <p id="reject">
+
+                </p>
             </div>
         </div>
 
@@ -306,10 +411,10 @@
                 <thead class="row">
                     <tr>
                         <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1">Index</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Date</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Time</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Date Time</th>
+                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">First Name</th>
                         <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Created On</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Actions</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="pendingContent">
@@ -325,14 +430,14 @@
                 <thead class="row">
                     <tr>
                         <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1">Index</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Date</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Time</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Date Time</th>
+                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">First Name</th>
                         <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Created On</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Actions</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="approvedContent">
-                    @* javascript generate pending table *@
+                    @* javascript generate approved table *@
                 </tbody>
             </table>
         </div>
@@ -344,14 +449,33 @@
                 <thead class="row">
                     <tr>
                         <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1">Index</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Date</th>
-                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Appointment Time</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Date Time</th>
+                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">First Name</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Created On</th>
+                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Reasons</th>
+                    </tr>
+                </thead>
+                <tbody id="rejectedContent">
+                    @* javascript generate rejected table *@
+                </tbody>
+            </table>
+        </div>
+
+        <br />
+        <div class="container-fluid" id="absent" style="overflow-x:auto;">
+            <table class="table-bordered table-responsive">
+                <caption style="color:black">Status : <b style="color:darkorange">Absent</b></caption>
+                <thead class="row">
+                    <tr>
+                        <th class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1">Index</th>
+                        <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Date Time</th>
+                        <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">First Name</th>
                         <th class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3">Created On</th>
                         <th class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="rejectedContent">
-                    @* javascript generate pending table *@
+                <tbody id="absentContent">
+                    @* javascript generate absent table *@
                 </tbody>
             </table>
         </div>

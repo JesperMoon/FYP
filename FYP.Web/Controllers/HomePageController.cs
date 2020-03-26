@@ -60,7 +60,7 @@ namespace FYP.Controllers
                             PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
                             vm.AccId = result.AccountNo;
                             FormsAuthentication.SetAuthCookie(result.AccountNo.ToString(), false);
-                            return RedirectToAction("Home", "Practitioner", vm);
+                            return RedirectToAction("Profile", "Practitioner", vm);
                         }
 
                         else if(result.AccountStatus.Equals(ConstantHelper.AccountStatus.Deleted))

@@ -54,6 +54,12 @@ namespace FYP.Entities
         public string AppointmentTimeString { get; set; }
 
         [DataMember]
+        public string RejectReasons { get; set; }
+
+        [DataMember]
         public string CreatedOnString { get; set; }
+
+        [DataMember]
+        public string FirstName { get; set; }
     }
 }

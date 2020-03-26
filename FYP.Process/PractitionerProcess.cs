@@ -133,10 +133,52 @@ namespace FYP.Process
 
             RestRequest request = new RestRequest(ConstantHelper.API.Appointment.AppointmentRejected, Method.POST);
             request.RequestFormat = DataFormat.Json;
-            //request.AddBody(appointment);
+            request.AddBody(appointment);
 
             IRestResponse<int> response = client.Execute<int>(request);
             int result = response.Data;
+
+            return result;
+        }
+
+        public int AppointmentAbsent(AppointmentModel appointment)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Appointment.AppointmentAbsent, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(appointment);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public int AppointmentPending(AppointmentModel appointment)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Appointment.AppointmentPending, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(appointment);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public NewPatientRecordViewModel CreateNewPatientRecord(PatientRecordModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.PatientRecord.CreateNewRecord, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<NewPatientRecordViewModel> response = client.Execute<NewPatientRecordViewModel>(request);
+            NewPatientRecordViewModel result = response.Data;
 
             return result;
         }

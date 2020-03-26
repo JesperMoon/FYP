@@ -87,6 +87,15 @@ namespace FYP.Framework
                 public const string MakeAppointment = "Patient/MakeAppointment";
                 public const string AppointmentAccepted = "Practitioner/AppointmentAccepted";
                 public const string AppointmentRejected = "Practitioner/AppointmentRejected";
+                public const string AppointmentAbsent = "Practitioner/AppointmentAbsent";
+                public const string AppointmentPending = "Practitioner/AppointmentPending";
+            }
+
+            public static class PatientRecord
+            {
+                public const string GetPatientDetails = "Practitioner/GetPatientDetails";
+                public const string GetPractitionerDetails = "Practitioner/GetPractitionerDetails";
+                public const string CreateNewRecord = "Practitioner/CreateNewRecord";
             }
         }
 
@@ -98,6 +107,7 @@ namespace FYP.Framework
             public const string Accepted = "Accepted";
             public const string Rejected = "Rejected";
             public const string NotFound = "Not found";
+            public const string Absent = "Absent";
         }
 
         public static class Email
@@ -134,11 +144,13 @@ namespace FYP.Framework
                 public const string NewAppointmentSubject = "Web App For Doctor - New Appointment";
                 public const string AppointmentApprovedSubject = "Web App For Doctor - Appointment Approved";
                 public const string AppointmentRejectedSubject = "Web App For Doctor - Appointment Rejected";
+                public const string AppointmentAbsentSubject = "Web App For Doctor - Absent Appointment";
 
                 public const string AppointmentMadeBody = @"<html><body><p>Dear User,</p><p>The appointment is made successfully. Please check your email regularly for practitioner approval on the appointment.</p><p>Your appointment details is shown as below:</p>{appointmentDetails}<br/><p>Thank you and have a nice day.</p></body></html>";
                 public const string NewAppointmentBody = @"<html><body><p>Dear User,</p><p>Sorry for disturbing, this is a reminder emails.</p><p>There is a new appointment from patient. Please login to your account for further actions on the appointment.</p><p>Link to login page : {practitionerLoginPageLink}</p><br/><p>Thank you and have a nice day.</p></body></html>";
                 public const string AppointmentApprovedBody = @"<html><body><p>Dear User,</p><p>Congratulation, your previous appointment request has been approved.</p><p>The date and time of the appointment is shown below:</p><p>{appointmentDetails}</p><br/><p>Thank you and have a nice day.</p></body></html>";
-                public const string AppointmentRejectedBody = @"<html><body>Web App For Doctor - Appointment Rejected</body></html>";
+                public const string AppointmentRejectedBody = @"<html><body><p>Dear User,</p><p>We would like to apalogize that your previous appointment request has been rejected.</p><p>The reason given by the practitioner is </p><p><u>{rejectedReasons}.</u></p><p>The date and time of the appointment is shown below:</p><p>{appointmentDetails}</p><br/><p>We would like to apalogize if any inconvinience caused. However,you can still try looking for other practitioners from our system and make an appointment with them.</p></br><p>Thank you and have a nice day.</p></body></html>";
+                public const string AppointmentAbsentBody = @"<html><body><p>Dear User,</p><p>We would like to remind you that you have missed your appointment.</p><p>The practitioner has marked your appointment as absent.</p><p>The date and time of the appointment is shown below:</p><p>{appointmentDetails}</p><br/><p>Please do mark your appointment date and time once you have made an appointment to avoid absent.</p></br><p>Thank you and have a nice day.</p></body></html>";
 
             }
 
@@ -157,6 +169,8 @@ namespace FYP.Framework
                 //Appointment
                 public const string AppointmentDetails = "{appointmentDetails}";
                 public const string PractitionerLoginPage = "{practitionerLoginPageLink}";
+
+                public const string RejectedReasons = "{rejectedReasons}";
             }
         }
 

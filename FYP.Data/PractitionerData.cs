@@ -267,6 +267,7 @@ namespace FYP.Data
                     result.Qualification = practitioner[ConstantHelper.SQLColumn.Practitioner.Qualification].ToString();
 
                     //Company
+                    result.CompanyId = Guid.Parse(practitioner[ConstantHelper.SQLColumn.Practitioner.CompanyId].ToString());
                     result.CompanyName = practitioner[ConstantHelper.SQLColumn.Practitioner.CompanyName].ToString();
                     result.CompanyPhoneNumber = practitioner[ConstantHelper.SQLColumn.Practitioner.CompanyPhoneNumber].ToString();
                     result.CompanyEmailAddress = practitioner[ConstantHelper.SQLColumn.Practitioner.CompanyEmailAddress].ToString();
@@ -554,5 +555,90 @@ namespace FYP.Data
             return returnAppointment;
         }
 
+        public Guid CreatePatientRecord(RecordFileSystem fileRecord)
+        {
+            Guid result = new Guid();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.RecordFile
+                                where pt.PatientId.Equals(fileRecord.PatientId) && pt.PractitionerId.Equals(fileRecord.PractitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Pending)
+                                select pt;
+
+                    var record = query.Select(p => p.Id).FirstOrDefault();
+
+                    if(record.Equals(Guid.Empty))
+                    {
+                        var newRecord = new PatientRecord()
+                        {
+                            ContentType = fileRecord.ContentType,
+                            FileContents = fileRecord.FileContents,
+                            FileDownloadname = fileRecord.FileDownloadname,
+                            PatientId = fileRecord.PatientId,
+                            PractitionerId = fileRecord.PractitionerId,
+                            Status = ConstantHelper.AccountStatus.Pending,
+                        };
+
+                        context.RecordFile.Add(newRecord);
+                        context.SaveChanges();
+                    }
+
+                    result = query.Select(p => p.Id).FirstOrDefault();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.CreatePatientRecord : " + err);
+            }
+
+            return result;
+        }
+
+        public int StoreRecordToDB(RecordFileSystem fileRecord)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var record = context.RecordFile.Where(p => p.Id.Equals(fileRecord.Id)).FirstOrDefault();
+                    record.FileContents = fileRecord.FileContents;
+                    record.FileDownloadname = fileRecord.FileDownloadname;
+                    record.Status = ConstantHelper.AccountStatus.Active;
+                    result = context.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.StoreRecordToDB : " + err);
+            }
+
+            return result;
+        }
+
+        public int CloseAppointment(Guid appointmentId)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var today = DateTime.Today;
+                    var appointment = context.Appointment.Where(x => x.AppointmentDateTime.Day == today.Day && x.AppointmentDateTime.Month == today.Month && x.AppointmentDateTime.Year == today.Year && x.Id.Equals(appointmentId)).Select(x => x).FirstOrDefault();
+                    appointment.Status = ConstantHelper.AccountStatus.Closed;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.CloseAppointment : " + err);
+            }
+
+            return result;
+        }
     }
 }

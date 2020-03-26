@@ -182,5 +182,30 @@ namespace FYP.Process
 
             return result;
         }
+
+        public int StoreRecordToDB(RecordFileSystem fileSystem,PatientRecordModel patientRecord)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.PatientRecord.StoreRecordToDB, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(fileSystem);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+            int secondResult = 0;
+
+            if(result != 0)
+            {
+                request = new RestRequest(ConstantHelper.API.Appointment.CloseAppointment, Method.POST);
+                request.RequestFormat = DataFormat.Json;
+                request.AddBody(patientRecord);
+
+                IRestResponse<int> response2 = client.Execute<int>(request);
+                secondResult = response.Data;
+            }
+
+            return secondResult;
+        }
     }
 }

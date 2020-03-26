@@ -417,13 +417,40 @@ namespace FYP.Business
             // Retrieve patient information
             result.PatientDetails = patientData.PatientProfile(vm.PatientId);
 
-            //record Id
-            //vm.RecordId = practitionerData.GetRecordId(xxx);
             vm.CreatedOn = DateTime.UtcNow;
             result.NewPatientRecord = vm;
+
+            RecordFileSystem fileRecord = new RecordFileSystem();
+            fileRecord.ContentType = ConstantHelper.AppSettings.RecordFileType;
+            fileRecord.FileContents = new byte[1];
+            fileRecord.FileDownloadname = DateTime.Now.Date.ToString() + "-" + result.PractitionerDetails.CompanyId;
+            fileRecord.PatientId = result.PatientDetails.AccId;
+            fileRecord.PractitionerId = result.PractitionerDetails.AccId;
+
+            //Creating a record in the database
+            result.NewPatientRecord.RecordId = practitionerData.CreatePatientRecord(fileRecord);
 
             return result;
         }
 
+        public int StoreRecordToDB(RecordFileSystem fileSystem)
+        {
+            int result = 0;
+
+            PractitionerData data = new PractitionerData();
+            result = data.StoreRecordToDB(fileSystem);
+
+            return result;
+        }
+
+        public int CloseAppointment(Guid appointmentId)
+        {
+            int result = 0;
+
+            PractitionerData data = new PractitionerData();
+            result = data.CloseAppointment(appointmentId);
+
+            return result;
+        }
     }
 }

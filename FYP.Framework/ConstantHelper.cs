@@ -23,6 +23,8 @@ namespace FYP.Framework
             {
                 public static string FYP = "FYP";
             }
+
+            public static string RecordFileType = "application/pdf";
         }
 
         public static class DBAppSettings
@@ -89,6 +91,7 @@ namespace FYP.Framework
                 public const string AppointmentRejected = "Practitioner/AppointmentRejected";
                 public const string AppointmentAbsent = "Practitioner/AppointmentAbsent";
                 public const string AppointmentPending = "Practitioner/AppointmentPending";
+                public const string CloseAppointment = "Practitioner/CloseAppointment";
             }
 
             public static class PatientRecord
@@ -96,6 +99,7 @@ namespace FYP.Framework
                 public const string GetPatientDetails = "Practitioner/GetPatientDetails";
                 public const string GetPractitionerDetails = "Practitioner/GetPractitionerDetails";
                 public const string CreateNewRecord = "Practitioner/CreateNewRecord";
+                public const string StoreRecordToDB = "Practitioner/StoreRecordToDB";
             }
         }
 
@@ -108,6 +112,7 @@ namespace FYP.Framework
             public const string Rejected = "Rejected";
             public const string NotFound = "Not found";
             public const string Absent = "Absent";
+            public const string Closed = "Closed";
         }
 
         public static class Email
@@ -192,6 +197,7 @@ namespace FYP.Framework
                 public const string Qualification = "Qualification";
 
                 //Company
+                public const string CompanyId = "CompanyId";
                 public const string CompanyName = "CompanyName";
                 public const string CompanyPhoneNumber = "CompanyPhoneNumber";
                 public const string CompanyEmailAddress = "CompanyEmailAddress";

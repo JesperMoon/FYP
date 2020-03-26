@@ -296,7 +296,7 @@
                 </tr>
 
                 <tr class="row">
-                    <td class="col-2"><h4><b>(Only If Yes) : </b></h4></td>
+                    <td class="col-2"><h4><b>(Only If Allergic is Yes) : </b></h4></td>
                     <td class="col-2">
                         <h4>@Html.TextBoxFor(m => m.NewPatientRecord.AllergicType, new { id = "allergic", @disabled = "true", value = Model.NewPatientRecord.AllergicType })</h4>
                     </td>
@@ -327,33 +327,33 @@
             @Html.HiddenFor(m => m.NewPatientRecord.PractitionerId)
             @Html.HiddenFor(m => m.NewPatientRecord.AppointmentId)
             @Html.HiddenFor(m => m.NewPatientRecord.RecordId)
-
-
             @Html.HiddenFor(m => m.NewPatientRecord.CreatedOn)
 
-            @Html.HiddenFor(m => m.PatientDetails.AccId)
-            @Html.HiddenFor(m => m.PatientDetails.BloodType)
-            @Html.HiddenFor(m => m.PatientDetails.DateOfBirth)
-            @Html.HiddenFor(m => m.PatientDetails.EmailAddress)
-            @Html.HiddenFor(m => m.PatientDetails.FirstName)
-            @Html.HiddenFor(m => m.PatientDetails.LastName)
-            @Html.HiddenFor(m => m.PatientDetails.Gender)
-
-            @Html.HiddenFor(m => m.PractitionerDetails.AccId)
-            @Html.HiddenFor(m => m.PractitionerDetails.City)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyId)
+            @Html.HiddenFor(m => m.PractitionerDetails.CompanyName)
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine1)
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine2)
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyAddressLine3)
-            @Html.HiddenFor(m => m.PractitionerDetails.CompanyEmailAddress)
-            @Html.HiddenFor(m => m.PractitionerDetails.CompanyName)
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyPhoneNumber)
-            @Html.HiddenFor(m => m.PractitionerDetails.DateOfBirth)
-            @Html.HiddenFor(m => m.PractitionerDetails.EmailAddress)
+            @Html.HiddenFor(m => m.PractitionerDetails.State)
+            @Html.HiddenFor(m => m.PractitionerDetails.PostalCode)
+
+            @Html.HiddenFor(m => m.PractitionerDetails.AccId)
             @Html.HiddenFor(m => m.PractitionerDetails.FirstName)
-            @Html.HiddenFor(m => m.PractitionerDetails.Gender)
             @Html.HiddenFor(m => m.PractitionerDetails.LastName)
-            @Html.HiddenFor(m => m.PractitionerDetails.OfficePhoneNumber)
+            @Html.HiddenFor(m => m.PractitionerDetails.Gender)
+            @Html.HiddenFor(m => m.PractitionerDetails.EmailAddress)
+            @Html.HiddenFor(m => m.PractitionerDetails.DateOfBirth)
             @Html.HiddenFor(m => m.PractitionerDetails.SpecialistString)
+            @Html.HiddenFor(m => m.PractitionerDetails.OfficePhoneNumber)
+
+            @Html.HiddenFor(m => m.PatientDetails.AccId)
+            @Html.HiddenFor(m => m.PatientDetails.FirstName)
+            @Html.HiddenFor(m => m.PatientDetails.LastName)
+            @Html.HiddenFor(m => m.PatientDetails.Gender)
+            @Html.HiddenFor(m => m.PatientDetails.EmailAddress)
+            @Html.HiddenFor(m => m.PatientDetails.DateOfBirth)
+            @Html.HiddenFor(m => m.PatientDetails.BloodType)
 
             <div style="float:right;">
                 <input type="submit" value="Create New Record" name="CreateNewRecord" class="btn btn-success" @*onclick="createNewRecord()"*@ />

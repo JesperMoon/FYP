@@ -111,5 +111,35 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.PatientRecord.StoreRecordToDB)]
+        [HttpPost]
+        public int StoreRecordToDB(RecordFileSystem fileSystem)
+        {
+            int result = 0;
+
+            if (fileSystem != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.StoreRecordToDB(fileSystem);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Appointment.CloseAppointment)]
+        [HttpPost]
+        public int CloseAppointment(PatientRecordModel patientRecord)
+        {
+            int result = 0;
+
+            if (patientRecord != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.CloseAppointment(patientRecord.AppointmentId);
+            }
+
+            return result;
+        }
     }
 }

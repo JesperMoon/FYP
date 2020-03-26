@@ -96,6 +96,10 @@
     <Compile Include="Migrations\202003171353452_Add_RejectedReasons_Column.designer.cs">
       <DependentUpon>202003171353452_Add_RejectedReasons_Column.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003260715045_add_fileRecord_table.cs" />
+    <Compile Include="Migrations\202003260715045_add_fileRecord_table.designer.cs">
+      <DependentUpon>202003260715045_add_fileRecord_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
@@ -138,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003171353452_Add_RejectedReasons_Column.resx">
       <DependentUpon>202003171353452_Add_RejectedReasons_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003260715045_add_fileRecord_table.resx">
+      <DependentUpon>202003260715045_add_fileRecord_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

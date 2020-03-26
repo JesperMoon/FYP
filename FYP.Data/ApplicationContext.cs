@@ -32,6 +32,9 @@ namespace FYP.Data
         //Appointment
         public DbSet<Appointment> Appointment { get; set; }
 
+        //PatientRecord
+        public DbSet<PatientRecord> RecordFile { get; set; }
+
         public override int SaveChanges()
         {
             var entries = ChangeTracker

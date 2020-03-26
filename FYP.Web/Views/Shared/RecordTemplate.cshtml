@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewBag.Title = "RecordTemplate";
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<style>
+
+    #header {
+        font-size: medium;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    tr{
+        margin:1px;        
+    }
+
+    h4{
+        margin:2px;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.NewPatientRecordViewModel
+
+<html>
+<body>
+    <h4 class="col-lg-8 col-xs-8" style="text-align:left;font-size:xx-large;"><b>Patient Health Record</b></h4>
+    <div class="col-lg-4 col-xs-4" style="text-align:right;">
+        <p><small>Created Date: <b>@Model.NewPatientRecord.CreatedOn.ToString("dd/MM/yyyy")</b></small></p>
+        <p><small>Created Time: <b>@Model.NewPatientRecord.CreatedOn.ToString("hh:MM:ss")</b></small></p>
+        <p><small>Record ID: <b>@Model.NewPatientRecord.RecordId</b></small></p>
+    </div>
+    <br/>
+    <h4 style="text-align:left;"><b><u>Company Details</u></b></h4>
+    <table>
+        <tr>
+            <td>
+                <p>Company Name :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.CompanyName</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Phone Number :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.CompanyPhoneNumber</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Company Address :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.CompanyAddressLine1</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">State :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.State</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <p>@Model.PractitionerDetails.CompanyAddressLine2</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Postal Code:</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.PostalCode</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td>
+                <p>@Model.PractitionerDetails.CompanyAddressLine3</p>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <hr />
+    <h4 style="text-align:left;"><b><u>Practitioner Details</u></b></h4>
+    <table>
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">First Name :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.FirstName</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Date of Birth (dd/MM/yyyy) :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.DateOfBirth.ToString("dd / MM / yyyy")</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Last Name :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.LastName</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Specialist :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.SpecialistString</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Gender :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.Gender</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Office Phone Number:</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.OfficePhoneNumber</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Email Address :</p>
+            </td>
+            <td>
+                <p>@Model.PractitionerDetails.EmailAddress</p>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <hr />
+    <h4 style="text-align:left;"><b><u>Patient Details</u></b></h4>
+    <table>
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">First Name :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.FirstName</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Date of Birth (dd/MM/yyyy) :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.DateOfBirth.ToString("dd / MM / yyyy")</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Last Name :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.LastName</p>
+            </td>
+            <td>
+                <p style="text-align:left;" id="header">Blood Type :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.BloodType</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Gender :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.Gender</p>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                <p style="text-align:left;" id="header">Email Address :</p>
+            </td>
+            <td>
+                <p>@Model.PatientDetails.EmailAddress</p>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <hr />
+
+    <table>
+        <tr>
+            <td><p>Current Medication Status :</p></td>
+            <td><p>@Model.NewPatientRecord.CurrMedication</p></td>
+        </tr>
+
+        <tr>
+            <td><p>Allergic : </p></td>
+            @if (Model.NewPatientRecord.AllergicBool.Equals("Yes"))
+            {
+                <td><p>@Model.NewPatientRecord.AllergicType</p></td>
+            }
+            else
+            {
+                <td><p>@Model.NewPatientRecord.AllergicBool</p></td>
+            }
+        </tr>
+
+
+        <tr>
+            <td><p>Body Temperature :</p></td>
+            <td><p>@Model.NewPatientRecord.BodyTemperature °C</p></td>
+        </tr>
+
+        <tr class="row">
+            <td><p>Symptoms : </p></td>
+            <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.Symptoms</p></td>
+        </tr>
+
+        <tr>
+            <td><p>Medicines : </p></td>
+            <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.Medicines</p></td>
+        </tr>
+    </table>
+</body>
+</html>
+

@@ -4,5 +4,226 @@
     Layout = "~/Views/Shared/PatientLayout.cshtml";
 }
 
-<h2>Records</h2>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.30">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+        window.onload = function ajaxGetRecords() {
+            var serviceURL = '@Url.Action("Records","Patient")';
+            var patientId = $("#patientId").val();
+            var data = JSON.stringify({ patientId: patientId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    $('.container').show();
+                    $("#loading").data($("#loading").hide());
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="4" style="text-align:center;color:red;">' + 'No records found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><a href="' + '@Url.Action("ViewRecord","Patient")' + '?recordId=' + item.RecordId + '&patientId=' + accId + '" target="_blank"><p>' + item.RecordId + '</p></a></td><td><p>' + item.CreatedOn + '</p></td><td><p>' + item.CreationTime + '</p></td></tr>';
+                            @*<a href="' + '@Url.Action("RecordsView","Practitioner")' + '?recordsId=' + item.RecordsId + '&accId=' + accId + '" target="_blank"><p>'*@
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+
+                    //$('#table').append(trHTML);
+                    //$('.container').html(result);
+                    //document.getElementsByClassName("container").style.visibility = 'visible';
+                    //document.getElementById("#result").style.display = 'block';
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+        function ajaxSearchRecords() {
+            var serviceURL = '@Url.Action("SearchRecords","Patient")';
+            var month = $("#month").val();
+            var year = $("#year").val();
+            var patientId = $("#patientId").val();
+            var data = JSON.stringify({ month: month, year: year, patientId: patientId });
+
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    document.getElementById("content").innerHTML = "";
+
+                    $("#loading").hide();
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="4" style="text-align:center;color:red;">' + 'No records found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><a href="' + '@Url.Action("ViewRecord","Patient")' + '?recordId=' + item.RecordId + '&patientId=' + accId + '" target="_blank"><p>' + item.RecordId + '</p></a></td><td><p>' + item.CreatedOn + '</p></td><td><p>' + item.CreationTime + '</p></td></tr>';
+                            @* <a href="' + '@Url.Action(" RecordsView","Practitioner")' + '?recordsId=' + item.RecordsId + '&accId=' + accId + '" target = "_blank" > <p>'*@
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            $('.container').hide();
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: rgb(79,190,197);
+    }
+
+    /* Body styling */
+    /* Frame styling */
+    .jumbotron {
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: right;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 100px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    .input {
+        flex: 1;
+    }
+
+    table {
+        width: 100%
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td.p {
+        font-size: 18px;
+    }
+
+    p2 {
+        color: red;
+    }
+
+    a {
+        color: dimgrey;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.PatientBaseViewModel
+
+<div class="jumbotron">
+    <div class="row">
+        <div><h2 style="text-align:center">-- <b>Records Directory</b> --</h2></div>
+    </div>
+
+    <div id="loading" class="spinner-border" role="status">
+        <span id="loading" class="sr-only">Loading...</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Month : </p></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.EnumDropDownListFor(m => m.PractitionerRecordSearch.Month, new { id = "month" })</p></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Year : </p></div>
+        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.PractitionerRecordSearch.Year, new { style = "width:65px;", placeholder = "Year", minlength = 4, maxlength = 4, id = "year" })</p></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p2>@Html.ValidationMessageFor(m => m.PractitionerRecordSearch.Year)</p2></div>
+    </div>
+
+    @Html.HiddenFor(m => m.AccId, new { id = "patientId", @value = Model.AccId })
+
+    <div style="text-align:center;">
+        <div type="button" onclick="javascript:ajaxSearchRecords()" class="btn btn-success" style="font-size:16px;">Search</div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+
+    <div class="container">
+        <table class="table-bordered table-condensed table-hover" style="background-color:lightgray;" id="table">
+            <thead>
+                <tr>
+                    <th><p><b>Index</b></p></th>
+                    <th><p><b>Record ID</b></p></th>
+                    <th><p><b>Date</b></p></th>
+                    <th><p><b>Time</b></p></th>
+                </tr>
+            </thead>
+            <tbody id="content">
+                @* Content generated by javascript *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 

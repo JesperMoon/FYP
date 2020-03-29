@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -39,9 +40,11 @@ namespace FYP.Entities
         public float BodyTemperature { get; set; }
 
         [DataMember]
+        [Required(ErrorMessage = "Symptoms field cannot be empty.")]
         public String Symptoms { get; set; }
 
         [DataMember]
+        [Required(ErrorMessage = "Medicine field cannot be empty.")]
         public String Medicines { get; set; }
     }
 }

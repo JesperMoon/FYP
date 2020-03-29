@@ -159,7 +159,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\ElmahLogScripts.sql" />
+    <Content Include="Scripts\[dbo].[GetAuthorizedPractitioners].sql" />
     <Content Include="Scripts\[dbo].[GetPractitionerProfile].sql" />
+    <Content Include="Scripts\[dbo].[GetRecordsDirectory].sql" />
+    <Content Include="Scripts\[dbo].[PatientSearchRecords].sql" />
+    <Content Include="Scripts\[dbo].[SearchRecords].sql" />
     <Content Include="Scripts\[dbo].[SpecialistSearch].sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

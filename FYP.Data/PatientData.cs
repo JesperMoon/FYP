@@ -411,5 +411,145 @@ namespace FYP.Data
 
             return patientEmail;
         }
+
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(Guid patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.RecordFile
+                                where pt.PatientId.Equals(patientId)
+                                select pt;
+
+                    var records = query.OrderBy(x => x.CreatedOn).Select(x => x);
+
+                    foreach (var record in records)
+                    {
+                        PractitionerRecordsDirectory row = new PractitionerRecordsDirectory();
+                        row.RecordId = record.Id;
+                        DateTime recordTime = Convert.ToDateTime(record.CreatedOn);
+                        row.CreatedOn = recordTime.ToString("dd/MM/yyyy");
+                        row.CreationTime = recordTime.ToString("hh:mm tt");
+
+                        result.Add(row);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.GetRecordsDirectory : " + err);
+            }
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> SearchRecords(Guid patientId, int? year,int month)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.PatientSearchRecords, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.AccId, patientId));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.Year, year));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.Month, month));
+
+                SqlDataReader records = cmd.ExecuteReader();
+                bool check = records.HasRows;
+
+                while (records.Read())
+                {
+                    PractitionerRecordsDirectory record = new PractitionerRecordsDirectory();
+                    record.RecordId = Guid.Parse(records[ConstantHelper.SQLColumn.GetRecordsDirectory.Id].ToString());
+                    DateTime recordTime = Convert.ToDateTime(records[ConstantHelper.SQLColumn.GetRecordsDirectory.CreatedOn].ToString());
+                    record.CreatedOn = recordTime.ToString("dd/MM/yyyy");
+                    record.CreationTime = recordTime.ToString("hh:mm tt");
+
+                    result.Add(record);
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.SearchRecords :" + err);
+            }
+
+            return result;
+        }
+
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            RecordFileSystem result = new RecordFileSystem();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.RecordFile
+                                where pt.Id.Equals(record.Id) && pt.PatientId.Equals(record.PatientId)
+                                select pt;
+
+                    var medicalRecord = query.Select(p => p).FirstOrDefault();
+
+                    //account found
+                    if (medicalRecord != null)
+                    {
+                        result.FileContents = medicalRecord.FileContents;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.GetRecord : " + err);
+            }
+
+            return result;
+        }
+
+        public int ProfileEdit(PatientBaseViewModel profile)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var patientProfile = context.Patient.Where(p => p.Id.Equals(profile.AccId) && p.Status.Equals(ConstantHelper.AccountStatus.Active)).FirstOrDefault();
+
+                    //profile found
+                    if (patientProfile != null)
+                    {
+                        patientProfile.FirstName = profile.FirstName;
+                        patientProfile.LastName = profile.LastName;
+                        patientProfile.UserName = profile.UserName;
+                        patientProfile.Gender = profile.Gender;
+                        patientProfile.Religion = profile.Religion.ToString();
+                        patientProfile.DateOfBirth = profile.DateOfBirth;
+                        patientProfile.EmailAddress = profile.EmailAddress;
+                        patientProfile.ContactNumber1 = profile.ContactNumber1;
+                        patientProfile.ContactNumber2 = profile.ContactNumber2;
+                        patientProfile.ContactNumber3 = profile.ContactNumber3;
+                        patientProfile.HomeAddress1 = profile.HomeAddressLine1;
+                        patientProfile.HomeAddress2 = profile.HomeAddressLine2;
+                        patientProfile.HomeAddress3 = profile.HomeAddressLine3;
+                        patientProfile.PostalCode = Convert.ToInt32(profile.PostalCode);
+                        patientProfile.City = profile.City;
+                        patientProfile.State = profile.State.ToString();
+
+                        result = context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.ProfileEdit : " + err);
+            }
+
+            return result;
+        }
     }
 }

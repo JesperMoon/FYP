@@ -18,6 +18,9 @@ namespace FYP.Entities
         public byte[] FileContents { get; set; }
 
         [DataMember]
+        public string FileContentsString { get; set; }
+
+        [DataMember]
         public string FileDownloadname { get; set; }
 
         [DataMember]

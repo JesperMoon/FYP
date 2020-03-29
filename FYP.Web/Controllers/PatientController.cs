@@ -1,5 +1,6 @@
 ﻿using FYP.Entities;
 using FYP.Entities.ViewModel;
+using FYP.Framework;
 using FYP.Process;
 using Newtonsoft.Json;
 using System;
@@ -53,27 +54,37 @@ namespace FYP.Controllers
             }
             else
             {
+                vm.State = (State)Enum.Parse(typeof(State), vm.StateString);
+                vm.Religion = (Religion)Enum.Parse(typeof(Religion), vm.ReligionString);
+                vm.DateOfBirthString = vm.DateOfBirth.ToString("yyyy-MM-dd");
+
                 return View(vm);
             }
+        }
 
-            ////moving data to form vm
-            //formVm.FirstName = vm.FirstName;
-            //formVm.LastName = vm.LastName;
-            //formVm.UserName = vm.UserName;
-            //formVm.Gender = vm.Gender;
-            ////formVm.Religion = vm.ReligionString;
-            //formVm.DateOfBirth = vm.DateOfBirth;
-            //formVm.EmailAddress = vm.EmailAddress;
-            //formVm.ContactNumber1 = vm.ContactNumber1;
-            //formVm.ContactNumber2 = vm.ContactNumber2;
-            //formVm.ContactNumber3 = vm.ContactNumber3;
-            //formVm.HomeAddressLine1 = vm.HomeAddressLine1;
-            //formVm.HomeAddressLine2 = vm.HomeAddressLine2;
-            //formVm.HomeAddressLine3 = vm.HomeAddressLine3;
-            //formVm.PostalCode = vm.PostalCode;
-            //formVm.City = vm.City;
-            ////formVm.State = vm.StateString;
-            ////formVm.BloodType = vm.BloodTypeString;
+        [Authorize]
+        [HttpPost]
+        public ActionResult ProfileEdit(PatientBaseViewModel vm, Guid accId)
+        {
+            PatientBaseViewModel result = new PatientBaseViewModel();
+            result.AccId = accId;
+
+            PatientProcess process = new PatientProcess();
+            int returnValue = process.ProfileEdit(vm);
+
+
+            if (returnValue != 0)
+            {
+                return RedirectToAction("Home", "Patient", result);
+            }
+            else
+            {
+                return Content(@"<body>
+                           <script type='text/javascript'>
+                             if(confirm('Profile is not updated successfully. Press Ok to try again.')){ window.history.back(); };
+                           </script>
+                         </body> ");
+            }
         }
 
         [Authorize]
@@ -273,7 +284,65 @@ namespace FYP.Controllers
             {
                 PatientBaseViewModel result = new PatientBaseViewModel();
                 result.AccId = vm.AccId;
+                result.PractitionerRecordSearch.Year = DateTime.Now.Year;
                 return View(result);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Records(string patientId)
+        {
+            PatientBaseViewModel vm = new PatientBaseViewModel();
+            vm.AccId = Guid.Parse(patientId);
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PatientProcess process = new PatientProcess();
+            result = process.GetRecordsDirectory(vm);
+
+            return Json(result,JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SearchRecords(string month, string year, string patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            PractitionerRecordSearch vm = new PractitionerRecordSearch();
+            vm.AccId = Guid.Parse(patientId);
+            vm.Month = (Month)Enum.Parse(typeof(Month), month);
+            vm.Year = Convert.ToInt32(year);
+
+            PatientProcess process = new PatientProcess();
+            result = process.SearchRecords(vm);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult ViewRecord(string recordId, string patientId)
+        {
+            RecordFileSystem record = new RecordFileSystem();
+            record.Id = Guid.Parse(recordId);
+            record.PatientId = Guid.Parse(patientId);
+            PatientProcess process = new PatientProcess();
+            RecordFileSystem result = new RecordFileSystem();
+            result = process.GetRecord(record);
+
+            if (result != null)
+            {
+                if (result.FileContentsString != null)
+                {
+                    result.FileContents = Convert.FromBase64String(result.FileContentsString);
+                    FileContentResult fileResult = new FileContentResult(result.FileContents, ConstantHelper.AppSettings.RecordFileType);
+
+                    return fileResult;
+                }
+
+                return new HttpNotFoundResult("Record Not Found!");
+            }
+            else
+            {
+                return new HttpNotFoundResult("Record Not Found!");
             }
         }
     }

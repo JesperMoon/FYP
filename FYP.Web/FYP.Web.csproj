@@ -218,6 +218,7 @@
     <Content Include="Views\Patient\MakeAppointment.cshtml" />
     <Content Include="Views\Practitioner\NewPatientRecord.cshtml" />
     <Content Include="Views\Shared\RecordTemplate.cshtml" />
+    <Content Include="Views\Practitioner\ProfileEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -30,7 +30,7 @@
                     $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
                 },
                 success: function success(result) {
-                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").hide() }, 1000));
+                    $("#loading").data('timeout', $("#loading").hide());
 
                     var pendingHtml = '';
                     var approvedHtml = '';

@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Web App For Doctor - Patient Profile Edit";
-    Layout = "~/Views/Shared/PatientLayout.cshtml";
+    ViewBag.Title = "Web App For Doctor - Practitioner Profile Edit";
+    Layout = "~/Views/Shared/PractitionerLayout.cshtml";
 }
 
 <meta name="viewport" content="width=device-width, initial-scale=0.5">
@@ -15,15 +15,15 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            var state = document.getElementById("State");
-            var selectedState = @Html.Raw(Json.Encode(Model.State));
-
-            state.value = selectedState;
-
             var religion = document.getElementById("Religion");
             var selectedReligion = @Html.Raw(Json.Encode(Model.Religion));
 
             religion.value = selectedReligion;
+
+            var specialist = document.getElementById("Specialist");
+            var selectedSpecialist = @Html.Raw(Json.Encode(Model.Specialist));
+
+            specialist.value = selectedSpecialist;
         });
     </script>
 }
@@ -31,7 +31,7 @@
 <style>
     /* Frame styling */
     body {
-        background-color: rgb(79,190,197);
+        background-color: rgb(2,210,173);
     }
 
     .jumbotron {
@@ -81,24 +81,24 @@
     .row {
         margin-left: 40px;
         margin-right: 20px;
-        width:100%;
+        width: 100%;
     }
 
-    button{
+    button {
         border-radius: 10px;
     }
 </style>
 
 @using FYP.Framework
 
-@model FYP.Entities.ViewModel.PatientBaseViewModel
+@model FYP.Entities.ViewModel.PractitionerBaseViewModel
 
 <html>
 <body>
     <div class="jumbotron">
         <div class="flex-row">
             <div class="col-lg-1 col-1"></div>
-            <a class="col-lg-3 col-xs-3 backButton" href="@Url.Action("Home", "Patient", new { Model, Model.AccId })">
+            <a class="col-lg-3 col-xs-3 backButton" href="@Url.Action("Profile", "Practitioner", new { Model, Model.AccId })">
                 <span class="fa fa-arrow-circle-left"></span>
             </a>
             <div class="col-lg-8 col-8 text-left">
@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        <form method="POST" action="@Url.Action("ProfileEdit","Patient", new { Model, Model.AccId })">
+        <form method="POST" action="@Url.Action("ProfileEdit","Practitioner", new { Model, Model.AccId })">
             <div class="row">
                 <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
                 <div class="col-10 col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -132,8 +132,7 @@
                                 <tr class="row">
                                     <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Gender): </th>
                                     <td class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">@Html.RadioButtonFor(m => m.Gender, "Male", true) Male   @Html.RadioButtonFor(m => m.Gender, "Female", false) Female</td>
-                                    @*<td class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">@Html.RadioButtonFor(m => m.Gender, new { value = "Male", name = "gender", @checked = "true" }) Male   @Html.RadioButtonFor(m => m.Gender, new { value = "Female", name = "gender" }) Female</td>*@
-                                    <td class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></td>
+                                    <td class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></td>
                                 </tr>
                             }
                             else
@@ -141,7 +140,7 @@
                                 <tr class="row">
                                     <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Gender): </th>
                                     <td class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2">@Html.RadioButtonFor(m => m.Gender, "Male", false) Male   @Html.RadioButtonFor(m => m.Gender, "Female", true) Female</td>
-                                    <td class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></td>
+                                    <td class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></td>
                                 </tr>
                             }
 
@@ -157,64 +156,84 @@
 
                             <tr class="row">
                                 <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.EmailAddress): </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.EmailAddress, new { value = Model.EmailAddress, style = "width:450px;" })</td>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.EmailAddress, new { value = Model.EmailAddress })</td>
                             </tr>
 
                             <tr class="row">
-                                <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Contact Number: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">1) @Html.TextBoxFor(m => m.ContactNumber1, new { value = Model.ContactNumber1, input = "numeric", @style = "width : 245px " })</td>
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.OfficePhoneNumber): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.OfficePhoneNumber, new { value = Model.OfficePhoneNumber })</td>
                             </tr>
 
                             <tr class="row">
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">2) @Html.TextBoxFor(m => m.ContactNumber2, new { value = Model.ContactNumber2, input = "numeric", @style = "width : 245px " })</td>
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Role: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.Role, new { value = Model.Role })</td>
                             </tr>
 
                             <tr class="row">
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">3) @Html.TextBoxFor(m => m.ContactNumber3, new { value = Model.ContactNumber3, input = "numeric", @style = "width : 245px " })</td>
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Specialist: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.EnumDropDownListFor(m => m.Specialist, new { @class = "form-control", value = Model.Specialist })</td>
                             </tr>
 
                             <tr class="row">
-                                <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Home Address: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.HomeAddressLine1, new { value = Model.HomeAddressLine1 })</td>
-                            </tr>
-
-                            <tr class="row">
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.HomeAddressLine2, new { value = Model.HomeAddressLine2 })</td>
-                            </tr>
-
-                            <tr class="row">
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.HomeAddressLine3, new { value = Model.HomeAddressLine3 })</td>
-                            </tr>
-
-                            <tr class="row">
-                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Postal Code: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.PostalCode, new { value = Model.PostalCode, htmlAttributes = new { @placeholder = "52100", maxlength = "5", input = "numeric", @style = "width: 150px" } })</td>
-                            </tr>
-
-                            <tr class="row">
-                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">City: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.City, new { value = Model.City })</td>
-                            </tr>
-
-                            <tr class="row">
-                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">State: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.EnumDropDownListFor(m => m.State)</td>
-                                @*<td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.EnumDropDownListFor(m => m.State, new SelectList(Enum.GetValues(typeof(EnumConstant.State)).OfType<Enum>().Select(x => new SelectListItem { Text = Model.State.ToString(), Value = ((int)Model.State).ToString() }), "Value", "Text"))</td>*@
-                                @*                            <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.EnumDropDownListFor(m => m.State, new SelectListItem { Text = Enum.GetName(typeof(EnumConstant.State),Model.State), Value = ((int)Model.State).ToString(), Selected = true } )</td>*@
-                                @*<td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.EnumDropDownListFor(m => m.State, new SelectList(Enum.GetValues(typeof(State))),"" )</td>*@
-                                @*<td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.DropDownListFor(m => m.State, ViewBag.DropDownList as SelectList, null)</td>*@
-                            </tr>
-
-                            <tr class="row">
-                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Blood Type: </th>
-                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.BloodType</td>
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"> Qualification: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextAreaFor(m => m.Qualification, new { value = Model.Qualification })</td>
                             </tr>
                         </table>
+
                         <br />
                         <div class="row">
                             <div class="col-lg-8 col-8"></div>
                             <div class="col-lg-4 col-4"><button type="submit" class="btn-primary">Update Profile</button></div>
                         </div>
+
+                        @*<div class="row">
+                            <div><h2 style="text-align:center">-- <b>Company</b> --</h2></div>
+                        </div>
+
+                        <table class="table-bordered table-striped table-condensed">
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Name: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyName</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Phone Number: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyPhoneNumber</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Email Address: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyEmailAddress</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th rowspan="3" class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Address: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyAddressLine1</td>
+                            </tr>
+
+                            <tr class="row">
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyAddressLine2</td>
+                            </tr>
+
+                            <tr class="row">
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.CompanyAddressLine3</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company Postal Code: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.PostalCode</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company City: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.City</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">Company State: </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Model.State</td>
+                            </tr>
+                        </table>*@
                     </div>
                 </div>
                 <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>

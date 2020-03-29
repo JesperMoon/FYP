@@ -19,6 +19,14 @@ namespace FYP.Entities.ViewModel
 
         [DataMember]
         public string RejectedReasons { get; set; }
+
+        [DataMember]
+        public PractitionerRecordSearch PractitionerRecordSearch { get; set; }
+
+        public PractitionerBaseViewModel()
+        {
+            PractitionerRecordSearch = new PractitionerRecordSearch();
+        }
         
     }
 }

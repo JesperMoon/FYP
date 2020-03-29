@@ -452,5 +452,56 @@ namespace FYP.Business
 
             return result;
         }
+
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(Guid practitionerId)
+        {
+            PractitionerData dataLayer = new PractitionerData();
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            result = dataLayer.GetRecordsDirectory(practitionerId);
+
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> SearchRecords(PractitionerRecordSearch vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PractitionerData dataLayer = new PractitionerData();
+
+            if (String.IsNullOrEmpty(vm.Year.ToString()))
+            {
+                vm.Year = 0;
+            }
+            result = dataLayer.SearchRecords(vm);
+
+            return result;
+        }
+
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            PractitionerData dataLayer = new PractitionerData();
+            RecordFileSystem result = new RecordFileSystem();
+            result = dataLayer.GetRecord(record);
+
+            if(result != null)
+            {
+                if (result.FileContents != null)
+                {
+                    result.FileContentsString = Convert.ToBase64String(result.FileContents);
+                }
+            }
+
+            return result;
+        }
+
+        public int ProfileEdit(PractitionerBaseViewModel profile)
+        {
+            PractitionerData dataLayer = new PractitionerData();
+            profile.DateOfBirth = Convert.ToDateTime(profile.DateOfBirthString);
+
+            int result = 0;
+            result = dataLayer.ProfileEdit(profile);
+
+            return result;
+        }
     }
 }

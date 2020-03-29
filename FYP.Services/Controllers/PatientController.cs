@@ -96,5 +96,66 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.PatientRecord.PatientGetRecordsDirectory)]
+        [HttpPost]
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(PatientBaseViewModel vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            if (vm != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.GetRecordsDirectory(vm.AccId);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.PatientRecord.PatientSearchRecords)]
+        [HttpPost]
+        public List<PractitionerRecordsDirectory> SearchRecords(PractitionerRecordSearch vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            if (vm != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.SearchRecords(vm);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.PatientRecord.PatientGetRecord)]
+        [HttpPost]
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            RecordFileSystem result = new RecordFileSystem();
+
+            if (record != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.GetRecord(record);
+                result.FileContents = null;
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Patient.ProfileEdit)]
+        [HttpPost]
+        public int ProfileEdit(PatientBaseViewModel profile)
+        {
+            int result = 0;
+
+            if (profile != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.ProfileEdit(profile);
+            }
+
+            return result;
+        }
     }
 }

@@ -37,6 +37,12 @@ namespace FYP.Entities
         public DateTime DateOfBirth { get; set; }
 
         [DataMember]
+        [DisplayName("Date Of Birth")]
+        [DisplayFormat(DataFormatString = "yyyy-MM-dd", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Date Of Birth is required.")]
+        public string DateOfBirthString { get; set; }
+
+        [DataMember]
         [DisplayName("Email Address")]
         [Required(ErrorMessage = "Email Address is required.")]
         public string EmailAddress { get; set; }

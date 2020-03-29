@@ -141,5 +141,61 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.PatientRecord.GetRecordsDirectory)]
+        [HttpPost]
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(PractitionerBaseViewModel vm)
+        {
+            PractitionerBusiness businessLayer = new PractitionerBusiness();
+            List<PractitionerRecordsDirectory> result = businessLayer.GetRecordsDirectory(vm.AccId);
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.PatientRecord.SearchRecords)]
+        [HttpPost]
+        public List<PractitionerRecordsDirectory> SearchRecords(PractitionerRecordSearch vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            if(vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.SearchRecords(vm);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.PatientRecord.PractitionerGetRecord)]
+        [HttpPost]
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            RecordFileSystem result = new RecordFileSystem();
+
+            if (record != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.GetRecord(record);
+                result.FileContents = null;
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.ProfileEdit)]
+        [HttpPost]
+        public int ProfileEdit(PractitionerBaseViewModel profile)
+        {
+            int result = 0;
+
+            if (profile != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.ProfileEdit(profile);
+            }
+
+            return result;
+        }
     }
 }

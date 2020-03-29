@@ -32,9 +32,9 @@ namespace FYP.Business
                 vm.DateOfBirth = vm.DateOfBirth.ToLocalTime();
 
                 //Process Home Address
-                vm.HomeAddressLine1 = vm.HomeAddressLine1.TrimEnd(',');
-                vm.HomeAddressLine2 = vm.HomeAddressLine2.TrimEnd(',');
-                vm.HomeAddressLine3 = vm.HomeAddressLine3.TrimEnd(',');
+                //vm.HomeAddressLine1 = vm.HomeAddressLine1.TrimEnd(',');
+                //vm.HomeAddressLine2 = vm.HomeAddressLine2.TrimEnd(',');
+                //vm.HomeAddressLine3 = vm.HomeAddressLine3.TrimEnd(',');
 
                 PatientData dataLayer = new PatientData();
                 result = dataLayer.CreatePatient(vm);
@@ -250,6 +250,59 @@ namespace FYP.Business
             {
                 new LogHelper().LogMessage("PatientBusiness.SentEmailNotification : " + err);
             }
+        }
+
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(Guid patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PatientData dataLayer = new PatientData();
+            result = dataLayer.GetRecordsDirectory(patientId);
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> SearchRecords(PractitionerRecordSearch search)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PatientData dataLayer = new PatientData();
+            int month = (int)search.Month;
+            if(String.IsNullOrEmpty(search.Year.ToString()))
+            {
+                search.Year = 0;
+            }
+            result = dataLayer.SearchRecords(search.AccId, search.Year, month);
+            return result;
+        }
+
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            PatientData dataLayer = new PatientData();
+            RecordFileSystem result = new RecordFileSystem();
+            result = dataLayer.GetRecord(record);
+
+            if (result != null)
+            {
+                if (result.FileContents != null)
+                {
+                    result.FileContentsString = Convert.ToBase64String(result.FileContents);
+                }
+            }
+
+            return result;
+        }
+
+        public int ProfileEdit(PatientBaseViewModel profile)
+        {
+            PatientData dataLayer = new PatientData();
+            profile.DateOfBirth = Convert.ToDateTime(profile.DateOfBirthString);
+
+            if (String.IsNullOrEmpty(profile.ContactNumber3))
+            {
+                profile.ContactNumber3 = "";
+            }
+            int result = 0;
+            result = dataLayer.ProfileEdit(profile);
+
+            return result;
         }
     }
 }

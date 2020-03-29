@@ -640,5 +640,144 @@ namespace FYP.Data
 
             return result;
         }
+
+        public List<PractitionerRecordsDirectory> GetRecordsDirectory(Guid practitionerId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.GetRecordsDirectory, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.AccId, practitionerId));
+                SqlDataReader records = cmd.ExecuteReader();
+
+                while (records.Read())
+                {
+                    PractitionerRecordsDirectory record = new PractitionerRecordsDirectory();
+                    record.RecordId = Guid.Parse(records[ConstantHelper.SQLColumn.GetRecordsDirectory.Id].ToString());
+                    record.PatientFirstName = records[ConstantHelper.SQLColumn.GetRecordsDirectory.FirstName].ToString();
+                    record.PatientLastName = records[ConstantHelper.SQLColumn.GetRecordsDirectory.LastName].ToString();
+                    DateTime recordTime = Convert.ToDateTime(records[ConstantHelper.SQLColumn.GetRecordsDirectory.CreatedOn].ToString());
+                    record.CreatedOn = recordTime.ToString("dd/MM/yyyy");
+                    record.CreationTime = recordTime.ToString("hh:mm tt");
+
+                    result.Add(record);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetRecordsDirectory : " + err);
+            }
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> SearchRecords(PractitionerRecordSearch vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            try
+            {
+                int month = (int)vm.Month;
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.SearchRecords, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.AccId, vm.AccId));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.RecordId, vm.RecordId));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.Year, vm.Year));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.Month, month));
+
+                SqlDataReader records = cmd.ExecuteReader();
+                bool check = records.HasRows;
+
+                while (records.Read())
+                {
+                    PractitionerRecordsDirectory record = new PractitionerRecordsDirectory();
+                    record.RecordId = Guid.Parse(records[ConstantHelper.SQLColumn.GetRecordsDirectory.Id].ToString());
+                    record.PatientFirstName = records[ConstantHelper.SQLColumn.GetRecordsDirectory.FirstName].ToString();
+                    record.PatientLastName = records[ConstantHelper.SQLColumn.GetRecordsDirectory.LastName].ToString();
+                    DateTime recordTime = Convert.ToDateTime(records[ConstantHelper.SQLColumn.GetRecordsDirectory.CreatedOn].ToString());
+                    record.CreatedOn = recordTime.ToString("dd/MM/yyyy");
+                    record.CreationTime = recordTime.ToString("hh:mm tt");
+
+                    result.Add(record);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.Searchrecords :" + err);
+            }
+
+            return result;
+        }
+
+        public RecordFileSystem GetRecord(RecordFileSystem record)
+        {
+            RecordFileSystem result = new RecordFileSystem();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.RecordFile
+                                where pt.Id.Equals(record.Id) && pt.PractitionerId.Equals(record.PractitionerId)
+                                select pt;
+
+                    var medicalRecord = query.Select(p => p).FirstOrDefault();
+
+                    //account found
+                    if(medicalRecord != null)
+                    {
+                        result.FileContents = medicalRecord.FileContents;
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetRecord : " + err);
+            }
+
+            return result;
+        }
+
+        public int ProfileEdit(PractitionerBaseViewModel profile)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var practitioenrProfile = context.Practitioner.Where(p => p.Id.Equals(profile.AccId) && p.Status.Equals(ConstantHelper.AccountStatus.Active)).FirstOrDefault();
+
+                    //profile found
+                    if (practitioenrProfile != null)
+                    {
+                        practitioenrProfile.FirstName = profile.FirstName;
+                        practitioenrProfile.LastName = profile.LastName;
+                        practitioenrProfile.UserName = profile.UserName;
+                        practitioenrProfile.Gender = profile.Gender;
+                        practitioenrProfile.Religion = profile.Religion.ToString();
+                        practitioenrProfile.DateOfBirth = profile.DateOfBirth;
+                        practitioenrProfile.EmailAddress = profile.EmailAddress;
+                        practitioenrProfile.OfficePhoneNumber = profile.OfficePhoneNumber;
+                        practitioenrProfile.Role = profile.Role;
+                        practitioenrProfile.Specialist = profile.Specialist.ToString();
+                        practitioenrProfile.Qualification = profile.Qualification;
+
+                        result = context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.ProfileEdit : " + err);
+            }
+
+            return result;
+        }
     }
 }

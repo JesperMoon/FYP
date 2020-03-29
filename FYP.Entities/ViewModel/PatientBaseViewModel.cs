@@ -28,5 +28,13 @@ namespace FYP.Entities.ViewModel
 
         [DataMember]
         public AuthorizedPractitionersViewModel AuthorizePractitionersViewModel = new AuthorizedPractitionersViewModel();
+
+        [DataMember]
+        public PractitionerRecordSearch PractitionerRecordSearch { get; set; }
+
+        public PatientBaseViewModel()
+        {
+            PractitionerRecordSearch = new PractitionerRecordSearch();
+        }
     }
 }

@@ -37,6 +37,9 @@ namespace FYP.Framework
             public const string GetAuthorizedPractitioners = "[dbo].[GetAuthorizedPractitioners]";
             public const string GetPractitionerProfile = "[dbo].[GetPractitionerProfile]";
             public const string SpecialistSearch = "[dbo].[SpecialistSearch]";
+            public const string GetRecordsDirectory = "[dbo].[GetRecordsDirectory]";
+            public const string SearchRecords = "[dbo].[SearchRecords]";
+            public const string PatientSearchRecords = "[dbo].[PatientSearchRecords]";
 
             public static class Parameter
             {
@@ -45,6 +48,9 @@ namespace FYP.Framework
                 public const string Specialist = "@Specialist";
                 public const string State = "@State";
                 public const string PostalCode = "@PostalCode";
+                public const string Month = "@Month";
+                public const string Year = "@Year";
+                public const string RecordId = "@RecordId";
             }
 
         }
@@ -62,6 +68,7 @@ namespace FYP.Framework
 
                 public const string GetCompanyList = "HomePage/GetCompanyList";
                 public const string GetProfile = "HomePage/GetProfile";
+                public const string ProfileEdit = "HomePage/ProfileEdit";
                 public const string GetAppointmentsTable = "HomePage/GetAppointmentsTable";
             }
 
@@ -71,6 +78,7 @@ namespace FYP.Framework
                 public const string PatientRegister = "HomePage/PatientRegister";
                 public const string PatientVerification = "HomePage/PatientVerification";
                 public const string PatientProfile = "Patient/Profile";
+                public const string ProfileEdit = "Patient/ProfileEdit";
 
                 public const string SpecialistSearch = "Patient/SpecialistSearch";
                 public const string AddAuthorizePractitioner = "Patient/AddAuthorizePractitioner";
@@ -100,6 +108,14 @@ namespace FYP.Framework
                 public const string GetPractitionerDetails = "Practitioner/GetPractitionerDetails";
                 public const string CreateNewRecord = "Practitioner/CreateNewRecord";
                 public const string StoreRecordToDB = "Practitioner/StoreRecordToDB";
+
+                public const string GetRecordsDirectory = "Practitioner/GetRecordsDirectory";
+                public const string SearchRecords = "Practitioner/SearchRecords";
+                public const string PractitionerGetRecord = "Practitioner/GetRecord";
+                public const string PatientGetRecord = "Patient/GetRecord";
+
+                public const string PatientGetRecordsDirectory = "Patient/GetRecordsDirectory";
+                public const string PatientSearchRecords = "Patient/SearchRecords";
             }
         }
 
@@ -234,6 +250,14 @@ namespace FYP.Framework
                 public const string City = "City";
                 public const string State = "State";
                 public const string CreatedOn = "CreatedOn";
+            }
+
+            public static class GetRecordsDirectory
+            {
+                public const string Id = "Id";
+                public const string CreatedOn = "CreatedOn";
+                public const string FirstName = "FirstName";
+                public const string LastName = "LastName";
             }
         }
     }

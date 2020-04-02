@@ -5,5 +5,239 @@
 
 }
 
-<h2>Products</h2>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.30">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+        window.onload = function ajaxGetProducts() {
+            var serviceURL = '@Url.Action("Products","Practitioner")';
+            var practitionerId = $("#practitionerId").val();
+            @*var viewmodel = @Html.Raw(Json.Encode(Model));*@
+            var data = JSON.stringify({ practitionerId: practitionerId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    $("#loading").data($("#loading").hide());
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="7" style="text-align:center;color:red;">' + 'No products found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td><td><p>' + item.TotalAmount + '</p></td><td><p>' + item.Threshold + '</p></td><td><a><button class="btn-success"><p>Update</p></button></a></td></tr>';
+                            @*<a href="' + '@Url.Action("RecordsView","Practitioner")' + '?recordsId=' + item.RecordsId + '&accId=' + accId + '" target="_blank"><p>'*@
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+        function ajaxSearchProduct() {
+            var serviceURL = '@Url.Action("SearchProduct","Practitioner")';
+            var searchText = $("#searchText").val();
+            var productCode = $("#productCode").val();
+            var practitionerId = $("#practitionerId").val();
+            var data = JSON.stringify({ searchText: searchText, productCode: productCode, practitionerId: practitionerId });
+
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    document.getElementById("content").innerHTML = "";
+                    $("#loading").hide();
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="7" style="text-align:center;color:red;">' + 'No records found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td><td><p>' + item.TotalAmount + '</p></td><td><p>' + item.Threshold + '</p></td><td><a><button class="btn-success" style = "border-radius:8px;"><p>Update</p></button></a></td></tr>';
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#loading').hide();
+        });
+    </script>
+}
+
+<style>
+    body {
+        background-color: rgb(2,210,173);
+    }
+
+    /* Body styling */
+    /* Frame styling */
+    .jumbotron {
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: right;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 100px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    .input {
+        flex: 1;
+    }
+
+    table {
+        width: 100%
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td{
+        text-align:center;
+    }
+
+    td.p {
+        font-size: 18px;
+    }
+
+    p2 {
+        color: red;
+    }
+
+    a {
+        color: dimgrey;
+    }
+
+    .createBtn {
+        display: flex;
+        justify-content: flex-end;
+        margin-right:5%;
+    }
+
+    .btn-success{
+        border-radius:8px;
+        border-color:grey;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.PractitionerBaseViewModel
+
+<div class="jumbotron">
+    <div class="row">
+        <div><h2 style="text-align:center">-- <b>Medicines Directory</b> --</h2></div>
+    </div>
+
+    <div id="loading" class="spinner-border" role="status">
+        <span id="loading" class="sr-only">Loading...</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Product Full Name : </p></div>
+        <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 input"><p>@Html.TextBoxFor(m => m.MedicineSearch.SearchText, new { @type = "text", id = "searchText" })</p></div>
+    </div>
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Product Code  : </p></div>
+        <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 input"><p>@Html.TextBoxFor(m => m.MedicineSearch.ProductCode, new { @type = "text", id = "productCode" })</p></div>
+    </div>
+
+    @Html.HiddenFor(m => m.AccId, new { id = "practitionerId", @value = Model.AccId })
+
+    <div style="text-align:center;">
+        <div type="button" onclick="javascript:ajaxSearchProduct()" class="btn btn-success" style="font-size:16px;">Search</div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+
+    <div class="createBtn">
+        <a href="@Url.Action("CreateProduct","Practitioner", Model)" target="_blank"><button class="btn-primary">Create</button></a>
+    </div>
+    <br />
+    <div class="container">
+        <table class="table-bordered table-condensed table-hover" style="background-color:lightgray;" id="table">
+            <thead>
+                <tr>
+                    <th><p><b>Index</b></p></th>
+                    <th><p><b>Code</b></p></th>
+                    <th><p><b>Product</b></p></th>
+                    <th><p><b>Expiry</b></p></th>
+                    <th><p><b>Stock</b></p></th>
+                    <th><p><b>Threshold</b></p></th>
+                    <th><p><b>Action</b></p></th>
+                </tr>
+            </thead>
+            <tbody id="content">
+                @* Content generated by javascript *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
 

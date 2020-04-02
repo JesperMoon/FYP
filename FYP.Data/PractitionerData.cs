@@ -779,5 +779,124 @@ namespace FYP.Data
 
             return result;
         }
+
+        public int CreateProduct(MedicineModel newMedicine)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Practitioner
+                                where pt.Id.Equals(newMedicine.PractitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                select pt;
+
+                    var companyId = query.Select(p => p.Company).FirstOrDefault();
+
+                    var medicine = new Medicine()
+                    {
+                        ProductCode = newMedicine.ProductCode,
+                        ProductName = newMedicine.ProductName,
+                        ProductionDate = newMedicine.ProductionDate,
+                        ExpiryDate = newMedicine.ExpiryDate,
+                        TotalAmount = newMedicine.TotalAmount,
+                        Threshold = newMedicine.Threshold,
+                        CreatedBy = newMedicine.PractitionerId,
+                        CompanyId = companyId,
+                        CreatedOn = DateTime.Now,
+                        ModifiedOn = DateTime.Now,
+                    };
+
+                        context.Medicine.Add(medicine);
+                    result = context.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.CreateProduct : " + err);
+            }
+            return result;
+        }
+
+        public List<MedicineModel> GetProducts(Guid practitionerId)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Practitioner
+                                where pt.Id.Equals(practitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                select pt;
+
+                    var companyId = query.Select(p => p.Company).FirstOrDefault();
+
+                    var query2 = from pt in context.Medicine
+                                 where pt.CompanyId.Equals(companyId)
+                                 select pt;
+
+                    if(query2 != null)
+                    {
+                        query2 = query2.OrderBy(p => p.ProductCode).Select(p => p);
+
+                        foreach (var item in query2)
+                        {
+                            MedicineModel medicine = new MedicineModel();
+                            medicine.MedicineId = item.Id;
+                            medicine.ProductCode = item.ProductCode;
+                            medicine.ProductName = item.ProductName;
+                            medicine.ExpiryDateString = item.ExpiryDate.ToString("dd/MM/yyyy");
+                            medicine.TotalAmount = item.TotalAmount;
+                            medicine.Threshold = item.Threshold;
+
+                            result.Add(medicine);
+                        }
+                    }
+
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetProducts : " + err);
+            }
+            return result;
+        }
+
+        public List<MedicineModel> SearchProduct(MedicineViewModel vm)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.PractitionerSearchProduct, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.AccId, vm.PractitionerId));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.SearchText, vm.SearchText));
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.ProductCode, vm.ProductCode));
+                SqlDataReader medicines = cmd.ExecuteReader();
+
+                while (medicines.Read())
+                {
+                    MedicineModel medicine = new MedicineModel();
+                    medicine.MedicineId = Guid.Parse(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.Id].ToString());
+                    medicine.ProductCode = medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ProductCode].ToString();
+                    medicine.ProductName = medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ProductName].ToString();
+                    medicine.ExpiryDateString = Convert.ToDateTime(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ExpiryDate]).ToString("dd/MM/yyyy");
+                    medicine.TotalAmount = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.TotalAmount]);
+                    medicine.Threshold = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.Threshold]);
+
+                    result.Add(medicine);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetProducts : " + err);
+            }
+            return result;
+        }
     }
 }

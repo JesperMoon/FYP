@@ -13,5 +13,11 @@ namespace FYP.Entities.ViewModel
     {
         [DataMember]
         public string SearchText { get; set; }
+
+        [DataMember]
+        public string ProductCode { get; set; }
+
+        [DataMember]
+        public Guid PractitionerId { get; set; }
     }
 }

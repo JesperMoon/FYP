@@ -40,6 +40,7 @@ namespace FYP.Framework
             public const string GetRecordsDirectory = "[dbo].[GetRecordsDirectory]";
             public const string SearchRecords = "[dbo].[SearchRecords]";
             public const string PatientSearchRecords = "[dbo].[PatientSearchRecords]";
+            public const string PractitionerSearchProduct = "[dbo].[PractitionerSearchProduct]";
 
             public static class Parameter
             {
@@ -51,6 +52,7 @@ namespace FYP.Framework
                 public const string Month = "@Month";
                 public const string Year = "@Year";
                 public const string RecordId = "@RecordId";
+                public const string ProductCode = "@ProductCode";
             }
 
         }
@@ -70,6 +72,9 @@ namespace FYP.Framework
                 public const string GetProfile = "HomePage/GetProfile";
                 public const string ProfileEdit = "HomePage/ProfileEdit";
                 public const string GetAppointmentsTable = "HomePage/GetAppointmentsTable";
+                public const string GetProducts = "HomePage/GetProducts";
+                public const string CreateProduct = "HomePage/CreateProduct";
+                public const string SearchProduct = "HomePage/SearchProduct";
             }
 
             public static class Patient
@@ -258,6 +263,16 @@ namespace FYP.Framework
                 public const string CreatedOn = "CreatedOn";
                 public const string FirstName = "FirstName";
                 public const string LastName = "LastName";
+            }
+
+            public static class PractitioenrSearchProduct
+            {
+                public const string Id = "Id";
+                public const string ProductCode = "ProductCode";
+                public const string ProductName = "ProductName";
+                public const string ExpiryDate = "ExpiryDate";
+                public const string TotalAmount = "TotalAmount";
+                public const string Threshold = "Threshold";
             }
         }
     }

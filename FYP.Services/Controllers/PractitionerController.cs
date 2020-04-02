@@ -197,5 +197,50 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.Practitioner.GetProducts)]
+        [HttpPost]
+        public List<MedicineModel> GetProducts(PractitionerBaseViewModel profile)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            if (profile != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.GetProducts(profile.AccId);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.CreateProduct)]
+        [HttpPost]
+        public int CreateProduct(MedicineModel newMedicine)
+        {
+            int result = 0;
+
+            if (newMedicine != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.CreateProduct(newMedicine);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.SearchProduct)]
+        [HttpPost]
+        public List<MedicineModel> SearchProduct(MedicineViewModel vm)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            if (vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.SearchProduct(vm);
+            }
+
+            return result;
+        }
     }
 }

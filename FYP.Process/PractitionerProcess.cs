@@ -96,7 +96,6 @@ namespace FYP.Process
             return result;
         }
 
-
         public NewPractitionerViewModel GetCompanyList(NewPractitionerViewModel vm)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
@@ -264,6 +263,48 @@ namespace FYP.Process
             RecordFileSystem result = new RecordFileSystem();
             //result.FileContents = bytes;
             result = response.Data;
+
+            return result;
+        }
+
+        public List<MedicineModel> GetProducts(PractitionerBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetProducts, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<MedicineModel>> response = client.Execute<List<MedicineModel>>(request);
+            List<MedicineModel> result = response.Data;
+
+            return result;
+        }
+
+        public int CreateProduct(MedicineModel newMedicine)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.CreateProduct, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(newMedicine);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
+        public List<MedicineModel> SearchProduct(MedicineViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.SearchProduct, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<MedicineModel>> response = client.Execute<List<MedicineModel>>(request);
+            List<MedicineModel> result = response.Data;
 
             return result;
         }

@@ -34,6 +34,9 @@ namespace FYP.Data
 
         //PatientRecord
         public DbSet<PatientRecord> RecordFile { get; set; }
+        
+        //Medicine
+        public DbSet<Medicine> Medicine { get; set; }
 
         public override int SaveChanges()
         {

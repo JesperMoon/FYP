@@ -120,13 +120,6 @@
 
     <div class="row">
         <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
-        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Specialist Name : </p></div>
-        <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.TextBoxFor(m => m.SpecialistNearby.SearchText, new { id = "searchText", @value = Model.SpecialistNearby.SearchText })</p></div>
-        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p2>@Html.ValidationMessageFor(m => m.SpecialistNearby.SearchText)</p2></div>
-    </div>
-
-    <div class="row">
-        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Specialist : </p></div>
         <div class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5 input"><p>@Html.EnumDropDownListFor(m => m.SpecialistNearby.EnumSpecialist, new { @class = "form-control", id = "specialist", @value = Model.SpecialistNearby.EnumSpecialist })</p></div>
         <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>

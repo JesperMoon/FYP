@@ -204,6 +204,96 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult Products(Guid practitionerId)
+        {
+            if(practitionerId != null)
+            {
+                if(!practitionerId.Equals(Guid.Empty))
+                {
+                    List<MedicineModel> result = new List<MedicineModel>();
+                    PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+                    vm.AccId = practitionerId;
+                    PractitionerProcess processLayer = new PractitionerProcess();
+                    result = processLayer.GetProducts(vm);
+
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("Error! Not Authorized.", new Exception("No Practitioner Id Found!"));
+            }
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CreateProduct(PractitionerBaseViewModel viewModel)
+        {
+            MedicineModel model = new MedicineModel();
+            model.PractitionerId = viewModel.AccId;
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Createproduct(MedicineModel newMedicine)
+        {
+            if(newMedicine != null)
+            {
+                PractitionerProcess process = new PractitionerProcess();
+                int result = 0;
+                result = process.CreateProduct(newMedicine);
+
+                if(result != 0)
+                {
+                    return Content(@"<body>
+                        <script type='text/javascript'>
+                            if(confirm('Product has been created successfully. Press Ok to close this tab.')){ window.close();window.opener.location.reload(); };
+                        </script>
+                    </body> ");
+                }
+                else
+                {
+                    return Content(@"<body>
+                        <script type='text/javascript'>
+                            if(confirm('Product creation error. Press Ok to go back the view.')){ window.history.back(); };
+                        </script>
+                    </body> ");
+                }
+                
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SearchProduct(string searchText, string productCode, string practitionerId)
+        {
+            if(!String.IsNullOrEmpty(practitionerId))
+            {
+                List<MedicineModel> result = new List<MedicineModel>();
+                PractitionerProcess process = new PractitionerProcess();
+                MedicineViewModel vm = new MedicineViewModel();
+                vm.PractitionerId = Guid.Parse(practitionerId);
+                vm.SearchText = searchText;
+                vm.ProductCode = productCode;
+                result = process.SearchProduct(vm);
+
+                return Json(result,JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("Error! Not Authorized.", new Exception("No Practitioner Id Found!"));
+            }
+        }
+
+        [Authorize]
         public ActionResult Records(PractitionerBaseViewModel vm)
         {
             if (vm.AccId.Equals(Guid.Empty))
@@ -363,7 +453,6 @@ namespace FYP.Controllers
                          </body> ");
             }
         }
-
 
         //For pdf conversion
         public static Byte[] PdfSharpConvert(String html)

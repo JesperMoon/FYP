@@ -100,6 +100,10 @@
     <Compile Include="Migrations\202003260715045_add_fileRecord_table.designer.cs">
       <DependentUpon>202003260715045_add_fileRecord_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004011442174_create_Medicine_table.cs" />
+    <Compile Include="Migrations\202004011442174_create_Medicine_table.designer.cs">
+      <DependentUpon>202004011442174_create_Medicine_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PatientData.cs" />
     <Compile Include="PractitionerData.cs" />
@@ -146,6 +150,9 @@
     <EmbeddedResource Include="Migrations\202003260715045_add_fileRecord_table.resx">
       <DependentUpon>202003260715045_add_fileRecord_table.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004011442174_create_Medicine_table.resx">
+      <DependentUpon>202004011442174_create_Medicine_table.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FYP.Entities\FYP.Entities.csproj">
@@ -163,6 +170,7 @@
     <Content Include="Scripts\[dbo].[GetPractitionerProfile].sql" />
     <Content Include="Scripts\[dbo].[GetRecordsDirectory].sql" />
     <Content Include="Scripts\[dbo].[PatientSearchRecords].sql" />
+    <Content Include="Scripts\[dbo].[PractitionerSearchProduct].sql" />
     <Content Include="Scripts\[dbo].[SearchRecords].sql" />
     <Content Include="Scripts\[dbo].[SpecialistSearch].sql" />
   </ItemGroup>

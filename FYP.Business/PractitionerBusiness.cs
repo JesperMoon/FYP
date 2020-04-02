@@ -503,5 +503,61 @@ namespace FYP.Business
 
             return result;
         }
+
+        public List<MedicineModel> GetProducts(Guid profileId)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            PractitionerData dataLayer = new PractitionerData();
+            //MedicineModel row = new MedicineModel();
+            //row.ProductCode = "ABC";
+            //row.ProductName = "Testing";
+            //row.ExpiryDate = DateTime.Now;
+            //row.ExpiryDateString = row.ExpiryDate.ToString("dd/MM/yyyy");
+            //row.TotalAmount = 15;
+            //row.Threshold = 3;
+            //result.Add(row);
+            result = dataLayer.GetProducts(profileId);
+
+            return result;
+        }
+
+        public int CreateProduct(MedicineModel newMedicine)
+        {
+            int result = 0;
+
+            PractitionerData dataLayer = new PractitionerData();
+            result = dataLayer.CreateProduct(newMedicine);
+
+            return result;
+        }
+
+        public List<MedicineModel> SearchProduct(MedicineViewModel vm)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            if(String.IsNullOrEmpty(vm.SearchText))
+            {
+                vm.SearchText = "All";
+            }
+
+            if (String.IsNullOrEmpty(vm.ProductCode))
+            {
+                vm.ProductCode = "All";
+            }
+
+            PractitionerData dataLayer = new PractitionerData();
+            //MedicineModel row = new MedicineModel();
+            //row.ProductCode = "ABC";
+            //row.ProductName = "Testing";
+            //row.ExpiryDate = DateTime.Now;
+            //row.ExpiryDateString = row.ExpiryDate.ToString("dd/MM/yyyy");
+            //row.TotalAmount = 15;
+            //row.Threshold = 3;
+            //result.Add(row);
+            result = dataLayer.SearchProduct(vm);
+
+            return result;
+        }
     }
 }

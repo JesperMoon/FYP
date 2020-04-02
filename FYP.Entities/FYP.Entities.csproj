@@ -53,6 +53,7 @@
     <Compile Include="Data\Appointment.cs" />
     <Compile Include="Data\AuthorizePractitioner.cs" />
     <Compile Include="Data\Company.cs" />
+    <Compile Include="Data\Medicine.cs" />
     <Compile Include="Data\Patient.cs" />
     <Compile Include="Data\PatientRecord.cs" />
     <Compile Include="Model\AppointmentModel.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Model\Common\User.cs" />
     <Compile Include="Model\LoginInfo.cs" />
     <Compile Include="Data\Practitioner.cs" />
+    <Compile Include="Model\MedicineModel.cs" />
     <Compile Include="Model\PatientRecordModel.cs" />
     <Compile Include="Model\PractitionerRecordsDirectory.cs" />
     <Compile Include="Model\PractitionerRecordSearch.cs" />

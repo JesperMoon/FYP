@@ -898,5 +898,81 @@ namespace FYP.Data
             }
             return result;
         }
+
+        public MedicineModel GetProduct(MedicineModel input)
+        {
+            MedicineModel result = new MedicineModel();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query1 = from pt in context.Practitioner
+                                 where pt.Id.Equals(input.PractitionerId) && pt.Status.Equals(ConstantHelper.AccountStatus.Active)
+                                 select pt;
+
+                    var companyId = query1.Select(p => p.Company).FirstOrDefault();
+
+                    var query2 = from pt in context.Medicine
+                                 where pt.Id.Equals(input.MedicineId) && pt.CompanyId.Equals(companyId)
+                                 select pt;
+
+                    var medicine = query2.Select(p => p).FirstOrDefault();
+
+                    if (query2 != null)
+                    {
+                        result.MedicineId = medicine.Id;
+                        result.ProductCode = medicine.ProductCode;
+                        result.ProductName = medicine.ProductName;
+                        result.ExpiryDateString = medicine.ExpiryDate.ToString("yyyy-MM-dd");
+                        result.ProductionDateString = medicine.ProductionDate.ToString("yyyy-MM-dd");
+                        result.TotalAmount = medicine.TotalAmount;
+                        result.Threshold = medicine.Threshold;
+                        result.PractitionerId = input.PractitionerId;
+                    }
+
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetProduct : " + err);
+            }
+
+            return result;
+        }
+
+        public int UpdateProduct(MedicineModel input)
+        {
+            int result = 0;
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var companyId = context.Practitioner.Where(p => p.Id.Equals(input.PractitionerId) && p.Status.Equals(ConstantHelper.AccountStatus.Active)).Select(p => p.Company).FirstOrDefault();
+                    var existingProduct = context.Medicine.Where(p => p.Id.Equals(input.MedicineId) && p.CompanyId.Equals(companyId)).FirstOrDefault();
+
+                    //profile found
+                    if (existingProduct != null)
+                    {
+                        existingProduct.ProductCode = input.ProductCode;
+                        existingProduct.ProductName = input.ProductName;
+                        existingProduct.ProductionDate = Convert.ToDateTime(input.ProductionDateString);
+                        existingProduct.ExpiryDate = Convert.ToDateTime(input.ExpiryDateString);
+                        existingProduct.TotalAmount = input.TotalAmount;
+                        existingProduct.Threshold = input.Threshold;
+                        existingProduct.ModifiedOn = DateTime.Now;
+
+                        result = context.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.UpdateProduct : " + err);
+            }
+
+            return result;
+        }
     }
 }

@@ -229,6 +229,54 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        public ActionResult ProductUpdate(string practitionerId, string productId)
+        {
+            if(practitionerId != null && productId != null)
+            {
+                MedicineModel medicine = new MedicineModel();
+                medicine.PractitionerId = Guid.Parse(practitionerId);
+                medicine.MedicineId = Guid.Parse(productId);
+
+                PractitionerProcess process = new PractitionerProcess();
+                MedicineModel result = new MedicineModel();
+                result = process.GetProduct(medicine);
+                
+                return View(result);
+            }
+            else
+            {
+                return new HttpNotFoundResult("Record Not Found!");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ProductUpdate(MedicineModel medicine)
+        {
+            int result = 0;
+
+            PractitionerProcess process = new PractitionerProcess();
+            result = process.UpdateProduct(medicine);
+
+            if(result == 0)
+            {
+                PractitionerBaseViewModel viewModel = new PractitionerBaseViewModel();
+                viewModel.AccId = medicine.PractitionerId;
+                viewModel.MedicineModel = medicine;
+
+                return View(viewModel);
+            }
+            else
+            {
+                return Content(@"<body>
+                           <script type='text/javascript'>
+                             if(confirm('Product update is updated successfully. Press Ok to close this tab.')){ window.close();window.opener.location.reload(); };
+                           </script>
+                         </body> ");
+            }
+        }
+
+        [Authorize]
         public ActionResult CreateProduct(PractitionerBaseViewModel viewModel)
         {
             MedicineModel model = new MedicineModel();

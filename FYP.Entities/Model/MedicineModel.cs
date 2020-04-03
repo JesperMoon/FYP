@@ -37,6 +37,9 @@ namespace FYP.Entities
         public DateTime ProductionDate { get; set; }
 
         [DataMember]
+        public string ProductionDateString { get; set; }
+
+        [DataMember]
         [DisplayName("Expiry Date")]
         public DateTime ExpiryDate { get; set; }
 

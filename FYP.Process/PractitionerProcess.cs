@@ -308,5 +308,34 @@ namespace FYP.Process
 
             return result;
         }
+
+        public MedicineModel GetProduct(MedicineModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetProduct, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<MedicineModel> response = client.Execute<MedicineModel>(request);
+            MedicineModel result = response.Data;
+
+            return result;
+        }
+
+        public int UpdateProduct(MedicineModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.UpdateProduct, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<int> response = client.Execute<int>(request);
+            int result = response.Data;
+
+            return result;
+        }
+
     }
 }

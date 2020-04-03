@@ -220,6 +220,7 @@
     <Content Include="Views\Shared\RecordTemplate.cshtml" />
     <Content Include="Views\Practitioner\ProfileEdit.cshtml" />
     <Content Include="Views\Practitioner\CreateProduct.cshtml" />
+    <Content Include="Views\Practitioner\ProductUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

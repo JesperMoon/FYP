@@ -242,5 +242,35 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.Practitioner.GetProduct)]
+        [HttpPost]
+        public MedicineModel GetProduct(MedicineModel medicine)
+        {
+            MedicineModel result = new MedicineModel();
+
+            if (medicine != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.GetProduct(medicine);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.UpdateProduct)]
+        [HttpPost]
+        public int UpdateProduct(MedicineModel newMedicine)
+        {
+            int result = 0;
+
+            if (newMedicine != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.UpdateProduct(newMedicine);
+            }
+
+            return result;
+        }
     }
 }

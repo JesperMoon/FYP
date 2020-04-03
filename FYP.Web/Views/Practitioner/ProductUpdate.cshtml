@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "ProductUpdate";
+}
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@*@section Scripts
+    {
+        <script type="text/javascript">
+
+            $('#allergicYes').click(function () {
+                if ($(this).is(':checked')) {
+                    document.getElementById('allergic').disabled = false;
+                }
+            });
+
+            $('#allergicNo').click(function () {
+                if ($(this).is(':checked')) {
+                    document.getElementById('allergic').value = "";
+                    document.getElementById('allergic').disabled = true;
+                }
+            });
+
+        </script>
+    }*@
+<style>
+    body {
+        background-color: rgb(2,210,173);
+    }
+
+    /* Body styling */
+    /* Frame styling */
+    .jumbotron {
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: left;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 50px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    #header {
+        font-size: medium;
+    }
+
+    table {
+        width: 100%;
+        margin-left: 80px;
+    }
+
+    th {
+        font-size: 24px;
+    }
+
+    td {
+        text-align: left;
+        font-size: 24px;
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    p2 {
+        font-size: 18px;
+        color: red;
+    }
+</style>
+
+@model FYP.Entities.MedicineModel
+
+<html>
+<body>
+    <div class="jumbotron">
+        <div class="flex-row">
+            <div class="col-lg-1 col-1"></div>
+            <a class="col-lg-2 col-xs-2 backButton" href="javascript:window.window.close();">
+                <span class="fa fa-arrow-circle-left"></span>
+            </a>
+            <div class="col-lg-8 col-8 text-left">
+                <h2><b>New Product Creation</b></h2>
+            </div>
+        </div>
+
+        <form method="POST" action="@Url.Action("ProductUpdate", "Practitioner", new { Model })">
+            <div class="row">
+                <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+                <div class="col-10 col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                    <div class="container">
+                        <table class="table-condensed">
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"><h3>@Html.LabelFor(m => m.ProductCode): </h3></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.ProductCode, new { value = Model.ProductCode })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.ProductCode)</p2></td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.ProductName): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.ProductName, new { value = Model.ProductName })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.ProductName)</p2></td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.ProductionDate): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.ProductionDateString, new { @class = "form-control datepicker", type = "date", value = Model.ProductionDateString })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.ProductionDate)</p2></td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.ExpiryDate): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.ExpiryDateString, new { @class = "form-control datepicker", type = "date", value = Model.ExpiryDateString })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.ExpiryDate)</p2></td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.TotalAmount): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.TotalAmount, new { value = Model.TotalAmount })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.TotalAmount)</p2></td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5">@Html.LabelFor(m => m.Threshold): </th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7">@Html.TextBoxFor(m => m.Threshold, new { value = Model.Threshold })</td>
+                            </tr>
+
+                            <tr class="row">
+                                <th class="col-5 col-xs-5 col-sm-5 col-md-5 col-lg-5"></th>
+                                <td class="col-7 col-xs-7 col-sm-7 col-md-7 col-lg-7"><p2>@Html.ValidationMessageFor(m => m.Threshold)</p2></td>
+                            </tr>
+                        </table>
+
+                        <br />
+
+                        @Html.HiddenFor(m => m.PractitionerId, new { value = Model.PractitionerId })
+                        @Html.HiddenFor(m => m.MedicineId, new { value = Model.MedicineId })
+
+
+                        <div class="row">
+                            <div class="col-lg-8 col-8"></div>
+                            <div class="col-lg-4 col-4"><button type="submit" class="btn-primary">Update Product </button></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

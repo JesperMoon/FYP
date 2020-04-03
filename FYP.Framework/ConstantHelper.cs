@@ -73,6 +73,8 @@ namespace FYP.Framework
                 public const string ProfileEdit = "HomePage/ProfileEdit";
                 public const string GetAppointmentsTable = "HomePage/GetAppointmentsTable";
                 public const string GetProducts = "HomePage/GetProducts";
+                public const string GetProduct = "HomePage/GetProduct";
+                public const string UpdateProduct = "HomePage/UpdateProduct";
                 public const string CreateProduct = "HomePage/CreateProduct";
                 public const string SearchProduct = "HomePage/SearchProduct";
             }

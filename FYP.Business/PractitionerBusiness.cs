@@ -559,5 +559,27 @@ namespace FYP.Business
 
             return result;
         }
+
+        public MedicineModel GetProduct(MedicineModel medicine)
+        {
+            MedicineModel result = new MedicineModel();
+
+            PractitionerData dataLayer = new PractitionerData();
+            result = dataLayer.GetProduct(medicine);
+
+            return result;
+        }
+
+        public int UpdateProduct(MedicineModel medicine)
+        {
+            int result = 0;
+
+            PractitionerData dataLayer = new PractitionerData();
+            result = dataLayer.UpdateProduct(medicine);
+
+            return result;
+        }
+
+
     }
 }

@@ -41,7 +41,14 @@
                         trHTML += '<tr><td colspan="7" style="text-align:center;color:red;">' + 'No products found.' + '</td></tr>';
                     } else {
                         $.each(result, function (i, item) {
-                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td><td><p>' + item.TotalAmount + '</p></td><td><p>' + item.Threshold + '</p></td><td><a><button class="btn-success"><p>Update</p></button></a></td></tr>';
+                            var stockCheck = '';
+                            if (item.TotalAmount <= item.Threshold) {
+                                stockCheck = '<td><p style="color:red;">' + item.TotalAmount + '</p></td>';
+                            } else {
+                                stockCheck = '<td><p style="color:green;">' + item.TotalAmount + '</p></td>';
+
+                            }
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td>' + stockCheck + '<td><p>' + item.Threshold + '</p></td><td><a href="' + '@Url.Action("ProductUpdate","Practitioner")' + '?practitionerId=' + accId + '&productId=' + item.MedicineId + '" target="_blank"><button class="btn-success"><p>Update</p></button></a></td></tr>';
                             @*<a href="' + '@Url.Action("RecordsView","Practitioner")' + '?recordsId=' + item.RecordsId + '&accId=' + accId + '" target="_blank"><p>'*@
                         });
                     }
@@ -85,7 +92,14 @@
                         trHTML += '<tr><td colspan="7" style="text-align:center;color:red;">' + 'No records found.' + '</td></tr>';
                     } else {
                         $.each(result, function (i, item) {
-                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td><td><p>' + item.TotalAmount + '</p></td><td><p>' + item.Threshold + '</p></td><td><a><button class="btn-success" style = "border-radius:8px;"><p>Update</p></button></a></td></tr>';
+                            var stockCheck = '';
+                            if (item.TotalAmount <= item.Threshold) {
+                                stockCheck = '<td><p style="color:red;">' + item.TotalAmount + '</p></td>';
+                            } else {
+                                stockCheck = '<td><p style="color:green;">' + item.TotalAmount + '</p></td>';
+
+                            }
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.ProductCode + '</p></td><td><p>' + item.ProductName + '</p></td><td><p>' + item.ExpiryDateString + '</p></td>' + stockCheck + '<td><p>' + item.Threshold + '</p></td><td><a href="' + '@Url.Action("ProductUpdate","Practitioner")' + '?practitionerId=' + accId + '&productId=' + item.MedicineId + '" target="_blank"><button class="btn-success" style = "border-radius:8px;"><p>Update</p></button></a></td></tr>';
                         });
                     }
 

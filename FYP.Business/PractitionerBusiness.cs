@@ -701,6 +701,32 @@ namespace FYP.Business
             return result;
         }
 
+        public List<PatientsDirectory> GetPatientsDirectory (Guid practitionerId)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+            PractitionerData data = new PractitionerData();
+            result = data.GetPatientsDirectory(practitionerId);
+
+            return result;
+        }
+
+        public List<PatientsDirectory> SearchPatients (PatientsDirectorySearch search)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+            PractitionerData data = new PractitionerData();
+            result = data.SearchPatients(search);
+
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> PatientPractitionerRecords(Guid practitionerId, Guid patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PractitionerData data = new PractitionerData();
+            result = data.PatientPractitionerRecords(practitionerId,patientId);
+
+            return result;
+        }
 
     }
 }

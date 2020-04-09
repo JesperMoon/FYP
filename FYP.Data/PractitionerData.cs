@@ -1033,5 +1033,122 @@ namespace FYP.Data
 
             return result;
         }
+
+        public List<PatientsDirectory> GetPatientsDirectory(Guid practitionerId)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.AuthorizePractitioner
+                                where pt.PractitionerId.Equals(practitionerId)
+                                join pa in context.Patient on pt.PatientId equals pa.Id
+                                orderby pa.FirstName
+                                select new
+                                {
+                                    pa.Id,
+                                    pa.FirstName,
+                                    pa.LastName,
+                                    pa.Gender,
+                                    pa.ContactNumber1
+                                };
+
+                    foreach (var item in query)
+                    {
+                        PatientsDirectory patient = new PatientsDirectory();
+                        patient.PatientId = item.Id;
+                        patient.FirstName = item.FirstName;
+                        patient.LastName = item.LastName;
+                        patient.Gender = item.Gender;
+                        patient.ContactNumber = item.ContactNumber1;
+                        result.Add(patient);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetPatientsDirectory : " + err);
+            }
+
+            return result;
+        }
+
+        public List<PatientsDirectory> SearchPatients(PatientsDirectorySearch search)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.AuthorizePractitioner
+                                where pt.PractitionerId.Equals(search.PractitionerId)
+                                join pa in context.Patient on pt.PatientId equals pa.Id
+                                select new
+                                {
+                                    pa.Id,
+                                    pa.FirstName,
+                                    pa.LastName,
+                                    pa.Gender,
+                                    pa.ContactNumber1
+                                };
+
+                    var filter = query.Where(p => p.FirstName.Contains(search.FirstName) || p.LastName.Contains(search.LastName)).OrderBy(p => p.LastName);
+
+                    foreach (var item in filter)
+                    {
+                        PatientsDirectory patient = new PatientsDirectory();
+                        patient.PatientId = item.Id;
+                        patient.FirstName = item.FirstName;
+                        patient.LastName = item.LastName;
+                        patient.Gender = item.Gender;
+                        patient.ContactNumber = item.ContactNumber1;
+                        result.Add(patient);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.SearchPatients : " + err);
+            }
+
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> PatientPractitionerRecords(Guid practitionerId, Guid patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.RecordFile
+                                where pt.PractitionerId.Equals(practitionerId) && pt.PatientId.Equals(patientId)
+                                select pt;
+
+                    var records = query.OrderByDescending(p => p.CreatedOn);
+
+                    foreach (var item in records)
+                    {
+                        PractitionerRecordsDirectory record = new PractitionerRecordsDirectory();
+                        record.RecordId = item.Id;
+                        DateTime recordTime = item.CreatedOn;
+                        record.CreatedOn = recordTime.ToString("dd/MM/yyyy");
+                        record.CreationTime = recordTime.ToString("hh:mm tt");
+
+                        result.Add(record);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.PatientPractitionerRecords : " + err);
+            }
+
+            return result;
+        }
     }
 }

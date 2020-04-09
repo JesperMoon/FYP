@@ -29,11 +29,19 @@ namespace FYP.Entities.ViewModel
         [DataMember]
         public MedicineModel MedicineModel { get; set; }
 
+        [DataMember]
+        public PatientsDirectorySearch PatientsDirectorySearch { get; set; }
+
+        [DataMember]
+        public PatientBaseViewModel PatientBaseViewModel { get; set; }
+
         public PractitionerBaseViewModel()
         {
             PractitionerRecordSearch = new PractitionerRecordSearch();
             MedicineSearch = new MedicineViewModel();
             MedicineModel = new MedicineModel();
+            PatientsDirectorySearch = new PatientsDirectorySearch();
+            PatientBaseViewModel = new PatientBaseViewModel();
         }
         
     }

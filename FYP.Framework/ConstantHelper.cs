@@ -78,6 +78,9 @@ namespace FYP.Framework
                 public const string UpdateProduct = "HomePage/UpdateProduct";
                 public const string CreateProduct = "HomePage/CreateProduct";
                 public const string SearchProduct = "HomePage/SearchProduct";
+                public const string GetPatientsDirectory = "HomePage/GetPatientsDirectory";
+                public const string SearchPatients = "HomePage/SearchPatients";
+                public const string PatientPractitionerRecords = "HomePage/PatientPractitionerRecords";
             }
 
             public static class Patient

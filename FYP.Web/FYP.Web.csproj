@@ -222,6 +222,7 @@
     <Content Include="Views\Practitioner\CreateProduct.cshtml" />
     <Content Include="Views\Practitioner\ProductUpdate.cshtml" />
     <Content Include="Views\Patient\ViewCompanyProfile.cshtml" />
+    <Content Include="Views\Practitioner\ViewPatient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

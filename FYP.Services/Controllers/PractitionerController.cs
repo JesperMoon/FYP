@@ -152,7 +152,11 @@ namespace FYP.Services.Controllers
             {
                 PractitionerBusiness businessLayer = new PractitionerBusiness();
                 businessLayer.StockUpdate(patientRecord);
-                result = businessLayer.CloseAppointment(patientRecord.AppointmentId);
+
+                if(patientRecord.AppointmentId != null || !patientRecord.AppointmentId.Equals(Guid.Empty))
+                {
+                    result = businessLayer.CloseAppointment(patientRecord.AppointmentId);
+                }
             }
 
             return result;
@@ -284,6 +288,51 @@ namespace FYP.Services.Controllers
             {
                 PractitionerBusiness businessLayer = new PractitionerBusiness();
                 result = businessLayer.UpdateProduct(newMedicine);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.GetPatientsDirectory)]
+        [HttpPost]
+        public List<PatientsDirectory> GetPatientsDirectory(PractitionerBaseViewModel vm)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+
+            if (vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.GetPatientsDirectory(vm.AccId);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.SearchPatients)]
+        [HttpPost]
+        public List<PatientsDirectory> SearchPatients(PatientsDirectorySearch search)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+
+            if (search != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.SearchPatients(search);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Practitioner.PatientPractitionerRecords)]
+        [HttpPost]
+        public List<PractitionerRecordsDirectory> PatientPractitionerRecords(PractitionerBaseViewModel vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            if (vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.PatientPractitionerRecords(vm.AccId, vm.PatientBaseViewModel.AccId);
             }
 
             return result;

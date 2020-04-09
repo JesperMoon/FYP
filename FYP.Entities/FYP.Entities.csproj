@@ -65,6 +65,8 @@
     <Compile Include="Data\Practitioner.cs" />
     <Compile Include="Model\MedicineModel.cs" />
     <Compile Include="Model\PatientRecordModel.cs" />
+    <Compile Include="Model\PatientsDirectory.cs" />
+    <Compile Include="Model\PatientsDirectorySearch.cs" />
     <Compile Include="Model\PractitionerRecordsDirectory.cs" />
     <Compile Include="Model\PractitionerRecordSearch.cs" />
     <Compile Include="Model\RecordFileSystem.cs" />

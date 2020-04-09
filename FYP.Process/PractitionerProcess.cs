@@ -351,5 +351,64 @@ namespace FYP.Process
             return result;
         }
 
+        public List<PatientsDirectory> GetPatientsDirectory(PractitionerBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.GetPatientsDirectory, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<PatientsDirectory>> response = client.Execute<List<PatientsDirectory>>(request);
+            List<PatientsDirectory> result = response.Data;
+
+            return result;
+        }
+
+        public List<PatientsDirectory> SearchPatients(PatientsDirectorySearch search)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.SearchPatients, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(search);
+
+            IRestResponse<List<PatientsDirectory>> response = client.Execute<List<PatientsDirectory>>(request);
+            List<PatientsDirectory> result = response.Data;
+
+            return result;
+        }
+
+        public PatientBaseViewModel ViewPatient(PatientBaseViewModel patientModel)
+        {
+            PatientBaseViewModel result = new PatientBaseViewModel();
+
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.PatientProfile, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(patientModel);
+
+            IRestResponse<PatientBaseViewModel> response = client.Execute<PatientBaseViewModel>(request);
+            result = response.Data;
+
+            return result;
+        }
+
+        public List<PractitionerRecordsDirectory> PatientPractitionerRecords(PractitionerBaseViewModel vm)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Practitioner.PatientPractitionerRecords, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<List<PractitionerRecordsDirectory>> response = client.Execute<List<PractitionerRecordsDirectory>>(request);
+            result = response.Data;
+
+            return result;
+        }
     }
 }

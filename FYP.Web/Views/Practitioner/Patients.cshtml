@@ -1,9 +1,236 @@
 ﻿
 @{
-    ViewBag.Title = "Patients";
+    ViewBag.Title = "Products";
     Layout = "~/Views/Shared/PractitionerLayout.cshtml";
 
 }
 
-<h2>Patients</h2>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.30">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+@section Scripts
+{
+<script type="text/javascript">
+        window.onload = function ajaxGetPatients() {
+            var serviceURL = '@Url.Action("Patients","Practitioner")';
+            var practitionerId = $("#practitionerId").val();
+            var data = JSON.stringify({ practitionerId: practitionerId });
+
+            $.ajax({
+                type: "POST",
+                cache: false ,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    $("#loading").data($("#loading").hide());
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="6" style="text-align:center;color:red;">' + 'No patients found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.FirstName + '</p></td><td><p>' + item.LastName + '</p></td><td><p>' + item.Gender + '</p></td><td><p>' + item.ContactNumber + '</p></td><td><a href="' + '@Url.Action("ViewPatient","Practitioner")' + '?patientId=' + item.PatientId + '&practitionerId=' + accId + '"><button class="btn-success"><p>View Profile</p></button></a>' + ' / ' + '<a href="' + '@Url.Action("NewPatientRecord","Practitioner")' + '?practitionerId=' + accId + '&patientId=' + item.PatientId + '" target="_blank"><button class="btn-success"><p>Create Record</p></button></a></td></tr>';
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+        function ajaxSearchPatients() {
+            var serviceURL = '@Url.Action("SearchPatients","Practitioner")';
+            var firstName = $("#firstName").val();
+            var lastName = $("#lastName").val();
+            var practitionerId = $("#practitionerId").val();
+            var data = JSON.stringify({ firstName: firstName, lastName: lastName, practitionerId: practitionerId });
+
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: serviceURL,
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                beforeSend: function () {
+                    $("#loading").data('timeout', window.setTimeout(function () { $("#loading").show() }, 100000));
+                },
+                success: function successFunc(result) {
+                    document.getElementById("content").innerHTML = "";
+                    $("#loading").hide();
+
+                    var trHTML = '';
+                    var accId = @Html.Raw(Json.Encode(Model.AccId));
+
+                    if (result.length == 0) {
+                        trHTML += '<tr><td colspan="6" style="text-align:center;color:red;">' + 'No patients found.' + '</td></tr>';
+                    } else {
+                        $.each(result, function (i, item) {
+                            trHTML += '<tr><td style="text-align:center;"><p>' + (i + 1) + '</p></td><td><p>' + item.FirstName + '</p></td><td><p>' + item.LastName + '</p></td><td><p>' + item.Gender + '</p></td><td><p>' + item.ContactNumber + '</p></td><td><a href="' + '@Url.Action("ViewPatient","Practitioner")' + '?patientId=' + item.PatientId + '&practitionerId=' + accId + '"><button class="btn-success"><p>View Profile</p></button></a>' + ' / ' + '<a href="' + '@Url.Action("NewPatientRecord","Practitioner")' + '?practitionerId=' + accId + '&patientId=' + item.PatientId + '" target="_blank"><button class="btn-success"><p>Create Record</p></button></a></td></tr>';
+                        });
+                    }
+
+                    document.getElementById("content").innerHTML = trHTML;
+                },
+                complete: {
+
+                },
+                error: function errorFunc() {
+                    windows.alert("Somethings wrong...Contact admin for further assistance.");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#loading').hide();
+        });
+</script>
+}
+
+<style>
+    body {
+        background-color: rgb(2,210,173);
+    }
+
+    /* Body styling */
+    /* Frame styling */
+    .jumbotron {
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+
+    /* Styling for Back Button */
+    .backButton {
+        text-align: right;
+        text-decoration: none !important;
+        color: inherit !important;
+        border-radius: 100px;
+        font-size: 75px;
+        position: static;
+        /*margin: 10px;*/
+        /*padding: 12px 0;*/
+    }
+
+        .backButton:hover {
+            background-color: white;
+            text-decoration: none !important;
+            color: #18a1e5 !important;
+        }
+
+    .input {
+        flex: 1;
+    }
+
+    table {
+        width: 100%
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+
+        td.p {
+            font-size: 18px;
+        }
+
+    p2 {
+        color: red;
+    }
+
+    a {
+        color: dimgrey;
+    }
+
+    .createBtn {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 5%;
+    }
+
+    .btn-success {
+        border-radius: 8px;
+        border-color: grey;
+    }
+</style>
+
+@model FYP.Entities.ViewModel.PractitionerBaseViewModel
+
+<div class="jumbotron">
+    <div class="row">
+        <div><h2 style="text-align:center">-- <b>Patients Directory</b> --</h2></div>
+    </div>
+
+    <div id="loading" class="spinner-border" role="status">
+        <span id="loading" class="sr-only">Loading...</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Patient Last Name : </p></div>
+        <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 input"><p>@Html.TextBoxFor(m => m.PatientsDirectorySearch.LastName, new { @type = "text", id = "lastName" })</p></div>
+    </div>
+
+    <div class="row">
+        <div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
+        <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3"><p>Patient First Name : </p></div>
+        <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 input"><p>@Html.TextBoxFor(m => m.PatientsDirectorySearch.FirstName, new { @type = "text", id = "firstName" })</p></div>
+    </div>
+
+    @Html.HiddenFor(m => m.AccId, new { id = "practitionerId", @value = Model.AccId })
+
+    <div style="text-align:center;">
+        <div type="button" onclick="javascript:ajaxSearchPatients()" class="btn btn-success" style="font-size:16px;">Search</div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+    <div class="container">
+        <table class="table-bordered table-condensed table-hover" style="background-color:lightgray;" id="table">
+            <thead>
+                <tr>
+                    <th><p><b>Index</b></p></th>
+                    <th><p><b>First Name</b></p></th>
+                    <th><p><b>Last Name</b></p></th>
+                    <th><p><b>Gender</b></p></th>
+                    <th><p><b>Contact Number</b></p></th>
+                    <th><p><b>Action</b></p></th>
+                    @*<th><p><button onclick="ajaxCreateRecord()" type="button" class="btn btn-success">Create Record</button></p></th>*@
+                </tr>
+            </thead>
+            <tbody id="content">
+                @* Content generated by javascript *@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
 

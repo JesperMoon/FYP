@@ -120,12 +120,21 @@ namespace FYP.Controllers
             NewPatientRecordViewModel result = new NewPatientRecordViewModel();
 
             PatientRecordModel newPatientRecord = new PatientRecordModel();
-            newPatientRecord.AppointmentId = Guid.Parse(appointmentId);
+            if (appointmentId != null)
+            {
+                newPatientRecord.AppointmentId = Guid.Parse(appointmentId);
+            }
+            else
+            {
+                newPatientRecord.AppointmentId = Guid.Empty;
+            }
+
             newPatientRecord.PractitionerId = Guid.Parse(practitionerId);
             newPatientRecord.PatientId = Guid.Parse(patientId);
 
-            //for appointment users
-            if(!newPatientRecord.AppointmentId.Equals(Guid.Empty) && !newPatientRecord.PractitionerId.Equals(Guid.Empty) && !newPatientRecord.PatientId.Equals(Guid.Empty))
+            //for appointment users and no appointment users
+            //!newPatientRecord.AppointmentId.Equals(Guid.Empty) 
+            if (!newPatientRecord.PractitionerId.Equals(Guid.Empty) && !newPatientRecord.PatientId.Equals(Guid.Empty))
             {
                 PractitionerProcess process = new PractitionerProcess();
                 result = process.CreateNewPatientRecord(newPatientRecord);
@@ -134,6 +143,7 @@ namespace FYP.Controllers
             else
             {
                 //no appointment made, retrive practitioner details
+
             }
 
             return View(result);
@@ -444,6 +454,63 @@ namespace FYP.Controllers
                 result.AccId = vm.AccId;
                 return View(result);
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Patients(string practitionerId)
+        {
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+            PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+            vm.AccId = Guid.Parse(practitionerId);
+            PractitionerProcess process = new PractitionerProcess();
+            result = process.GetPatientsDirectory(vm);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult SearchPatients(string firstName, string lastName, string practitionerId)
+        {
+            PatientsDirectorySearch search = new PatientsDirectorySearch();
+            search.FirstName = firstName;
+            search.LastName = lastName;
+            search.PractitionerId = Guid.Parse(practitionerId);
+            List<PatientsDirectory> result = new List<PatientsDirectory>();
+            PractitionerProcess process = new PractitionerProcess();
+            result = process.SearchPatients(search);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult ViewPatient(string patientId, string practitionerId)
+        {
+            PractitionerBaseViewModel result = new PractitionerBaseViewModel();
+        
+            PatientBaseViewModel patientModel = new PatientBaseViewModel();
+            patientModel.AccId = Guid.Parse(patientId);
+
+            PractitionerProcess process = new PractitionerProcess();
+            result.PatientBaseViewModel = process.ViewPatient(patientModel);
+            result.AccId = Guid.Parse(practitionerId);
+
+            return View(result);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult PatientPractitionerRecords(string practitionerId, string patientId)
+        {
+            List<PractitionerRecordsDirectory> result = new List<PractitionerRecordsDirectory>();
+            PractitionerProcess process = new PractitionerProcess();
+            PractitionerBaseViewModel vm = new PractitionerBaseViewModel();
+            vm.AccId = Guid.Parse(practitionerId);
+            vm.PatientBaseViewModel.AccId = Guid.Parse(patientId);
+            result = process.PatientPractitionerRecords(vm);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

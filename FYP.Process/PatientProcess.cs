@@ -182,5 +182,33 @@ namespace FYP.Process
 
             return result;
         }
+
+        public List<MedicineModel> ProductSearch(MedicineViewModel search)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.ProductSearch, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(search);
+
+            IRestResponse<List<MedicineModel>> response = client.Execute<List<MedicineModel>>(request);
+            List<MedicineModel> result = response.Data;
+
+            return result;
+        }
+
+        public CompanyViewModel ViewCompanyProfile(CompanyViewModel input)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.Patient.ViewCompanyProfile, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(input);
+
+            IRestResponse<CompanyViewModel> response = client.Execute<CompanyViewModel>(request);
+            CompanyViewModel result = response.Data;
+
+            return result;
+        }
     }
 }

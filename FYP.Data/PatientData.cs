@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static FYP.Framework.EnumConstant;
 
 namespace FYP.Data
 {
@@ -549,6 +550,75 @@ namespace FYP.Data
                 new LogHelper().LogMessage("PatientData.ProfileEdit : " + err);
             }
 
+            return result;
+        }
+
+        public List<MedicineModel> ProductSearch(MedicineViewModel search)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+            try
+            {
+                SqlConnection conn = new SqlConnection(ConstantHelper.DBAppSettings.FYP);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(ConstantHelper.StoredProcedure.ProductSearch, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter(ConstantHelper.StoredProcedure.Parameter.SearchText, search.SearchText));
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    MedicineModel medicine = new MedicineModel();
+                    medicine.ProductCode = reader[ConstantHelper.SQLColumn.ProductSearch.ProductCode].ToString();
+                    medicine.ProductName = reader[ConstantHelper.SQLColumn.ProductSearch.ProductName].ToString();
+                    medicine.TotalAmount = Convert.ToInt32(reader[ConstantHelper.SQLColumn.ProductSearch.TotalAmount].ToString());
+                    medicine.CompanyId = Guid.Parse(reader[ConstantHelper.SQLColumn.ProductSearch.CompanyId].ToString());
+                    medicine.CompanyName = reader[ConstantHelper.SQLColumn.ProductSearch.CompanyName].ToString();
+                    medicine.CompanyPostalCode = reader[ConstantHelper.SQLColumn.ProductSearch.PostalCode].ToString();
+                    medicine.CompanyState = reader[ConstantHelper.SQLColumn.ProductSearch.State].ToString();
+
+                    result.Add(medicine);
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("PatientData.ProductSearch : " + err);
+            }
+
+            return result;
+        }
+
+        public CompanyViewModel ViewCompanyProfile(Guid companyId)
+        {
+            CompanyViewModel result = new CompanyViewModel();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Company
+                                where pt.Id.Equals(companyId)
+                                select pt;
+
+                    var company = query.Select(p => p).FirstOrDefault();
+
+                    if (query != null)
+                    {
+                        result.CompanyName = company.CompanyName;
+                        result.CompanyPhoneNumber = company.CompanyPhoneNumber;
+                        result.CompanyEmailAddress = company.CompanyEmailAddress;
+                        result.CompanyAddressLine1 = company.CompanyAddressLine1;
+                        result.CompanyAddressLine2 = company.CompanyAddressLine2;
+                        result.CompanyAddressLine3 = company.CompanyAddressLine3;
+                        result.PostalCode = company.PostalCode.ToString();
+                        result.State = (State)Enum.Parse(typeof(State), company.State);
+                        result.City = company.City;
+                    }
+                }
+            }
+            catch(Exception err)
+            {
+                new LogHelper().LogMessage("Patientdata.ViewCompanyProfile : " + err);
+            }
             return result;
         }
     }

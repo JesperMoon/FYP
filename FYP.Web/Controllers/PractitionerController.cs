@@ -143,49 +143,50 @@ namespace FYP.Controllers
         [HttpPost]
         public ActionResult NewPatientRecord(NewPatientRecordViewModel vm)
         {
-            if(ModelState.IsValid)
+            PractitionerProcess process = new PractitionerProcess();
+            vm.NewPatientRecord.MedicineDropDown = process.GetMedicinesDropDown(vm.PractitionerDetails);
+
+            var test = vm.NewPatientRecord.MedicineDropDown[vm.NewPatientRecord.MedicinesId1];
+            if ((vm.NewPatientRecord.AllergicBool.Equals("No")) || ((vm.NewPatientRecord.AllergicBool.Equals("Yes") && !String.IsNullOrEmpty(vm.NewPatientRecord.AllergicType))))
             {
-                if ((vm.NewPatientRecord.AllergicBool.Equals("No")) || ((vm.NewPatientRecord.AllergicBool.Equals("Yes") && !String.IsNullOrEmpty(vm.NewPatientRecord.AllergicType))))
+                //Conversion to pdf
+                var viewToString = RenderViewToString(ControllerContext, "~/Views/Shared/RecordTemplate.cshtml", vm, false);
+
+                FileContentResult fileResult = new FileContentResult(PdfSharpConvert(viewToString), ConstantHelper.AppSettings.RecordFileType);
+
+                RecordFileSystem fileRecord = new RecordFileSystem();
+                fileRecord.Id = vm.NewPatientRecord.RecordId;
+                fileRecord.FileContents = fileResult.FileContents;
+                fileRecord.FileDownloadname = DateTime.Now.ToString("dd-MM-yyyy") + "-" + vm.PractitionerDetails.CompanyId + ".pdf";
+
+                //Continue call to API
+                vm.NewPatientRecord.CompanyId = vm.PractitionerDetails.CompanyId;
+                int returnResult = process.StoreRecordToDB(fileRecord, vm.NewPatientRecord);
+
+                if (returnResult != 0)
                 {
-                    //Conversion to pdf
-                    var viewToString = RenderViewToString(ControllerContext, "~/Views/Shared/RecordTemplate.cshtml", vm, false);
-
-                    FileContentResult fileResult = new FileContentResult(PdfSharpConvert(viewToString), ConstantHelper.AppSettings.RecordFileType);
-
-                    RecordFileSystem fileRecord = new RecordFileSystem();
-                    fileRecord.Id = vm.NewPatientRecord.RecordId;
-                    fileRecord.FileContents = fileResult.FileContents;
-                    fileRecord.FileDownloadname = DateTime.Now.ToString("dd-MM-yyyy") + "-" + vm.PractitionerDetails.CompanyId + ".pdf";
-
-                    //Continue call to API
-                    PractitionerProcess process = new PractitionerProcess();
-                    int returnResult = process.StoreRecordToDB(fileRecord, vm.NewPatientRecord);
-
-                    if (returnResult != 0)
-                    {
-                        //return fileResult;
-                        return Content(@"<body>
-                           <script type='text/javascript'>
-                             if(confirm('Patient Record updated successfully. Press Ok to close current tab.')){ window.close(); window.opener.location.reload(); };
-                           </script>
-                         </body> ");
-                    }
-                    else
-                    {
-                        return Content(@"<body>
-                           <script type='text/javascript'>
-                             if(confirm('Fail to insert record to database. Press ok to go back.')){ window.history.back(); };
-                           </script>
-                         </body> ");
-                    }
+                    //return fileResult;
+                    return Content(@"<body>
+                        <script type='text/javascript'>
+                            if(confirm('Patient Record updated successfully. Press Ok to close current tab.')){ window.close(); window.opener.location.reload(); };
+                        </script>
+                        </body> ");
                 }
                 else
                 {
-                    //Stop, return error
-                    return Json(new { status = "Error", message = "Allergic selected is Yes. The textbox below it cannot be empty." });
+                    return Content(@"<body>
+                        <script type='text/javascript'>
+                            if(confirm('Fail to insert record to database. Press ok to go back.')){ window.history.back(); };
+                        </script>
+                        </body> ");
                 }
             }
-            return View(vm);
+            else
+            {
+                //Stop, return error
+                return Json(new { status = "Error", message = "Allergic selected is Yes. The textbox below it cannot be empty." });
+            }
+            //return View(vm);
         }
 
         [Authorize]

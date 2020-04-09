@@ -245,6 +245,40 @@ namespace FYP.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult ProductSearch(string searchText)
+        {
+            MedicineViewModel search = new MedicineViewModel();
+            search.SearchText = searchText;
+            List<MedicineModel> result = new List<MedicineModel>();
+            PatientProcess process = new PatientProcess();
+            result = process.ProductSearch(search);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult ViewCompanyProfile(string companyId)
+        {
+            if(companyId != null)
+            {
+                CompanyViewModel result = new CompanyViewModel();
+                CompanyViewModel input = new CompanyViewModel();
+                input.CompanyId = Guid.Parse(companyId);
+
+                PatientProcess process = new PatientProcess();
+
+                result = process.ViewCompanyProfile(input);
+                return View(result);
+            }
+            else
+            {
+                return new HttpNotFoundResult("Company Not Found! Please try again.");
+            }
+
+        }
+
+        [Authorize]
         public ActionResult AuthorizedUsers(PatientBaseViewModel vm)
         {
             if (vm.AccId.Equals(Guid.Empty))

@@ -418,7 +418,6 @@ namespace FYP.Business
             result.PatientDetails = patientData.PatientProfile(vm.PatientId);
 
             vm.CreatedOn = DateTime.UtcNow;
-            result.NewPatientRecord = vm;
 
             RecordFileSystem fileRecord = new RecordFileSystem();
             fileRecord.ContentType = ConstantHelper.AppSettings.RecordFileType;
@@ -427,10 +426,27 @@ namespace FYP.Business
             fileRecord.PatientId = result.PatientDetails.AccId;
             fileRecord.PractitionerId = result.PractitionerDetails.AccId;
 
+            //Get medicines list in the company
+            result.NewPatientRecord = practitionerData.GetMedicinesList(result.PractitionerDetails.CompanyId);
+            result.NewPatientRecord.AppointmentId = vm.AppointmentId;
+            result.NewPatientRecord.PatientId = vm.PatientId;
+            result.NewPatientRecord.PractitionerId = vm.PractitionerId;
+
             //Creating a record in the database
             result.NewPatientRecord.RecordId = practitionerData.CreatePatientRecord(fileRecord);
 
             return result;
+        }
+
+        public PatientRecordModel GetMedicinesDropDown(Guid companyId)
+        {
+            PractitionerData data = new PractitionerData();
+            PatientRecordModel result = new PatientRecordModel();
+
+            result = data.GetMedicinesList(companyId);
+
+            return result;
+
         }
 
         public int StoreRecordToDB(RecordFileSystem fileSystem)
@@ -441,6 +457,115 @@ namespace FYP.Business
             result = data.StoreRecordToDB(fileSystem);
 
             return result;
+        }
+
+        public void StockUpdate(PatientRecordModel medicineGiven)
+        {
+            PractitionerData data = new PractitionerData();
+            List<StockUpdate> stock = new List<StockUpdate>();
+            StockUpdate medicine = new StockUpdate();
+
+            if(medicineGiven.QuantityForMedicine1 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId1),
+                    Quantity = medicineGiven.QuantityForMedicine1,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine2 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId2),
+                    Quantity = medicineGiven.QuantityForMedicine2,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine3 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId3),
+                    Quantity = medicineGiven.QuantityForMedicine3,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine4 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId4),
+                    Quantity = medicineGiven.QuantityForMedicine4,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine5 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId5),
+                    Quantity = medicineGiven.QuantityForMedicine5,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine6 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId6),
+                    Quantity = medicineGiven.QuantityForMedicine6,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine7 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId7),
+                    Quantity = medicineGiven.QuantityForMedicine7,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine8 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId8),
+                    Quantity = medicineGiven.QuantityForMedicine8,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine9 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId9),
+                    Quantity = medicineGiven.QuantityForMedicine9,
+                };
+                stock.Add(medicine);
+            }
+
+            if (medicineGiven.QuantityForMedicine10 > 0)
+            {
+                medicine = new StockUpdate()
+                {
+                    MedicineId = Guid.Parse(medicineGiven.MedicinesId10),
+                    Quantity = medicineGiven.QuantityForMedicine10,
+                };
+                stock.Add(medicine);
+            }
+
+            data.StockUpdate(stock, medicineGiven);
         }
 
         public int CloseAppointment(Guid appointmentId)
@@ -535,11 +660,7 @@ namespace FYP.Business
         public List<MedicineModel> SearchProduct(MedicineViewModel vm)
         {
             List<MedicineModel> result = new List<MedicineModel>();
-
-            if(String.IsNullOrEmpty(vm.SearchText))
-            {
-                vm.SearchText = "All";
-            }
+            vm.SearchText = "%" + vm.SearchText + "%";
 
             if (String.IsNullOrEmpty(vm.ProductCode))
             {

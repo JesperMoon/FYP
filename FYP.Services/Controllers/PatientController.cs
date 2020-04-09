@@ -157,5 +157,40 @@ namespace FYP.Services.Controllers
 
             return result;
         }
+
+        [Route(ConstantHelper.API.Patient.ProductSearch)]
+        [HttpPost]
+        public List<MedicineModel> ProductSearch(MedicineViewModel search)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+
+            if (search != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.ProductSearch(search);
+            }
+
+            return result;
+        }
+
+        [Route(ConstantHelper.API.Patient.ViewCompanyProfile)]
+        [HttpPost]
+        public CompanyViewModel ViewCompanyProfile(CompanyViewModel company)
+        {
+            CompanyViewModel result = new CompanyViewModel();
+
+            if (company != null)
+            {
+                PatientBusiness businessLayer = new PatientBusiness();
+                result = businessLayer.ViewCompanyProfile(company.CompanyId);
+            }
+            else
+            {
+                return null;
+            }
+
+            return result;
+        }
+
     }
 }

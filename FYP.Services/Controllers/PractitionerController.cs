@@ -112,6 +112,21 @@ namespace FYP.Services.Controllers
             return result;
         }
 
+        [Route(ConstantHelper.API.PatientRecord.GetMedicinesDropDown)]
+        [HttpPost]
+        public PatientRecordModel GetMedicinesDropDown(PractitionerBaseViewModel vm)
+        {
+            PatientRecordModel result = new PatientRecordModel();
+
+            if (vm != null)
+            {
+                PractitionerBusiness businessLayer = new PractitionerBusiness();
+                result = businessLayer.GetMedicinesDropDown(vm.CompanyId);
+            }
+
+            return result;
+        }
+
         [Route(ConstantHelper.API.PatientRecord.StoreRecordToDB)]
         [HttpPost]
         public int StoreRecordToDB(RecordFileSystem fileSystem)
@@ -136,6 +151,7 @@ namespace FYP.Services.Controllers
             if (patientRecord != null)
             {
                 PractitionerBusiness businessLayer = new PractitionerBusiness();
+                businessLayer.StockUpdate(patientRecord);
                 result = businessLayer.CloseAppointment(patientRecord.AppointmentId);
             }
 

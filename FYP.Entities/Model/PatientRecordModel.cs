@@ -25,6 +25,9 @@ namespace FYP.Entities
         public Guid AppointmentId { get; set; }
 
         [DataMember]
+        public Guid CompanyId { get; set; }
+
+        [DataMember]
         public DateTime CreatedOn { get; set; }
 
         [DataMember]
@@ -44,7 +47,66 @@ namespace FYP.Entities
         public String Symptoms { get; set; }
 
         [DataMember]
-        [Required(ErrorMessage = "Medicine field cannot be empty.")]
-        public String Medicines { get; set; }
+        public Dictionary<string, string> MedicineDropDown { get; set; }
+
+        [DataMember]
+        public String MedicinesId1 { get; set; }
+ 
+        [DataMember]
+        public String MedicinesId2 { get; set; }
+
+        [DataMember]
+        public String MedicinesId3 { get; set; }
+
+        [DataMember]
+        public String MedicinesId4 { get; set; }
+
+        [DataMember]
+        public String MedicinesId5 { get; set; }
+
+        [DataMember]
+        public String MedicinesId6 { get; set; }
+
+        [DataMember]
+        public String MedicinesId7 { get; set; }
+
+        [DataMember]
+        public String MedicinesId8 { get; set; }
+
+        [DataMember]
+        public String MedicinesId9 { get; set; }
+
+        [DataMember]
+        public String MedicinesId10 { get; set; }
+
+       [DataMember]
+        public int QuantityForMedicine1{ get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine2 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine3 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine4 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine5 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine6 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine7 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine8 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine9 { get; set; }
+
+        [DataMember]
+        public int QuantityForMedicine10 { get; set; }
     }
 }

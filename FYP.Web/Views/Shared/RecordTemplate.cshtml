@@ -241,9 +241,89 @@
         </tr>
 
         <tr>
-            <td><p>Medicines : </p></td>
-            <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.Medicines</p></td>
+            <td><u><p>Medicines</p></u></td>
+            <td><u><p>Quantity</p></u></td>
         </tr>
+
+        @if (Model.NewPatientRecord.QuantityForMedicine1 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId1]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine1</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine2 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId2]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine2</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine3 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId3]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine3</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine4 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId4]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine4</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine5 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId5]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine5</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine6 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId6]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine6</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine7 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId7]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine7</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine8 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId8]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine8</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine9 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId9]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine9</p></td>
+            </tr>
+        }
+
+        @if (Model.NewPatientRecord.QuantityForMedicine10 > 0)
+        {
+            <tr>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.MedicineDropDown[Model.NewPatientRecord.MedicinesId10]</p></td>
+                <td style="background-color:lightslategrey;"><p>@Model.NewPatientRecord.QuantityForMedicine10</p></td>
+            </tr>
+        }
     </table>
 </body>
 </html>

@@ -70,6 +70,7 @@
     <Compile Include="Model\RecordFileSystem.cs" />
     <Compile Include="Model\SpecialistNearby.cs" />
     <Compile Include="Model\SpecialistSearch.cs" />
+    <Compile Include="Model\StockUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AuthorizedPractitionersViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />

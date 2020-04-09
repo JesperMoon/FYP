@@ -555,6 +555,35 @@ namespace FYP.Data
             return returnAppointment;
         }
 
+        public PatientRecordModel GetMedicinesList(Guid companyId)
+        {
+            PatientRecordModel result = new PatientRecordModel();
+
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Medicine
+                                where pt.CompanyId.Equals(companyId) && pt.TotalAmount > 0
+                                select pt;
+
+                    var key = query.Select(p => p.Id.ToString()).ToList();
+                    var value = query.Select(p => p.ProductName).ToList();
+
+                    List<string> medicineIdList = key;
+                    List<string> medicineNameList = value;
+
+                    result.MedicineDropDown = medicineIdList.Zip(medicineNameList, (k,v) => new { k,v }).ToDictionary(x => x.k, x => x.v);
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.GetMedicinesList : " + err);
+            }
+
+            return result;
+        }
+
         public Guid CreatePatientRecord(RecordFileSystem fileRecord)
         {
             Guid result = new Guid();
@@ -617,6 +646,36 @@ namespace FYP.Data
             }
 
             return result;
+        }
+
+        public void StockUpdate(List<StockUpdate> stock, PatientRecordModel medicineGiven)
+        {
+            try
+            {
+                using (var context = new ApplicationContext())
+                {
+                    var query = from pt in context.Medicine
+                                where pt.CompanyId.Equals(medicineGiven.CompanyId)
+                                //join sc in stock on pt.Id equals sc.MedicineId
+                                select pt;
+
+                    //var test = query.Where();
+                    //var medicines = query.Where(x => stock.Any(y =>y.MedicineId.Equals(x.Id)));
+
+                    foreach(var medicine in stock)
+                    {
+                        var medicines = query.Where(x => x.Id.Equals(medicine.MedicineId)).FirstOrDefault();
+                        medicines.TotalAmount = medicines.TotalAmount - medicine.Quantity;
+                        //var updateValue = stock.Where(x => x.MedicineId.Equals(medicine.Id)).Select(y => y.Quantity).FirstOrDefault();
+                        //medicine.TotalAmount = medicine.TotalAmount - updateValue;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception err)
+            {
+                new LogHelper().LogMessage("PractitionerData.StockUpdate : " + err);
+            }
         }
 
         public int CloseAppointment(Guid appointmentId)
@@ -882,12 +941,12 @@ namespace FYP.Data
                 while (medicines.Read())
                 {
                     MedicineModel medicine = new MedicineModel();
-                    medicine.MedicineId = Guid.Parse(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.Id].ToString());
-                    medicine.ProductCode = medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ProductCode].ToString();
-                    medicine.ProductName = medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ProductName].ToString();
-                    medicine.ExpiryDateString = Convert.ToDateTime(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.ExpiryDate]).ToString("dd/MM/yyyy");
-                    medicine.TotalAmount = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.TotalAmount]);
-                    medicine.Threshold = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitioenrSearchProduct.Threshold]);
+                    medicine.MedicineId = Guid.Parse(medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.Id].ToString());
+                    medicine.ProductCode = medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.ProductCode].ToString();
+                    medicine.ProductName = medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.ProductName].ToString();
+                    medicine.ExpiryDateString = Convert.ToDateTime(medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.ExpiryDate]).ToString("dd/MM/yyyy");
+                    medicine.TotalAmount = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.TotalAmount]);
+                    medicine.Threshold = Convert.ToInt32(medicines[ConstantHelper.SQLColumn.PractitionerSearchProduct.Threshold]);
 
                     result.Add(medicine);
                 }

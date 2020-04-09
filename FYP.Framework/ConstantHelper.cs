@@ -41,6 +41,7 @@ namespace FYP.Framework
             public const string SearchRecords = "[dbo].[SearchRecords]";
             public const string PatientSearchRecords = "[dbo].[PatientSearchRecords]";
             public const string PractitionerSearchProduct = "[dbo].[PractitionerSearchProduct]";
+            public const string ProductSearch = "[dbo].[ProductSearch]";
 
             public static class Parameter
             {
@@ -90,6 +91,8 @@ namespace FYP.Framework
                 public const string SpecialistSearch = "Patient/SpecialistSearch";
                 public const string AddAuthorizePractitioner = "Patient/AddAuthorizePractitioner";
                 public const string AuthorizedPractitionersTable = "Patient/AuthorizedPractitionersTable";
+                public const string ProductSearch = "Patient/ProductSearch";
+                public const string ViewCompanyProfile = "Patient/ViewCompanyProfile";
             }
 
             public static class Company
@@ -115,6 +118,7 @@ namespace FYP.Framework
                 public const string GetPractitionerDetails = "Practitioner/GetPractitionerDetails";
                 public const string CreateNewRecord = "Practitioner/CreateNewRecord";
                 public const string StoreRecordToDB = "Practitioner/StoreRecordToDB";
+                public const string GetMedicinesDropDown = "Practitioner/GetMedicinesDropDown";
 
                 public const string GetRecordsDirectory = "Practitioner/GetRecordsDirectory";
                 public const string SearchRecords = "Practitioner/SearchRecords";
@@ -267,7 +271,7 @@ namespace FYP.Framework
                 public const string LastName = "LastName";
             }
 
-            public static class PractitioenrSearchProduct
+            public static class PractitionerSearchProduct
             {
                 public const string Id = "Id";
                 public const string ProductCode = "ProductCode";
@@ -275,6 +279,17 @@ namespace FYP.Framework
                 public const string ExpiryDate = "ExpiryDate";
                 public const string TotalAmount = "TotalAmount";
                 public const string Threshold = "Threshold";
+            }
+
+            public static class ProductSearch
+            {
+                public const string ProductCode = "ProductCode";
+                public const string ProductName = "ProductName";
+                public const string CompanyId = "CompanyId";
+                public const string CompanyName = "CompanyName";
+                public const string PostalCode = "PostalCode";
+                public const string State = "State";
+                public const string TotalAmount = "TotalAmount";
             }
         }
     }

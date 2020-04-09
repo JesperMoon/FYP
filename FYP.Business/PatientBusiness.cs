@@ -304,5 +304,29 @@ namespace FYP.Business
 
             return result;
         }
+
+        public List<MedicineModel> ProductSearch(MedicineViewModel search)
+        {
+            List<MedicineModel> result = new List<MedicineModel>();
+            PatientData dataLayer = new PatientData();
+
+            if (!String.IsNullOrEmpty(search.SearchText))
+            {
+                search.SearchText = "%" + search.SearchText + "%";
+            }      
+            result = dataLayer.ProductSearch(search);
+
+            return result;
+        }
+
+        public CompanyViewModel ViewCompanyProfile(Guid companyId)
+        {
+            CompanyViewModel result = new CompanyViewModel();
+
+            PatientData data = new PatientData();
+            result = data.ViewCompanyProfile(companyId);
+
+            return result;
+        }
     }
 }

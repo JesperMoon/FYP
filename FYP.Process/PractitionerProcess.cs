@@ -197,6 +197,20 @@ namespace FYP.Process
             return result;
         }
 
+        public Dictionary<string,string> GetMedicinesDropDown(PractitionerBaseViewModel vm)
+        {
+            var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);
+
+            RestRequest request = new RestRequest(ConstantHelper.API.PatientRecord.GetMedicinesDropDown, Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(vm);
+
+            IRestResponse<PatientRecordModel> response = client.Execute<PatientRecordModel>(request);
+            PatientRecordModel result = response.Data;
+
+            return result.MedicineDropDown;
+        }
+
         public int StoreRecordToDB(RecordFileSystem fileSystem,PatientRecordModel patientRecord)
         {
             var client = new RestClient(ConstantHelper.AppSettings.BackEndUrl);

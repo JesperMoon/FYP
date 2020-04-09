@@ -316,7 +316,68 @@
 
                 <tr class="row">
                     <td class="col-4"><h4><b>Medicines : </b></h4></td>
-                    <td class="col-8"><h4>@Html.TextAreaFor(m => m.NewPatientRecord.Medicines, new { value = Model.NewPatientRecord.Medicines, rows = "10", cols = "40" })</h4></td>
+                    <td class="col-4"><h4><b>Medicines</b></h4></td>
+                    <td class="col-4"><h4><b>Quantity</b></h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId1, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine1, new { value = Model.NewPatientRecord.QuantityForMedicine1 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId2, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine2, new { value = Model.NewPatientRecord.QuantityForMedicine2 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId3, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine3, new { value = Model.NewPatientRecord.QuantityForMedicine3 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId4, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine4, new { value = Model.NewPatientRecord.QuantityForMedicine4 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId5, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine5, new { value = Model.NewPatientRecord.QuantityForMedicine5 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId6, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine6, new { value = Model.NewPatientRecord.QuantityForMedicine6 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId7, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine7, new { value = Model.NewPatientRecord.QuantityForMedicine7 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId8, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine8, new { value = Model.NewPatientRecord.QuantityForMedicine8 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId9, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine9, new { value = Model.NewPatientRecord.QuantityForMedicine9 })</h4></td>
+                </tr>
+
+                <tr class="row">
+                    <td class="col-4"></td>
+                    <td class="col-4"><h4>@Html.DropDownListFor(m => m.NewPatientRecord.MedicinesId10, new SelectList(Model.NewPatientRecord.MedicineDropDown, "key", "value"), "- Select Medicines -", new { @class = "form-control" })</h4></td>
+                    <td class="col-4"><h4>@Html.TextBoxFor(m => m.NewPatientRecord.QuantityForMedicine10, new { value = Model.NewPatientRecord.QuantityForMedicine10 })</h4></td>
                 </tr>
             </table>
 
@@ -328,6 +389,7 @@
             @Html.HiddenFor(m => m.NewPatientRecord.AppointmentId)
             @Html.HiddenFor(m => m.NewPatientRecord.RecordId)
             @Html.HiddenFor(m => m.NewPatientRecord.CreatedOn)
+            @Html.HiddenFor(m => m.NewPatientRecord.MedicineDropDown);
 
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyId)
             @Html.HiddenFor(m => m.PractitionerDetails.CompanyName)

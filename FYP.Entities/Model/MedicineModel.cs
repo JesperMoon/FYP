@@ -60,5 +60,15 @@ namespace FYP.Entities
 
         [DataMember]
         public DateTime ModifiedOn { get; set; }
+
+        [DataMember]
+        public string CompanyPostalCode { get; set; }
+
+        [DataMember]
+        public string CompanyState { get; set; }
+
+        [DataMember]
+        public string CompanyName { get; set; }
+
     }
 }

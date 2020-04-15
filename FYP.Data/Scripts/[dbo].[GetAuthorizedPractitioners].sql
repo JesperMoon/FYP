@@ -1,6 +1,6 @@
 ﻿USE [FYP]
 GO
-/****** Object:  StoredProcedure [dbo].[GetAuthorizedPractitioners]    Script Date: 3/29/2020 9:04:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetAuthorizedPractitioners]    Script Date: 4/15/2020 12:56:29 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

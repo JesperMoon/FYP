@@ -1,13 +1,16 @@
 ﻿USE [FYP]
 GO
-/****** Object:  StoredProcedure [dbo].[GetAuthorizedPractitioners]    Script Date: 3/29/2020 9:04:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[PatientSearchRecords]    Script Date: 4/15/2020 12:57:17 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[GetAuthorizedPractitioners]
-	@AccId uniqueidentifier
+ALTER PROCEDURE [dbo].[PatientSearchRecords]
+	@AccId uniqueidentifier,
+	@Year int,
+	@Month int
+
 AS
 BEGIN
 SET NOCOUNT ON;
@@ -15,20 +18,16 @@ SET NOCOUNT ON;
 	WITH cte AS
 	(
 		SELECT
-			(PR.Id) AS PractitionerId
-			, (PR.LastName + ' ' + PR.FirstName) AS PractitionerName
-			, PR.Specialist
-			, CO.CompanyName
-			, CO.PostalCode
-			, CO.City
-			, CO.State
-			, AP.CreatedOn
+			RF.Id
+			, RF.CreatedOn
 		FROM
-			AuthorizePractitioners AP
-			LEFT JOIN Practitioners PR ON PR.Id = AP.PractitionerId
-			LEFT JOIN Companies CO ON CO.Id = PR.Company
+			PatientRecords RF 
+			LEFT JOIN Patients PA ON RF.PatientId = PA.Id 
 		WHERE
-			AP.PatientId = @AccId
+			RF.PatientId = @AccId
+			AND YEAR(RF.CreatedOn) = CASE WHEN @Year != 0 THEN @Year ELSE YEAR(RF.CreatedOn) END
+			AND MONTH(RF.CreatedOn) = CASE WHEN @Month != 0 THEN @Month ELSE MONTH(RF.CreatedOn) END
+
 	)
 
 	SELECT

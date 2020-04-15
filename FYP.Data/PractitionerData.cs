@@ -1125,8 +1125,9 @@ namespace FYP.Data
             {
                 using (var context = new ApplicationContext())
                 {
+                    byte[] emptyFile = new byte[1];
                     var query = from pt in context.RecordFile
-                                where pt.PractitionerId.Equals(practitionerId) && pt.PatientId.Equals(patientId)
+                                where pt.PractitionerId.Equals(practitionerId) && pt.PatientId.Equals(patientId) && !pt.FileContents.Equals(emptyFile)
                                 select pt;
 
                     var records = query.OrderByDescending(p => p.CreatedOn);

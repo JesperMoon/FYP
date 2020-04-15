@@ -1,6 +1,6 @@
 ﻿USE [FYP]
 GO
-/****** Object:  StoredProcedure [dbo].[GetRecordsDirectory]    Script Date: 3/29/2020 9:04:29 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetRecordsDirectory]    Script Date: 4/15/2020 12:57:05 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -22,4 +22,5 @@ SET NOCOUNT ON;
 		LEFT JOIN Patients PA ON PA.Id = RF.PatientId
 	WHERE
 		RF.PractitionerId = @AccId
+		AND RF.FileContents != 0x00
 END

@@ -1,6 +1,6 @@
 ﻿USE [FYP]
 GO
-/****** Object:  StoredProcedure [dbo].[SearchRecords]    Script Date: 3/29/2020 9:06:23 PM ******/
+/****** Object:  StoredProcedure [dbo].[SearchRecords]    Script Date: 4/15/2020 12:58:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -31,6 +31,7 @@ SET NOCOUNT ON;
 			AND RF.Id = CASE WHEN @RecordId != '00000000-0000-0000-0000-000000000000' THEN @RecordId ELSE RF.Id END
 			AND YEAR(RF.CreatedOn) = CASE WHEN @Year != 0 THEN @Year ELSE YEAR(RF.CreatedOn) END
 			AND MONTH(RF.CreatedOn) = CASE WHEN @Month != 0 THEN @Month ELSE MONTH(RF.CreatedOn) END
+			AND RF.FileContents != 0x00
 
 	)
 

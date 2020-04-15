@@ -171,6 +171,7 @@
     <Content Include="Scripts\[dbo].[GetRecordsDirectory].sql" />
     <Content Include="Scripts\[dbo].[PatientSearchRecords].sql" />
     <Content Include="Scripts\[dbo].[PractitionerSearchProduct].sql" />
+    <Content Include="Scripts\[dbo].[ProductSearch].sql" />
     <Content Include="Scripts\[dbo].[SearchRecords].sql" />
     <Content Include="Scripts\[dbo].[SpecialistSearch].sql" />
   </ItemGroup>

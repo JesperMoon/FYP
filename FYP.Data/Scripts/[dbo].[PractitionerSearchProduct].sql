@@ -1,12 +1,12 @@
 ﻿USE [FYP]
 GO
-/****** Object:  StoredProcedure [dbo].[SearchRecords]    Script Date: 4/2/2020 2:41:51 PM ******/
+/****** Object:  StoredProcedure [dbo].[PractitionerSearchProduct]    Script Date: 4/15/2020 12:57:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[PractitionerSearchProduct]
+ALTER PROCEDURE [dbo].[PractitionerSearchProduct]
 	@AccId uniqueidentifier,
 	@SearchText varchar(MAX),
 	@ProductCode varchar(MAX)
@@ -29,7 +29,7 @@ SET NOCOUNT ON;
 			LEFT JOIN Practitioners PR ON PR.Id = @AccId
 		WHERE
 			ME.CompanyId = PR.Company
-			AND ME.ProductName = CASE WHEN @SearchText != 'All' THEN @SearchText ELSE ME.ProductName END
+			AND ME.ProductName LIKE @SearchText
 			AND ME.ProductCode = CASE WHEN @ProductCode != 'All' THEN @ProductCode ELSE ME.ProductCode END
 	)
 
